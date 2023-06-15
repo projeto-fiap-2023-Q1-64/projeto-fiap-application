@@ -1,0 +1,1 @@
+INSERT INTO test_schema.test_table("test_id_col", "test_col") VALUES (1, 'TestValue1');

@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Build the application using Maven
-RUN mvn clean package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 mvn clean package -DskipTests
 
 # Create a new stage for the final image
 FROM openjdk:8-jdk-alpine
