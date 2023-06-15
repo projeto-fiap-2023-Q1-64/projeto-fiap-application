@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories
-public class ProjetoFiapApplication {
+public class AplicacaoProjetoFiap {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProjetoFiapApplication.class, args);
+		SpringApplication.run(AplicacaoProjetoFiap.class, args);
 	}
 
 }
