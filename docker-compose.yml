@@ -1,8 +1,6 @@
 services:
   db:
     image: postgres
-    volumes:
-      - ./scripts:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_DB: test_db
       POSTGRES_PASSWORD: "postgres-projeto-fiap-2023-Q1-64"
