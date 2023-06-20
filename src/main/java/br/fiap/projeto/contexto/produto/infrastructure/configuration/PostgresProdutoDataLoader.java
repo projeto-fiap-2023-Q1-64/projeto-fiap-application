@@ -1,10 +1,8 @@
 package br.fiap.projeto.contexto.produto.infrastructure.configuration;
 
 import br.fiap.projeto.contexto.produto.domain.Produto;
-import br.fiap.projeto.contexto.produto.domain.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.infrastructure.repository.postgres.PostgresProdutoRepository;
-import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
-public class PostgresDataLoader {
+public class PostgresProdutoDataLoader {
 
     @Autowired
     private PostgresProdutoRepository produtoRepository;
