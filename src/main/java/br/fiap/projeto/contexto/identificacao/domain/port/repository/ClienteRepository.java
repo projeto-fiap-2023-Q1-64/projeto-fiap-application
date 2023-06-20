@@ -3,10 +3,11 @@ package br.fiap.projeto.contexto.identificacao.domain.port.repository;
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ClienteRepository {
 
-    Cliente busca(Long codigo);
+    Cliente busca(UUID codigo);
 
     List<Cliente> buscaTodos();
 
@@ -14,5 +15,5 @@ public interface ClienteRepository {
 
     Cliente edita(Cliente cliente);
 
-    void remove(Long codigo);
+    void remove(UUID codigo);
 }

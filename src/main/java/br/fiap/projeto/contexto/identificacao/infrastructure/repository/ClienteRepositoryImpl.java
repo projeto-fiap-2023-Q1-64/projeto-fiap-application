@@ -3,22 +3,22 @@ package br.fiap.projeto.contexto.identificacao.infrastructure.repository;
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
-import br.fiap.projeto.contexto.identificacao.infrastructure.repository.SpringDataClienteRepository;
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class ClienteRepositoryImpl implements ClienteRepository {
 
+    @Autowired
     private SpringDataClienteRepository repository;
-    private ModelMapper mapper;
 
     @Override
-    public Cliente busca(Long codigo) {
+    public Cliente busca(UUID codigo) {
 
         Cliente ret;
         Optional<ClienteEntity> optClienteEntity;
@@ -27,7 +27,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         if (!optClienteEntity.isPresent()) {
             return null;
         }
-        ret = mapper.map(optClienteEntity.get(), Cliente.class);
+        ret = optClienteEntity.get().toCliente();
         return ret;
     }
 
@@ -38,7 +38,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         List<Cliente> clientes;
         entidades = repository.findAll();
         clientes = entidades.stream()
-                .map(cli -> mapper.map(cli, Cliente.class))
+                .map(ClienteEntity::toCliente)
                 .collect(Collectors.toList());
 
         return clientes;
@@ -49,22 +49,22 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
         ClienteEntity clienteEntity;
 
-        clienteEntity = mapper.map(cliente, ClienteEntity.class);
+        clienteEntity = ClienteEntity.fromCliente(cliente);
         clienteEntity = repository.save(clienteEntity);
 
-        return mapper.map(clienteEntity, Cliente.class);
+        return clienteEntity.toCliente();
     }
 
     @Override
     public Cliente edita(Cliente cliente) {
 
-        ClienteEntity clienteEntity = mapper.map(cliente, ClienteEntity.class);
+        ClienteEntity clienteEntity = ClienteEntity.fromCliente(cliente);
         clienteEntity = repository.save(clienteEntity);
-        return mapper.map(clienteEntity, Cliente.class);
+        return clienteEntity.toCliente();
     }
 
     @Override
-    public void remove(Long codigo) {
+    public void remove(UUID codigo) {
 
         repository.deleteById(codigo);
     }

@@ -3,8 +3,12 @@ package br.fiap.projeto.contexto.identificacao.domain.service;
 import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
+import br.fiap.projeto.exception.EntityNotFoundException;
+import lombok.SneakyThrows;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ClienteServiceImpl implements ClienteService {
@@ -16,10 +20,14 @@ public class ClienteServiceImpl implements ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    @Override
-    public ClienteDTO busca(Long codigo) {
+    @Override @SneakyThrows
+    public ClienteDTO busca(UUID codigo) {
 
-        return ClienteDTO.fromCliente(clienteRepository.busca(codigo));
+        ClienteDTO cliente = ClienteDTO.fromCliente(clienteRepository.busca(codigo));
+        if (Objects.isNull(cliente)) {
+            throw new EntityNotFoundException("Cliente não encontrado!");
+        }
+        return cliente;
     }
 
     @Override
@@ -43,7 +51,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void remove(Long codigo) {
+    public void remove(UUID codigo) {
 
         clienteRepository.remove(codigo);
     }

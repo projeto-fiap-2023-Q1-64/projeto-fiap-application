@@ -4,7 +4,9 @@ import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntit
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface SpringDataClienteRepository extends JpaRepository<ClienteEntity, Long> {
+public interface SpringDataClienteRepository extends JpaRepository<ClienteEntity, UUID> {
 
 }

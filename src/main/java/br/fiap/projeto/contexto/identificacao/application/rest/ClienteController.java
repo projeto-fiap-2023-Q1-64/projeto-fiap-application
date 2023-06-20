@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/clientes")
@@ -15,7 +16,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ClienteDTO busca(Long codigo) {
+    public ClienteDTO busca(UUID codigo) {
 
         return clienteService.busca(codigo);
     }
@@ -39,7 +40,7 @@ public class ClienteController {
     }
 
     @DeleteMapping
-    public void remove(Long codigo) {
+    public void remove(UUID codigo) {
 
         clienteService.remove(codigo);
     }

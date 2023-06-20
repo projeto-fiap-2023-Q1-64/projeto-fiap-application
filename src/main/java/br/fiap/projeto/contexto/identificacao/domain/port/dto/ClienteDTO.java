@@ -3,10 +3,13 @@ package br.fiap.projeto.contexto.identificacao.domain.port.dto;
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
+import lombok.SneakyThrows;
+
+import java.util.UUID;
 
 public class ClienteDTO {
 
-    private Long codigo;
+    private UUID codigo;
 
     private String nome;
 
@@ -14,14 +17,14 @@ public class ClienteDTO {
 
     private Email email;
 
-    public ClienteDTO(Long codigo, String nome, Cpf cpf, Email email) {
+    public ClienteDTO(UUID codigo, String nome, Cpf cpf, Email email) {
         this.codigo = codigo;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
     }
 
-    public Long getCodigo() {
+    public UUID getCodigo() {
         return codigo;
     }
 
@@ -37,6 +40,7 @@ public class ClienteDTO {
         return email;
     }
 
+    @SneakyThrows
     public Cliente toCliente() {
 
         return new Cliente(codigo, nome, cpf, email);
@@ -50,6 +54,7 @@ public class ClienteDTO {
         return new ClienteDTO(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
     }
 
+    @SneakyThrows
     public static Cliente toCliente(ClienteDTO cliente) {
 
         return new Cliente(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
