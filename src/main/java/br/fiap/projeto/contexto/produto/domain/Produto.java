@@ -1,78 +1,75 @@
 package br.fiap.projeto.contexto.produto.domain;
 
+import br.fiap.projeto.contexto.produto.domain.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 
+import java.util.UUID;
+
 public class Produto {
- 
-	private Long codigo;
-	 
-	private String nome;
-	 
-	private String descricao;
-	 
-	private Double preco;
-	 
-	private CategoriaProduto categoria;
-	 
-	private String imagem;
-	 
-	private Integer tempoPreparoMin;
 
-	public Long getCodigo() {
-		return codigo;
-	}
+    private UUID codigo;
 
-	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
-	}
+    private String nome;
 
-	public String getNome() {
-		return nome;
-	}
+    private String descricao;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    private Double preco;
 
-	public String getDescricao() {
-		return descricao;
-	}
+    private CategoriaProduto categoria;
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    private String imagem;
 
-	public Double getPreco() {
-		return preco;
-	}
+    private Integer tempoPreparoMin;
 
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
+    public Produto(UUID codigo, String nome, String descricao, Double preco, CategoriaProduto categoria, String imagem, Integer tempoPreparoMin) {
+        this.codigo = codigo;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.categoria = categoria;
+        this.imagem = imagem;
+        this.tempoPreparoMin = tempoPreparoMin;
+    }
 
-	public CategoriaProduto getCategoria() {
-		return categoria;
-	}
+    public Produto(ProdutoDTO produtoDTO) {
+        this.nome = produtoDTO.getNome();
+        this.descricao = produtoDTO.getDescricao();
+        this.preco = produtoDTO.getPreco();
+        this.categoria = CategoriaProduto.valueOf(produtoDTO.getCategoria());
+        this.imagem = produtoDTO.getImagem();
+        this.tempoPreparoMin = produtoDTO.getTempoPreparoMin();
+    }
 
-	public void setCategoria(CategoriaProduto categoria) {
-		this.categoria = categoria;
-	}
+    public UUID getCodigo() {
+        return codigo;
+    }
 
-	public String getImagem() {
-		return imagem;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public Integer getTempoPreparoMin() {
-		return tempoPreparoMin;
-	}
+    public Double getPreco() {
+        return preco;
+    }
 
-	public void setTempoPreparoMin(Integer tempoPreparoMin) {
-		this.tempoPreparoMin = tempoPreparoMin;
-	}
-	 
+    public CategoriaProduto getCategoria() {
+        return categoria;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public Integer getTempoPreparoMin() {
+        return tempoPreparoMin;
+    }
+
+    public ProdutoDTO toProdutoDTO() {
+        return new ProdutoDTO(codigo, nome, descricao, preco, categoria.name(), imagem, tempoPreparoMin);
+    }
 }
  
