@@ -10,9 +10,13 @@
 ## Comandos do docker
 ### Iniciar containers (aplicação e banco)
 ```
-docker-compose up --force-recreate --build -d
+docker-compose up --force-recreate --build
 ```
 ### Parar e remover containers (aplicação e banco)
 ```
 docker-compose down -v
+```
+### Para acessar o swagger
+```
+http://localhost:8080/swagger-ui/index.html
 ```
