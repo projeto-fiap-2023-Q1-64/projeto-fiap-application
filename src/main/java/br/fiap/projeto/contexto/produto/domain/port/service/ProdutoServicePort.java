@@ -6,20 +6,20 @@ import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 import java.util.List;
 import java.util.UUID;
 
-public interface ProdutoService {
+public interface ProdutoServicePort {
 
     List<ProdutoDTO> buscaTodos();
 
     ProdutoDTO buscaProduto(UUID codigo);
 
-    List<ProdutoDTO> buscaProdutoPorCategoria(CategoriaProduto categoria);
+    List<ProdutoDTO> buscaProdutosPorCategoria(CategoriaProduto categoria);
 
     List<String> getCategoriasDeProdutos();
 
-    void criaProduto(ProdutoDTO produto);
+    ProdutoDTO criaProduto(ProdutoDTO produtoDTO);
 
     void removeProduto(UUID codigo);
 
-    void atualizaProduto(ProdutoDTO produto);
+    void atualizaProduto(UUID codigo, ProdutoDTO produto);
 
 }
