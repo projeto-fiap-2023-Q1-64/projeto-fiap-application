@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class DomainProdutoServicePort implements ProdutoServicePort {
+public class DomainProdutoService implements ProdutoServicePort {
 
     private final ProdutoRepositoryPort produtoRepositoryPort;
 
-    public DomainProdutoServicePort(ProdutoRepositoryPort produtoRepositoryPort) {
+    public DomainProdutoService(ProdutoRepositoryPort produtoRepositoryPort) {
         this.produtoRepositoryPort = produtoRepositoryPort;
     }
 
