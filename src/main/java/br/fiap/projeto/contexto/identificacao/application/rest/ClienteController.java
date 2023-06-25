@@ -21,6 +21,12 @@ public class ClienteController {
         return clienteService.busca(codigo);
     }
 
+    @GetMapping("/cpf")
+    public ClienteDTO buscaPorCpf(String cpf) {
+
+        return clienteService.buscaPorCpf(cpf);
+    }
+
     @GetMapping("/todos")
     public List<ClienteDTO> buscaTodos() {
 

@@ -1,12 +1,15 @@
 package br.fiap.projeto.contexto.identificacao.infrastructure.repository;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -67,5 +70,15 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     public void remove(UUID codigo) {
 
         repository.deleteById(codigo);
+    }
+
+    @Override
+    public ClienteDTO buscaPorCpf(String cpf) {
+
+        ClienteEntity entity = repository.findByCpf(cpf);
+        if (Objects.nonNull(entity)) {
+            return ClienteDTO.fromCliente(entity.toCliente());
+        }
+        return null;
     }
 }

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource("classpath:application.properties")
-public class IdentificacaoServiceTest {
+public class ClienteServiceTest {
 
     @Autowired
     private ClienteService clienteService;
@@ -33,7 +33,26 @@ public class IdentificacaoServiceTest {
     }
 
     @Test
-    public void testeInsere() {
+    public void testeBuscaPorCpf() {
+
+        String cpf = "09876543210";
+        ClienteDTO cliente = new ClienteDTO(UUID.randomUUID(), "TesteBusca", Cpf.fromString(cpf), Email.fromString("teste@busca.com"));
+        cliente = clienteService.insere(cliente);
+
+        assertNotNull(cliente);
+        assertNotNull(cliente.getCpf());
+        assertNotNull(cliente.getCpf());
+        assertEquals(cpf, cliente.getCpf().getNumero());
+
+        ClienteDTO clienteBusca = clienteService.buscaPorCpf(cpf);
+        assertNotNull(clienteBusca);
+        assertNotNull(clienteBusca.getCpf());
+        assertNotNull(clienteBusca.getCodigo());
+        assertEquals(cpf, clienteBusca.getCpf().getNumero());
+    }
+
+    @Test
+    public void testeInsercaoValida() {
 
         ClienteDTO cliente = new ClienteDTO(UUID.randomUUID(), "NomeTeste", Cpf.fromString("98765432109"), Email.fromString("teste@teste.com"));
         ClienteDTO resultado = clienteService.insere(cliente);
@@ -43,6 +62,27 @@ public class IdentificacaoServiceTest {
         List<ClienteDTO> clienteDTOS = clienteService.buscaTodos();
         assertFalse(CollectionUtils.isEmpty(clienteDTOS));
         assertTrue(clienteDTOS.stream().anyMatch(cli -> cli.getCodigo().equals(cliente.getCodigo())));
+    }
+
+    @Test
+    public void testeInsercaoInvalida() {
+
+        assertThrows(
+                InvalidInputException.class,
+                () -> clienteService.insere(new ClienteDTO(UUID.randomUUID(), null, Cpf.fromString("98765432109"), Email.fromString("teste@teste.com"))),
+                Cliente.NOME_AUSENTE
+        );
+        assertThrows(
+                InvalidInputException.class,
+                () -> clienteService.insere(new ClienteDTO(UUID.randomUUID(), "Nome teste", null, Email.fromString("teste@teste.com"))),
+                Cliente.CPF_AUSENTE
+        );
+        assertThrows(
+                InvalidInputException.class,
+                () -> clienteService.insere(new ClienteDTO(UUID.randomUUID(), "Nome teste", Cpf.fromString("98765432109"), null)),
+                Cliente.EMAIL_AUSENTE
+        );
+
     }
 
     @Test

@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface SpringDataClienteRepository extends JpaRepository<ClienteEntity, UUID> {
 
+    ClienteEntity findByCpf(String cpf);
 }

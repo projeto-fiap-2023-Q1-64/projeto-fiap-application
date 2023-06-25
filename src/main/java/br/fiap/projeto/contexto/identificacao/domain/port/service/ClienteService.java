@@ -17,4 +17,6 @@ public interface ClienteService {
     ClienteDTO edita(ClienteDTO cliente);
 
     void remove(UUID codigo);
+
+    ClienteDTO buscaPorCpf(String cpf);
 }

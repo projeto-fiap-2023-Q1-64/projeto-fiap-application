@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.identificacao.domain.service;
 
+import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
@@ -38,10 +39,11 @@ public class ClienteServiceImpl implements ClienteService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public ClienteDTO insere(ClienteDTO cliente) {
+    @Override @SneakyThrows
+    public ClienteDTO insere(ClienteDTO clienteDTO) {
 
-        return ClienteDTO.fromCliente(clienteRepository.insere(cliente.toCliente()));
+        Cliente cliente = clienteDTO.toCliente();
+        return ClienteDTO.fromCliente(clienteRepository.insere(cliente));
     }
 
     @Override
@@ -54,5 +56,11 @@ public class ClienteServiceImpl implements ClienteService {
     public void remove(UUID codigo) {
 
         clienteRepository.remove(codigo);
+    }
+
+    @Override
+    public ClienteDTO buscaPorCpf(String cpf) {
+
+        return clienteRepository.buscaPorCpf(cpf);
     }
 }
