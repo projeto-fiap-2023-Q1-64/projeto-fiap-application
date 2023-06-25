@@ -5,7 +5,10 @@ import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
 import lombok.SneakyThrows;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -21,6 +24,8 @@ public class ClienteEntity {
     private String cpf;
 
     private String email;
+
+    private LocalDateTime dataExclusao;
 
     public ClienteEntity() {
     }
@@ -47,5 +52,13 @@ public class ClienteEntity {
     public static ClienteEntity fromCliente(Cliente cliente) {
 
         return new ClienteEntity(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
+    }
+
+    public LocalDateTime getDataExclusao() {
+        return dataExclusao;
+    }
+
+    public void setDataExclusao(LocalDateTime dataExclusao) {
+        this.dataExclusao = dataExclusao;
     }
 }

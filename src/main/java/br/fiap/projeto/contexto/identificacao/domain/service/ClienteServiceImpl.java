@@ -4,13 +4,17 @@ import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.exception.EntityNotFoundException;
+import br.fiap.projeto.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.exception.EntradaInvalidaException;
 import lombok.SneakyThrows;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static br.fiap.projeto.contexto.identificacao.domain.entity.Cliente.ENTIDADE_DUPLICADA;
+import static br.fiap.projeto.contexto.identificacao.domain.entity.Cliente.ENTIDADE_NAO_ENCONTRADA;
 
 public class ClienteServiceImpl implements ClienteService {
 
@@ -26,7 +30,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         ClienteDTO cliente = ClienteDTO.fromCliente(clienteRepository.busca(codigo));
         if (Objects.isNull(cliente)) {
-            throw new EntityNotFoundException("Cliente não encontrado!");
+            throw new EntidadeNaoEncontradaException("Cliente não encontrado!");
         }
         return cliente;
     }
@@ -42,25 +46,53 @@ public class ClienteServiceImpl implements ClienteService {
     @Override @SneakyThrows
     public ClienteDTO insere(ClienteDTO clienteDTO) {
 
-        Cliente cliente = clienteDTO.toCliente();
+        Cliente cliente;
+        ClienteDTO existente;
+
+        cliente = clienteDTO.toCliente();
+        try {
+            existente = buscaPorCpf(cliente.getCpf().getNumero());
+            if (existente != null) {
+                throw new EntradaInvalidaException(ENTIDADE_DUPLICADA);
+            }
+        } catch (Exception ex) {
+            if (!(ex instanceof EntidadeNaoEncontradaException)) {
+                throw ex;
+            }
+        }
         return ClienteDTO.fromCliente(clienteRepository.insere(cliente));
     }
 
-    @Override
-    public ClienteDTO edita(ClienteDTO cliente) {
+    @Override @SneakyThrows
+    public ClienteDTO edita(ClienteDTO clienteDTO) {
 
-        return ClienteDTO.fromCliente(clienteRepository.edita(cliente.toCliente()));
+        ClienteDTO existente;
+        Cliente cliente;
+        if (clienteDTO.getCodigo() == null) {
+            throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
+        }
+        existente = busca(clienteDTO.getCodigo());
+        if (existente == null) {
+            throw new EntidadeNaoEncontradaException(ENTIDADE_NAO_ENCONTRADA);
+        }
+        cliente = new Cliente(existente.getCodigo(), clienteDTO.getNome(), clienteDTO.getCpf(), clienteDTO.getEmail());
+        return ClienteDTO.fromCliente(clienteRepository.edita(cliente));
     }
 
     @Override
     public void remove(UUID codigo) {
 
-        clienteRepository.remove(codigo);
+        ClienteDTO clienteDTO = busca(codigo);
+        clienteRepository.remove(clienteDTO.getCodigo());
     }
 
-    @Override
+    @Override @SneakyThrows
     public ClienteDTO buscaPorCpf(String cpf) {
 
-        return clienteRepository.buscaPorCpf(cpf);
+        ClienteDTO ret = clienteRepository.buscaPorCpf(cpf);
+        if (ret == null) {
+            throw new EntidadeNaoEncontradaException(ENTIDADE_NAO_ENCONTRADA);
+        }
+        return ret;
     }
 }

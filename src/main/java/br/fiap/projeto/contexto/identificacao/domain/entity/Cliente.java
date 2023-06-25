@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.identificacao.domain.entity;
 
 import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
-import br.fiap.projeto.exception.InvalidInputException;
+import br.fiap.projeto.exception.EntradaInvalidaException;
 
 import java.util.UUID;
 
@@ -11,6 +11,9 @@ public class Cliente {
 	public final static String CPF_AUSENTE = "Informe o cpf!";
 	public final static String EMAIL_AUSENTE = "Informe o e-mail!";
 	public final static String NOME_AUSENTE = "Informe o nome!";
+	public final static String ENTIDADE_NAO_ENCONTRADA = "Cliente não encontrado!";
+	public final static String ENTIDADE_DUPLICADA = "Esse cpf já está cadastrado!";
+	public final static String CODIGO_AUSENTE = "Informe o código do cliente!";
  
 	private final UUID codigo;
 	 
@@ -20,42 +23,50 @@ public class Cliente {
 	 
 	private final Email email;
 
-	public Cliente(UUID codigo, String nome, Cpf cpf, Email email) throws InvalidInputException {
+	public Cliente(UUID codigo, String nome, Cpf cpf, Email email) throws EntradaInvalidaException {
 
 		this.codigo = codigo;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.email = email;
+		validaCodigo();
 		validaCpf();
 		validaEmail();
 		validaNome();
 	}
 
-	public Cliente(UUID codigo, String nome, String cpf, String email) throws InvalidInputException {
+	public Cliente(UUID codigo, String nome, String cpf, String email) throws EntradaInvalidaException {
 
 		this(codigo, nome, Cpf.fromString(cpf), Email.fromString(email));
 	}
 
-	public void validaCpf() throws InvalidInputException {
+	private void validaCodigo() throws EntradaInvalidaException {
+
+		if (codigo == null) {
+			throw new EntradaInvalidaException(CODIGO_AUSENTE);
+		}
+	}
+
+	private void validaCpf() throws EntradaInvalidaException {
 
 		if (cpf == null) {
-			throw new InvalidInputException(CPF_AUSENTE);
+			throw new EntradaInvalidaException(CPF_AUSENTE);
 		}
 		cpf.validar();
 	}
 
-	public void validaEmail() throws InvalidInputException {
+	private void validaEmail() throws EntradaInvalidaException {
 
 		if (email == null) {
-			throw new InvalidInputException(EMAIL_AUSENTE);
+			throw new EntradaInvalidaException(EMAIL_AUSENTE);
 		}
 		email.validar();
 	}
 
-	public void validaNome() throws InvalidInputException {
+	private void validaNome() throws EntradaInvalidaException {
 
 		if (nome == null || nome.length() == 0) {
-			throw new InvalidInputException(NOME_AUSENTE);
+			throw new EntradaInvalidaException(NOME_AUSENTE);
 		}
 	}
 

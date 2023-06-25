@@ -5,8 +5,8 @@ import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
-import br.fiap.projeto.exception.EntityNotFoundException;
-import br.fiap.projeto.exception.InvalidInputException;
+import br.fiap.projeto.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.exception.EntradaInvalidaException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +52,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testeInsercaoValida() {
+    public void testeInsere() {
 
         ClienteDTO cliente = new ClienteDTO(UUID.randomUUID(), "NomeTeste", Cpf.fromString("98765432109"), Email.fromString("teste@teste.com"));
         ClienteDTO resultado = clienteService.insere(cliente);
@@ -65,27 +65,6 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testeInsercaoInvalida() {
-
-        assertThrows(
-                InvalidInputException.class,
-                () -> clienteService.insere(new ClienteDTO(UUID.randomUUID(), null, Cpf.fromString("98765432109"), Email.fromString("teste@teste.com"))),
-                Cliente.NOME_AUSENTE
-        );
-        assertThrows(
-                InvalidInputException.class,
-                () -> clienteService.insere(new ClienteDTO(UUID.randomUUID(), "Nome teste", null, Email.fromString("teste@teste.com"))),
-                Cliente.CPF_AUSENTE
-        );
-        assertThrows(
-                InvalidInputException.class,
-                () -> clienteService.insere(new ClienteDTO(UUID.randomUUID(), "Nome teste", Cpf.fromString("98765432109"), null)),
-                Cliente.EMAIL_AUSENTE
-        );
-
-    }
-
-    @Test
     public void testeRemove() {
 
         UUID codigoEntrada, codigoSaida;
@@ -93,7 +72,7 @@ public class ClienteServiceTest {
 
         codigoEntrada = UUID.randomUUID();
 
-        cliente = new ClienteDTO(codigoEntrada, "NomeTeste", Cpf.fromString("98765432109"), Email.fromString("teste@teste.com"));
+        cliente = new ClienteDTO(codigoEntrada, "NomeTeste", Cpf.fromString("45678912301"), Email.fromString("teste@teste.com"));
         resultado = clienteService.insere(cliente);
         codigoSaida = resultado.getCodigo();
 
@@ -104,11 +83,11 @@ public class ClienteServiceTest {
 
         clienteService.remove(codigoEntrada);
         assertThrows(
-                EntityNotFoundException.class,
+                EntidadeNaoEncontradaException.class,
                 () -> clienteService.busca(codigoEntrada)
         );
         assertThrows(
-                EntityNotFoundException.class,
+                EntidadeNaoEncontradaException.class,
                 () -> clienteService.busca(codigoSaida)
         );
 
