@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -46,12 +47,38 @@ public class ClienteEntity {
     @SneakyThrows
     public Cliente toCliente() {
 
-        return new Cliente(codigo, nome, cpf, email);
+        return new Cliente(
+                Optional.ofNullable(codigo).map(UUID::toString).orElse(null),
+                nome,
+                cpf,
+                email
+        );
     }
 
     public static ClienteEntity fromCliente(Cliente cliente) {
 
-        return new ClienteEntity(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
+        return new ClienteEntity(
+                Optional.ofNullable(cliente.getCodigo()).map(UUID::fromString).orElse(null),
+                cliente.getNome(),
+                cliente.getCpf(),
+                cliente.getEmail()
+        );
+    }
+
+    public UUID getCodigo() {
+        return codigo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public LocalDateTime getDataExclusao() {

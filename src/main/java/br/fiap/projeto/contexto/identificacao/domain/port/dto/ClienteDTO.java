@@ -5,26 +5,35 @@ import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
 import lombok.SneakyThrows;
 
-import java.util.UUID;
+import java.util.Optional;
 
 public class ClienteDTO {
 
-    private UUID codigo;
+    private String codigo;
 
     private String nome;
 
-    private Cpf cpf;
+    private String cpf;
 
-    private Email email;
+    private String email;
 
-    public ClienteDTO(UUID codigo, String nome, Cpf cpf, Email email) {
+    public ClienteDTO() {
+    }
+
+    public ClienteDTO(String codigo, String nome, String cpf, String email) {
         this.codigo = codigo;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
     }
 
-    public UUID getCodigo() {
+    public ClienteDTO(String nome, String cpf, String email) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+    }
+
+    public String getCodigo() {
         return codigo;
     }
 
@@ -32,11 +41,11 @@ public class ClienteDTO {
         return nome;
     }
 
-    public Cpf getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public Email getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -51,12 +60,11 @@ public class ClienteDTO {
         if (cliente == null) {
             return null;
         }
-        return new ClienteDTO(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
-    }
-
-    @SneakyThrows
-    public static Cliente toCliente(ClienteDTO cliente) {
-
-        return new Cliente(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
+        return new ClienteDTO(
+                cliente.getCodigo(),
+                cliente.getNome(),
+                Optional.ofNullable(cliente.getCpf()).map(Cpf::getNumero).orElse(null),
+                Optional.ofNullable(cliente.getEmail()).map(Email::getEndereco).orElse(null)
+        );
     }
 }

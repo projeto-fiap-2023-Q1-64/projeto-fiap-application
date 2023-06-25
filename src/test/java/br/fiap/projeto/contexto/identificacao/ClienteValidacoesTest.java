@@ -17,7 +17,7 @@ public class ClienteValidacoesTest {
 
         assertThrows(
                 EntradaInvalidaException.class,
-                () -> new Cliente(UUID.randomUUID(), "nome1", Cpf.fromString("123"), Email.fromString("teste@teste.com")),
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", "123", "teste@teste.com"),
                 Cpf.CPF_INVALIDO
         );
     }
@@ -27,16 +27,17 @@ public class ClienteValidacoesTest {
 
         assertThrows(
                 EntradaInvalidaException.class,
-                () -> new Cliente(UUID.randomUUID(), "nome1", Cpf.fromString("01234567890"), Email.fromString("teste")),
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", "01234567890", "teste"),
                 Email.EMAIL_INVALIDO
         );
     }
 
+    @Test
     public void testeCodigoAusente() {
 
         assertThrows(
                 EntradaInvalidaException.class,
-                () -> new Cliente(null, "nome1", Cpf.fromString("01234567890"), Email.fromString("teste@teste.com")),
+                () -> new Cliente(null, "nome1", "01234567890", "teste@teste.com"),
                 Cliente.CODIGO_AUSENTE
         );
     }
@@ -46,7 +47,7 @@ public class ClienteValidacoesTest {
 
         assertThrows(
                 EntradaInvalidaException.class,
-                () -> new Cliente(UUID.randomUUID(), null, Cpf.fromString("01234567890"), Email.fromString("teste@teste.com")),
+                () -> new Cliente(UUID.randomUUID().toString(), null, "01234567890", "teste@teste.com"),
                 Cliente.CPF_AUSENTE
         );
     }
@@ -56,7 +57,7 @@ public class ClienteValidacoesTest {
 
         assertThrows(
                 EntradaInvalidaException.class,
-                () -> new Cliente(UUID.randomUUID(), "nome1", Cpf.fromString("01234567890"), null),
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", "01234567890", null),
                 Cliente.EMAIL_AUSENTE
         );
     }
@@ -66,7 +67,7 @@ public class ClienteValidacoesTest {
 
         assertThrows(
                 EntradaInvalidaException.class,
-                () -> new Cliente(UUID.randomUUID(), "nome1", null, Email.fromString("teste@teste.com")),
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", null, "teste@teste.com"),
                 Cliente.CPF_AUSENTE
         );
     }

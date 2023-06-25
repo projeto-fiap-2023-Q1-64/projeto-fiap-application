@@ -4,8 +4,6 @@ import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
 import br.fiap.projeto.exception.EntradaInvalidaException;
 
-import java.util.UUID;
-
 public class Cliente {
 
 	public final static String CPF_AUSENTE = "Informe o cpf!";
@@ -15,7 +13,7 @@ public class Cliente {
 	public final static String ENTIDADE_DUPLICADA = "Esse cpf já está cadastrado!";
 	public final static String CODIGO_AUSENTE = "Informe o código do cliente!";
  
-	private final UUID codigo;
+	private final String codigo;
 	 
 	private final String nome;
 	 
@@ -23,21 +21,16 @@ public class Cliente {
 	 
 	private final Email email;
 
-	public Cliente(UUID codigo, String nome, Cpf cpf, Email email) throws EntradaInvalidaException {
+	public Cliente(String codigo, String nome, String cpf, String email) throws EntradaInvalidaException {
 
 		this.codigo = codigo;
 		this.nome = nome;
-		this.cpf = cpf;
-		this.email = email;
 		validaCodigo();
-		validaCpf();
-		validaEmail();
+		validaCpf(cpf);
+		validaEmail(email);
 		validaNome();
-	}
-
-	public Cliente(UUID codigo, String nome, String cpf, String email) throws EntradaInvalidaException {
-
-		this(codigo, nome, Cpf.fromString(cpf), Email.fromString(email));
+		this.cpf = Cpf.fromString(cpf);
+		this.email = Email.fromString(email);
 	}
 
 	private void validaCodigo() throws EntradaInvalidaException {
@@ -47,20 +40,20 @@ public class Cliente {
 		}
 	}
 
-	private void validaCpf() throws EntradaInvalidaException {
+	private void validaCpf(String cpf) throws EntradaInvalidaException {
 
 		if (cpf == null) {
 			throw new EntradaInvalidaException(CPF_AUSENTE);
 		}
-		cpf.validar();
+		Cpf.fromString(cpf).validar();
 	}
 
-	private void validaEmail() throws EntradaInvalidaException {
+	private void validaEmail(String email) throws EntradaInvalidaException {
 
 		if (email == null) {
 			throw new EntradaInvalidaException(EMAIL_AUSENTE);
 		}
-		email.validar();
+		Email.fromString(email).validar();
 	}
 
 	private void validaNome() throws EntradaInvalidaException {
@@ -70,7 +63,7 @@ public class Cliente {
 		}
 	}
 
-	public UUID getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 

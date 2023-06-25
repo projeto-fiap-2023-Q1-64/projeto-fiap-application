@@ -26,9 +26,13 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override @SneakyThrows
-    public ClienteDTO busca(UUID codigo) {
+    public ClienteDTO busca(String codigo) {
 
-        ClienteDTO cliente = ClienteDTO.fromCliente(clienteRepository.busca(codigo));
+        if (codigo == null) {
+            throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
+        }
+
+        ClienteDTO cliente = ClienteDTO.fromCliente(clienteRepository.busca(UUID.fromString(codigo)));
         if (Objects.isNull(cliente)) {
             throw new EntidadeNaoEncontradaException("Cliente não encontrado!");
         }
@@ -44,11 +48,13 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override @SneakyThrows
-    public ClienteDTO insere(ClienteDTO clienteDTO) {
+    public ClienteDTO insere(ClienteDTO ref) {
 
         Cliente cliente;
+        ClienteDTO clienteDTO;
         ClienteDTO existente;
 
+        clienteDTO = new ClienteDTO(UUID.randomUUID().toString(), ref.getNome(), ref.getCpf(), ref.getEmail());
         cliente = clienteDTO.toCliente();
         try {
             existente = buscaPorCpf(cliente.getCpf().getNumero());
@@ -80,10 +86,10 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void remove(UUID codigo) {
+    public void remove(String codigo) {
 
         ClienteDTO clienteDTO = busca(codigo);
-        clienteRepository.remove(clienteDTO.getCodigo());
+        clienteRepository.remove(UUID.fromString(clienteDTO.getCodigo()));
     }
 
     @Override @SneakyThrows

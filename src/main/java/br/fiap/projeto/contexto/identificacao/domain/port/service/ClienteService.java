@@ -3,11 +3,10 @@ package br.fiap.projeto.contexto.identificacao.domain.port.service;
 import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ClienteService {
 
-    ClienteDTO busca(UUID codigo);
+    ClienteDTO busca(String codigo);
 
     List<ClienteDTO> buscaTodos();
 
@@ -15,7 +14,7 @@ public interface ClienteService {
 
     ClienteDTO edita(ClienteDTO cliente);
 
-    void remove(UUID codigo);
+    void remove(String codigo);
 
     ClienteDTO buscaPorCpf(String cpf);
 }
