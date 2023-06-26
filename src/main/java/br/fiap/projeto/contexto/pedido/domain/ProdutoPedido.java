@@ -1,78 +1,67 @@
 package br.fiap.projeto.contexto.pedido.domain;
 
+import br.fiap.projeto.contexto.pedido.domain.dto.ProdutoPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
+
+import java.util.UUID;
 
 public class ProdutoPedido {
  
-	private Long codigo;
-	 
+	private UUID codigo;
 	private String nome;
-	 
 	private String descricao;
-	 
 	private Double preco;
-	 
 	private CategoriaProduto categoria;
-	 
 	private String imagem;
-	 
 	private Integer tempoPreparoMin;
+	public ProdutoPedido( UUID codigo
+						, String nome
+						, String descricao
+						, Double preco
+						, CategoriaProduto categoria
+						, String imagem
+						, Integer tempoPreparoMin){
+		this.codigo = codigo;
+		this.nome = nome;
+		this.descricao = descricao;
+		this.preco = preco;
+		this.categoria = categoria;
+		this.imagem = imagem;
+		this.tempoPreparoMin = tempoPreparoMin;
+	}
 
-	public Long getCodigo() {
+	public ProdutoPedido(ProdutoPedidoDTO produtoPedidoDTO) {
+		this.codigo = produtoPedidoDTO.getCodigo();
+		this.nome = produtoPedidoDTO.getNome();
+		this.descricao = produtoPedidoDTO.getDescricao();
+		this.preco = produtoPedidoDTO.getPreco();
+		this.categoria = produtoPedidoDTO.getCategoria();
+		this.imagem = produtoPedidoDTO.getImagem();
+		this.tempoPreparoMin = produtoPedidoDTO.getTempoPreparoMin();
+	}
+	public UUID getCodigo() {
 		return codigo;
 	}
-
-	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
-	}
-
 	public String getNome() {
 		return nome;
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
 	public Double getPreco() {
 		return preco;
 	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
-
 	public CategoriaProduto getCategoria() {
 		return categoria;
 	}
-
-	public void setCategoria(CategoriaProduto categoria) {
-		this.categoria = categoria;
-	}
-
 	public String getImagem() {
 		return imagem;
 	}
-
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
-	}
-
 	public Integer getTempoPreparoMin() {
 		return tempoPreparoMin;
 	}
-
-	public void setTempoPreparoMin(Integer tempoPreparoMin) {
-		this.tempoPreparoMin = tempoPreparoMin;
+	public ProdutoPedidoDTO toProdutoPedidoDTO() {
+		return new ProdutoPedidoDTO( codigo, nome, descricao, preco, categoria, imagem, tempoPreparoMin );
 	}
-	 
 }
  
