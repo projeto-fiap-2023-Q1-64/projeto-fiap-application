@@ -1,12 +1,15 @@
 package br.fiap.projeto.contexto.identificacao.infrastructure.repository;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,7 +26,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         Cliente ret;
         Optional<ClienteEntity> optClienteEntity;
 
-        optClienteEntity = repository.findById(codigo);
+        optClienteEntity = repository.findByCodigoAndDataExclusaoIsNull(codigo);
         if (!optClienteEntity.isPresent()) {
             return null;
         }
@@ -36,7 +39,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
         List<ClienteEntity> entidades;
         List<Cliente> clientes;
-        entidades = repository.findAll();
+        entidades = repository.findAllByDataExclusaoIsNull();
         clientes = entidades.stream()
                 .map(ClienteEntity::toCliente)
                 .collect(Collectors.toList());
@@ -66,6 +69,21 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     @Override
     public void remove(UUID codigo) {
 
-        repository.deleteById(codigo);
+        Optional<ClienteEntity> existing;
+        existing = repository.findByCodigoAndDataExclusaoIsNull(codigo);
+        if (existing.isPresent()) {
+            existing.get().setDataExclusao(LocalDateTime.now());
+            repository.save(existing.get());
+        }
+    }
+
+    @Override
+    public ClienteDTO buscaPorCpf(String cpf) {
+
+        ClienteEntity entity = repository.findByCpfAndDataExclusaoIsNull(cpf);
+        if (Objects.nonNull(entity)) {
+            return ClienteDTO.fromCliente(entity.toCliente());
+        }
+        return null;
     }
 }

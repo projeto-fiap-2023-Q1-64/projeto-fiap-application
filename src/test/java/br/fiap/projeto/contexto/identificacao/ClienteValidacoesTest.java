@@ -3,7 +3,7 @@ package br.fiap.projeto.contexto.identificacao;
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
-import br.fiap.projeto.exception.InvalidInputException;
+import br.fiap.projeto.exception.EntradaInvalidaException;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -16,8 +16,8 @@ public class ClienteValidacoesTest {
     public void testeCpfInvalido() {
 
         assertThrows(
-                InvalidInputException.class,
-                () -> new Cliente(UUID.randomUUID(), "nome1", Cpf.fromString("123"), Email.fromString("teste@teste.com")),
+                EntradaInvalidaException.class,
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", "123", "teste@teste.com"),
                 Cpf.CPF_INVALIDO
         );
     }
@@ -26,9 +26,49 @@ public class ClienteValidacoesTest {
     public void testeCnpjInvalido() {
 
         assertThrows(
-                InvalidInputException.class,
-                () -> new Cliente(UUID.randomUUID(), "nome1", Cpf.fromString("01234567890"), Email.fromString("teste")),
+                EntradaInvalidaException.class,
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", "01234567890", "teste"),
                 Email.EMAIL_INVALIDO
+        );
+    }
+
+    @Test
+    public void testeCodigoAusente() {
+
+        assertThrows(
+                EntradaInvalidaException.class,
+                () -> new Cliente(null, "nome1", "01234567890", "teste@teste.com"),
+                Cliente.CODIGO_AUSENTE
+        );
+    }
+
+    @Test
+    public void testeNomeAusente() {
+
+        assertThrows(
+                EntradaInvalidaException.class,
+                () -> new Cliente(UUID.randomUUID().toString(), null, "01234567890", "teste@teste.com"),
+                Cliente.CPF_AUSENTE
+        );
+    }
+
+    @Test
+    public void testeEmailAusente() {
+
+        assertThrows(
+                EntradaInvalidaException.class,
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", "01234567890", null),
+                Cliente.EMAIL_AUSENTE
+        );
+    }
+
+    @Test
+    public void testeCpfAusente() {
+
+        assertThrows(
+                EntradaInvalidaException.class,
+                () -> new Cliente(UUID.randomUUID().toString(), "nome1", null, "teste@teste.com"),
+                Cliente.CPF_AUSENTE
         );
     }
 }

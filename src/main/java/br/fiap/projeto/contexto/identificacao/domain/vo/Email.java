@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao.domain.vo;
 
-import br.fiap.projeto.exception.InvalidInputException;
+import br.fiap.projeto.exception.EntradaInvalidaException;
 
 import java.util.regex.Pattern;
 
@@ -13,12 +13,12 @@ public class Email {
 		this.endereco = endereco;
 	}
 
-	public void validar() throws InvalidInputException {
+	public void validar() throws EntradaInvalidaException {
 
 		if (Pattern.matches("\\w+@\\w+\\.\\w+[\\.\\w*]*", endereco)) {
 			return;
 		}
-		throw new InvalidInputException(EMAIL_INVALIDO);
+		throw new EntradaInvalidaException(EMAIL_INVALIDO);
 	}
 
 	public String getEndereco() {

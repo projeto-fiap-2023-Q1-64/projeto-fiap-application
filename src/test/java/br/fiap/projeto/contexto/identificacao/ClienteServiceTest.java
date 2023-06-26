@@ -1,12 +1,8 @@
 package br.fiap.projeto.contexto.identificacao;
 
-import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
-import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
-import br.fiap.projeto.exception.EntityNotFoundException;
-import br.fiap.projeto.exception.InvalidInputException;
+import br.fiap.projeto.exception.EntidadeNaoEncontradaException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestPropertySource("classpath:application.properties")
-public class IdentificacaoServiceTest {
+public class ClienteServiceTest {
 
     @Autowired
     private ClienteService clienteService;
@@ -33,9 +29,28 @@ public class IdentificacaoServiceTest {
     }
 
     @Test
+    public void testeBuscaPorCpf() {
+
+        String cpf = "09876543210";
+        ClienteDTO cliente = new ClienteDTO(UUID.randomUUID().toString(), "TesteBusca", cpf, "teste@busca.com");
+        cliente = clienteService.insere(cliente);
+
+        assertNotNull(cliente);
+        assertNotNull(cliente.getCpf());
+        assertNotNull(cliente.getCpf());
+        assertEquals(cpf, cliente.getCpf());
+
+        ClienteDTO clienteBusca = clienteService.buscaPorCpf(cpf);
+        assertNotNull(clienteBusca);
+        assertNotNull(clienteBusca.getCpf());
+        assertNotNull(clienteBusca.getCodigo());
+        assertEquals(cpf, clienteBusca.getCpf());
+    }
+
+    @Test
     public void testeInsere() {
 
-        ClienteDTO cliente = new ClienteDTO(UUID.randomUUID(), "NomeTeste", Cpf.fromString("98765432109"), Email.fromString("teste@teste.com"));
+        ClienteDTO cliente = new ClienteDTO(UUID.randomUUID().toString(), "NomeTeste", "98765432109", "teste@teste.com");
         ClienteDTO resultado = clienteService.insere(cliente);
         assertNotNull(resultado);
         assertEquals(cliente.getCodigo(), resultado.getCodigo());
@@ -48,12 +63,12 @@ public class IdentificacaoServiceTest {
     @Test
     public void testeRemove() {
 
-        UUID codigoEntrada, codigoSaida;
+        String codigoEntrada, codigoSaida;
         ClienteDTO cliente, resultado;
 
-        codigoEntrada = UUID.randomUUID();
+        codigoEntrada = UUID.randomUUID().toString();
 
-        cliente = new ClienteDTO(codigoEntrada, "NomeTeste", Cpf.fromString("98765432109"), Email.fromString("teste@teste.com"));
+        cliente = new ClienteDTO(codigoEntrada, "NomeTeste", "45678912301", "teste@teste.com");
         resultado = clienteService.insere(cliente);
         codigoSaida = resultado.getCodigo();
 
@@ -64,11 +79,11 @@ public class IdentificacaoServiceTest {
 
         clienteService.remove(codigoEntrada);
         assertThrows(
-                EntityNotFoundException.class,
+                EntidadeNaoEncontradaException.class,
                 () -> clienteService.busca(codigoEntrada)
         );
         assertThrows(
-                EntityNotFoundException.class,
+                EntidadeNaoEncontradaException.class,
                 () -> clienteService.busca(codigoSaida)
         );
 
