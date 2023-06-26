@@ -4,6 +4,9 @@ import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;
 import br.fiap.projeto.contexto.pedido.domain.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
+import br.fiap.projeto.contexto.pedido.infrastructure.entity.PedidoEntity;
+import br.fiap.projeto.contexto.pedido.infrastructure.mapper.ItemPedidoMapper;
+import br.fiap.projeto.contexto.pedido.infrastructure.mapper.PedidoMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +22,8 @@ public class PostgresPedidoRepositoryPort implements PedidoRepositoryPort {
     }
     @Override
     public Pedido criaPedido(Pedido pedido) {
-        return null;
+        PedidoEntity novoPedido = springPedidoRepository.save(new PedidoEntity(PedidoMapper.toEntity(pedido)));
+        return PedidoMapper.toDomain(novoPedido);
     }
     @Override
     public Pedido buscaPedido(UUID codigo) {

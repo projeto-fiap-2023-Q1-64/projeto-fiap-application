@@ -37,6 +37,13 @@ public class PedidoEntity {
         this.status = status;
         this.valorTotal = valorTotal;
     }
+    public PedidoEntity(PedidoEntity pedido){
+        this.codigo = pedido.getCodigo();
+        this.itens = pedido.getItens();
+        this.cliente = pedido.getCliente();
+        this.status = pedido.getStatus();
+        this.valorTotal = pedido.getValorTotal();
+    }
     public PedidoEntity() {
     }
 
