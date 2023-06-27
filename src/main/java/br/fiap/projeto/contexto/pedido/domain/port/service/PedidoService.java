@@ -13,11 +13,11 @@ public interface PedidoService {
     List<PedidoDTO> buscaTodos();
     PedidoDTO atualizaPedido(UUID codigo, PedidoDTO pedidoDTO);
     void removePedido(UUID codigo);
-    Double calcularValorTotal();
-    void aumentarQuantidade(ProdutoPedidoDTO produtoDTO);
-    void reduzirQuantidade(ProdutoPedidoDTO produtoDTO);
-    Integer calcularTempoTotalPreparo();
-    void adicionarProduto(ProdutoPedidoDTO produtoDTO);
-    void removerProduto(ProdutoPedidoDTO produtoDTO);
-    List<ItemPedidoDTO> listarItens();
+    Double calcularValorTotal(UUID codigo);
+    void aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO);
+    void reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO);
+    Integer calcularTempoTotalPreparo(UUID codigo);
+    void adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO);
+    void removerProduto(UUID codigo, ProdutoPedidoDTO produtoDTO);
+    List<ItemPedidoDTO> listarItens(UUID codigo);
 }

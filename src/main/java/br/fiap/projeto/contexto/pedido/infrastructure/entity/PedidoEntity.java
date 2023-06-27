@@ -1,23 +1,18 @@
 package br.fiap.projeto.contexto.pedido.infrastructure.entity;
 
-import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
-import br.fiap.projeto.contexto.pedido.domain.Pedido;
-import br.fiap.projeto.contexto.pedido.domain.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name="Pedidos")
 public class PedidoEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID codigo;
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ItemPedidoEntity> itens;
     @Column(nullable = false)
     private UUID cliente;
@@ -44,26 +39,28 @@ public class PedidoEntity {
         this.status = pedido.getStatus();
         this.valorTotal = pedido.getValorTotal();
     }
-    public PedidoEntity() {
-    }
-
     public UUID getCodigo() {
         return codigo;
     }
-
     public List<ItemPedidoEntity> getItens() {
         return itens;
     }
-
     public UUID getCliente() {
         return cliente;
     }
-
     public StatusPedido getStatus() {
         return status;
     }
-
     public Double getValorTotal() {
         return valorTotal;
+    }
+    public PedidoEntity() {
+    }
+    public void atualizar(PedidoEntity pedidoEntity) {
+        this.codigo = pedidoEntity.getCodigo();
+        this.cliente = pedidoEntity.getCliente();
+        this.itens = pedidoEntity.getItens();
+        this.status = pedidoEntity.getStatus();
+        this.valorTotal = pedidoEntity.getValorTotal();
     }
 }

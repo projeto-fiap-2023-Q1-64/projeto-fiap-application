@@ -24,6 +24,7 @@ public class PostgresPedidoDataLoader {
 
     @PostConstruct
     public void init(){
+        /*
         // Criação de 2 produtos de teste
         List<ProdutoPedido> list = Arrays.asList(
                 new ProdutoPedido(UUID.fromString("28894d3e-5f18-40da-93c7-49440b911001"),
@@ -51,5 +52,6 @@ public class PostgresPedidoDataLoader {
         pedido.adicionarProduto(list.get(0));
         pedido.adicionarProduto(list.get(1));
         pedidoRepository.criaPedido(pedido);
+        */
     }
 }

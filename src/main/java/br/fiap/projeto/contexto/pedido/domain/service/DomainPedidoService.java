@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pedido.domain.service;
 
+import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;
 import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
@@ -38,31 +39,40 @@ public class DomainPedidoService implements PedidoService {
         pedidoRepositoryPort.removePedido(codigo);
     }
     @Override
-    public Double calcularValorTotal() {
+    public Double calcularValorTotal(UUID codigo) {
+        PedidoDTO pedido = this.buscaPedido(codigo);
+        Double retorno = 0d;
+
+        //Foreach para percorrer os itens e calcular o valor total
+        List<ItemPedido> listaItens = pedido.getItens();
+        for (ItemPedido i : listaItens) {
+            retorno += i.getValorUnitario() * i.getQuantidade();
+        }
+        return retorno;
+    }
+    @Override
+    public void aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) {
+        PedidoDTO pedido = this.buscaPedido(codigo);
+
+    }
+    @Override
+    public void reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) {
+
+    }
+    @Override
+    public Integer calcularTempoTotalPreparo(UUID codigo) {
         return null;
     }
     @Override
-    public void aumentarQuantidade(ProdutoPedidoDTO produtoDTO) {
+    public void adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO) {
 
     }
     @Override
-    public void reduzirQuantidade(ProdutoPedidoDTO produtoDTO) {
+    public void removerProduto(UUID codigo, ProdutoPedidoDTO produtoDTO) {
 
     }
     @Override
-    public Integer calcularTempoTotalPreparo() {
-        return null;
-    }
-    @Override
-    public void adicionarProduto(ProdutoPedidoDTO produtoDTO) {
-
-    }
-    @Override
-    public void removerProduto(ProdutoPedidoDTO produtoDTO) {
-
-    }
-    @Override
-    public List<ItemPedidoDTO> listarItens() {
+    public List<ItemPedidoDTO> listarItens(UUID codigo) {
         return null;
     }
 }

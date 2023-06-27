@@ -5,13 +5,15 @@ import br.fiap.projeto.contexto.pedido.domain.Pedido;
 import br.fiap.projeto.contexto.pedido.domain.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.infrastructure.entity.PedidoEntity;
-import br.fiap.projeto.contexto.pedido.infrastructure.mapper.ItemPedidoMapper;
 import br.fiap.projeto.contexto.pedido.infrastructure.mapper.PedidoMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @Primary
@@ -27,18 +29,26 @@ public class PostgresPedidoRepositoryPort implements PedidoRepositoryPort {
     }
     @Override
     public Pedido buscaPedido(UUID codigo) {
-        return null;
+        Optional<PedidoEntity> pedidoEntity = springPedidoRepository.findByCodigo(codigo);
+        pedidoEntity.orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado!"));
+        return PedidoMapper.toDomain(pedidoEntity.get());
     }
     @Override
     public List<Pedido> buscaTodos() {
-        return null;
+        List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findAll();
+        return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
     }
     @Override
     public Pedido atualizaPedido(UUID codigo, Pedido pedido) {
-        return null;
+        PedidoEntity pedidoEntity = new PedidoEntity(PedidoMapper.toEntity(this.buscaPedido(codigo)));
+        pedidoEntity.atualizar(pedidoEntity);
+        return PedidoMapper.toDomain(springPedidoRepository.save(pedidoEntity));
     }
     @Override
-    public void removePedido(UUID codigo) {}
+    public void removePedido(UUID codigo) {
+        this.buscaPedido(codigo);
+        springPedidoRepository.deleteByCodigo(codigo);
+    }
     @Override
     public Double calcularValorTotal() {
         return null;

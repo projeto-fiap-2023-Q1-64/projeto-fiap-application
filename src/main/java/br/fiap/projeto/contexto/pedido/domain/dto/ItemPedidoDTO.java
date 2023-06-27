@@ -15,6 +15,7 @@ public class ItemPedidoDTO {
                            ProdutoPedido produto,
                            Integer quantidade,
                            Double valorUnitario ){
+        this.codigo = codigo;
         this.pedido = pedido;
         this.produto = produto;
         this.quantidade = quantidade;

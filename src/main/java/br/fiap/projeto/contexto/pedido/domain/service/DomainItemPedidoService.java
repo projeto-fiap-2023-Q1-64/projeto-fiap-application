@@ -1,12 +1,12 @@
 package br.fiap.projeto.contexto.pedido.domain.service;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
+import br.fiap.projeto.contexto.pedido.domain.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.ItemPedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.service.ItemPedidoService;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DomainItemPedidoService implements ItemPedidoService {
@@ -19,7 +19,7 @@ public class DomainItemPedidoService implements ItemPedidoService {
         return itemPedidoRepositoryPort.criaItemPedido(new ItemPedido(itemPedidoDTO)).toItemPedidoDTO();
     }
     @Override
-    public ItemPedidoDTO buscaItemPedido(UUID codigo) {
+    public ItemPedidoDTO buscaItemPedido(ItemPedidoCodigo codigo) {
         return itemPedidoRepositoryPort.buscaItemPedido(codigo).toItemPedidoDTO();
     }
     @Override
@@ -32,15 +32,17 @@ public class DomainItemPedidoService implements ItemPedidoService {
         return itemPedidoRepositoryPort.atualizaItemPedido(new ItemPedido(itemPedidoDTO)).toItemPedidoDTO();
     }
     @Override
-    public void removeItemPedido(UUID codigo) {
+    public void removeItemPedido(ItemPedidoCodigo codigo) {
         itemPedidoRepositoryPort.removeItemPedido(codigo);
     }
     @Override
-    public Double calcularValorTotal() {
-        return null;
+    public Double calcularValorTotal(ItemPedidoCodigo codigo) {
+        ItemPedidoDTO itemPedido = this.buscaItemPedido(codigo);
+        return itemPedido.getProduto().getPreco() * itemPedido.getQuantidade();
     }
     @Override
-    public Integer calcularTempoTotalPreparo() {
-        return null;
+    public Integer calcularTempoTotalPreparo(ItemPedidoCodigo codigo) {
+        ItemPedidoDTO itemPedido = this.buscaItemPedido(codigo);
+        return itemPedido.getProduto().getTempoPreparoMin() * itemPedido.getQuantidade();
     }
 }
