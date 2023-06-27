@@ -2,24 +2,28 @@ package br.fiap.projeto.contexto.produto.infrastructure.repository.postgres;
 
 import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
-import br.fiap.projeto.contexto.produto.domain.port.repository.ProdutoRepository;
+import br.fiap.projeto.contexto.produto.domain.port.repository.ProdutoRepositoryPort;
 import br.fiap.projeto.contexto.produto.infrastructure.entity.ProdutoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 @Primary
-public class PostgresProdutoRepository implements ProdutoRepository {
+public class PostgresProdutoRepository implements ProdutoRepositoryPort {
 
     private final SpringProdutoRepository springProdutoRepository;
 
     @Autowired
-    public PostgresProdutoRepository(SpringProdutoRepository springProdutoRepository){
+    public PostgresProdutoRepository(SpringProdutoRepository springProdutoRepository) {
         this.springProdutoRepository = springProdutoRepository;
     }
 
@@ -31,31 +35,41 @@ public class PostgresProdutoRepository implements ProdutoRepository {
 
     @Override
     public Produto buscaProduto(UUID codigo) {
-        return null;
+        Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
+        produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
+        return produtoEntity.get().toProduto();
     }
 
     @Override
-    public Produto buscaProdutoPorCategoria(CategoriaProduto categoria) {
-        return null;
+    public List<Produto> buscaProdutosPorCategoria(CategoriaProduto categoria) {
+        List<ProdutoEntity> resultados = springProdutoRepository.findByCategoria(categoria);
+        return resultados.stream().map(ProdutoEntity::toProduto).collect(Collectors.toList());
     }
 
     @Override
     public List<String> buscaCategoriasDeProdutos() {
-        return null;
+        return Arrays.stream(CategoriaProduto.values()).map(c -> c.name()).collect(Collectors.toList());
     }
 
     @Override
-    public void criaProduto(Produto produto) {
-        springProdutoRepository.save(new ProdutoEntity(produto));
+    public Produto criaProduto(Produto produto) {
+        ProdutoEntity produtoSalvo = springProdutoRepository.save(new ProdutoEntity(produto));
+        return produtoSalvo.toProduto();
     }
 
+    @Transactional
     @Override
     public void removeProduto(UUID codigo) {
-
+        Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
+        produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
+        springProdutoRepository.deleteByCodigo(codigo);
     }
 
     @Override
-    public void atualizaProduto(Produto produto) {
-
+    public void atualizaProduto(UUID codigo, Produto produto) {
+        Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
+        produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
+        produtoEntity.get().atualizar(produto);
+        springProdutoRepository.save(produtoEntity.get());
     }
 }

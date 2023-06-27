@@ -17,9 +17,9 @@ docker-compose up --force-recreate --build
 docker-compose down -v
 ```
 ### Para acessar o swagger
-```
-http://localhost:8080/swagger-ui/index.html
-```
+
+> http://localhost:8080/swagger-ui/index.html
+
 ### Prefixos de commit e suas finalidades
 ```
 feat: (new feature for the user, not a new feature for build script)

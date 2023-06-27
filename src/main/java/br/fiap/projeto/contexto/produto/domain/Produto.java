@@ -32,6 +32,7 @@ public class Produto {
     }
 
     public Produto(ProdutoDTO produtoDTO) {
+        this.codigo = produtoDTO.getCodigo();
         this.nome = produtoDTO.getNome();
         this.descricao = produtoDTO.getDescricao();
         this.preco = produtoDTO.getPreco();
