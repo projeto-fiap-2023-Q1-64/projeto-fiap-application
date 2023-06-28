@@ -1,8 +1,8 @@
-package br.fiap.projeto.exception;
+package br.fiap.projeto.contexto.identificacao.infrastructure.exception;
 
 public class EntidadeNaoEncontradaException extends BaseException {
 
     public EntidadeNaoEncontradaException(String message) {
-        super(message);
+        super(4001, message);
     }
 }
