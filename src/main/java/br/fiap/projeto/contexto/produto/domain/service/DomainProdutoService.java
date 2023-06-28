@@ -5,21 +5,29 @@ import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.domain.port.repository.ProdutoRepositoryPort;
 import br.fiap.projeto.contexto.produto.domain.port.service.ProdutoServicePort;
+import br.fiap.projeto.contexto.produto.domain.port.repository.ProdutoRepositoryPort;
+import br.fiap.projeto.contexto.produto.domain.port.service.ProdutoServicePort;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DomainProdutoService implements ProdutoServicePort {
+public class DomainProdutoService implements ProdutoServicePort {
 
     private final ProdutoRepositoryPort produtoRepositoryPort;
+    private final ProdutoRepositoryPort produtoRepositoryPort;
 
+    public DomainProdutoService(ProdutoRepositoryPort produtoRepositoryPort) {
+        this.produtoRepositoryPort = produtoRepositoryPort;
     public DomainProdutoService(ProdutoRepositoryPort produtoRepositoryPort) {
         this.produtoRepositoryPort = produtoRepositoryPort;
     }
 
     @Override
     public List<ProdutoDTO> buscaTodos() {
+        List<Produto> produtos = produtoRepositoryPort.buscaTodos();
+        return produtos.stream().map(Produto::toProdutoDTO).collect(Collectors.toList());
         List<Produto> produtos = produtoRepositoryPort.buscaTodos();
         return produtos.stream().map(Produto::toProdutoDTO).collect(Collectors.toList());
     }
@@ -34,10 +42,14 @@ public class DomainProdutoService implements ProdutoServicePort {
     public List<ProdutoDTO> buscaProdutosPorCategoria(CategoriaProduto categoria) {
         List<Produto> produtos = produtoRepositoryPort.buscaProdutosPorCategoria(categoria);
         return produtos.stream().map(Produto::toProdutoDTO).collect(Collectors.toList());
+    public List<ProdutoDTO> buscaProdutosPorCategoria(CategoriaProduto categoria) {
+        List<Produto> produtos = produtoRepositoryPort.buscaProdutosPorCategoria(categoria);
+        return produtos.stream().map(Produto::toProdutoDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<String> getCategoriasDeProdutos() {
+        return produtoRepositoryPort.buscaCategoriasDeProdutos();
         return produtoRepositoryPort.buscaCategoriasDeProdutos();
     }
 

@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.domain.vo;
 
 
-import br.fiap.projeto.exception.InvalidInputException;
+import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntradaInvalidaException;
 
 import java.util.regex.Pattern;
 
@@ -14,12 +14,12 @@ public class Cpf {
 		this.numero = numero;
 	}
 
-	public void validar() throws InvalidInputException {
+	public void validar() throws EntradaInvalidaException {
 
 		if (Pattern.matches("\\d{11}", numero)) {
 			return;
 		}
-		throw new InvalidInputException(CPF_INVALIDO);
+		throw new EntradaInvalidaException(CPF_INVALIDO);
 	}
 
 	public String getNumero() {

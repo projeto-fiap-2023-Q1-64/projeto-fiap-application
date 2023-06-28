@@ -1,24 +1,33 @@
 package br.fiap.projeto.contexto.identificacao.application.rest;
 
-import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/clientes")
+@Log4j2
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
     @GetMapping
-    public ClienteDTO busca(UUID codigo) {
+    public ClienteDTO busca(String codigo) {
 
         return clienteService.busca(codigo);
+    }
+
+    @GetMapping("/cpf")
+    public ClienteDTO buscaPorCpf(@RequestParam String cpf) {
+
+        return clienteService.buscaPorCpf(cpf);
     }
 
     @GetMapping("/todos")
@@ -28,19 +37,19 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteDTO insere(ClienteDTO cliente) {
+    public ResponseEntity<ClienteDTO> insere(@RequestBody ClienteDTO cliente) {
 
-        return clienteService.insere(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.insere(cliente));
     }
 
     @PutMapping
-    public ClienteDTO edita(ClienteDTO cliente) {
+    public ClienteDTO edita(@RequestBody ClienteDTO cliente) {
 
         return clienteService.edita(cliente);
     }
 
     @DeleteMapping
-    public void remove(UUID codigo) {
+    public void remove(@RequestParam String codigo) {
 
         clienteService.remove(codigo);
     }
