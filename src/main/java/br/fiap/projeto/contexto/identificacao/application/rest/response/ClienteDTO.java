@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.identificacao.domain.port.dto;
+package br.fiap.projeto.contexto.identificacao.application.rest.response;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;

@@ -6,12 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface SpringDataClienteRepository extends JpaRepository<ClienteEntity, UUID> {
+public interface SpringDataClienteRepository extends JpaRepository<ClienteEntity, String> {
 
     List<ClienteEntity> findAllByDataExclusaoIsNull();
     ClienteEntity findByCpfAndDataExclusaoIsNull(String cpf);
-    Optional<ClienteEntity> findByCodigoAndDataExclusaoIsNull(UUID codigo);
+    Optional<ClienteEntity> findByCodigoAndDataExclusaoIsNull(String codigo);
 }

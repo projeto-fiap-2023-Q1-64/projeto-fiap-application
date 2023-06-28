@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao;
 
-import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
 import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
 import org.junit.jupiter.api.Test;

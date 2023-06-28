@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.identificacao.infrastructure.exception;
 
 public abstract class BaseException extends Exception {
 
-    private final static int DEFAULT_CODE = 4000;
+    public final static int DEFAULT_CODE = 4000;
 
     private int code;
     private String message;
@@ -18,7 +18,7 @@ public abstract class BaseException extends Exception {
         return message;
     }
 
-    public static int getCode() {
-        return DEFAULT_CODE;
+    public int getCode() {
+        return code;
     }
 }

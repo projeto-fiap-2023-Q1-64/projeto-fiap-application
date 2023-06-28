@@ -1,9 +1,9 @@
 package br.fiap.projeto.contexto.comanda.domain;
 
+import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
+
 import java.util.Date;
 import java.util.List;
-
-import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
 
 public class Comanda {
  

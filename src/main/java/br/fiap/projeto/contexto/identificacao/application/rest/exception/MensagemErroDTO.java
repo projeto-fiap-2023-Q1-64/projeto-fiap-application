@@ -1,9 +1,4 @@
-package br.fiap.projeto.contexto.identificacao.application.entity;
-
-import org.springframework.http.HttpStatus;
-
-import java.util.Arrays;
-import java.util.List;
+package br.fiap.projeto.contexto.identificacao.application.rest.exception;
 
 public class MensagemErroDTO {
 
