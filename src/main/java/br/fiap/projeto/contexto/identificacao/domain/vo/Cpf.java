@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.domain.vo;
 
 
-import br.fiap.projeto.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntradaInvalidaException;
 
 import java.util.regex.Pattern;
 
