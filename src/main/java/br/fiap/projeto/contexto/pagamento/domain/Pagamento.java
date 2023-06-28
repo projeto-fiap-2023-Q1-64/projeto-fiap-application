@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.pagamento.domain;
 
-import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
-
 import java.util.Date;
+
+import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 
 public class Pagamento {
  

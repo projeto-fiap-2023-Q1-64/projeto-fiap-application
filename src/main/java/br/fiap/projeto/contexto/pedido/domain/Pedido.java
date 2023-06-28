@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.pedido.domain;
 
-import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
-
 import java.util.List;
+
+import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 
 public class Pedido {
  

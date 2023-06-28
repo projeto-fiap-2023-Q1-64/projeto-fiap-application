@@ -3,6 +3,7 @@ package br.fiap.projeto.contexto.produto.infrastructure.entity;
 import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 import lombok.ToString;
+import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
 import java.util.UUID;
