@@ -1,11 +1,11 @@
 package br.fiap.projeto.contexto.identificacao.domain.service;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
-import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.exception.EntidadeNaoEncontradaException;
-import br.fiap.projeto.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntradaInvalidaException;
 import lombok.SneakyThrows;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class ClienteServiceImpl implements ClienteService {
             throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
         }
 
-        ClienteDTO cliente = ClienteDTO.fromCliente(clienteRepository.busca(UUID.fromString(codigo)));
+        ClienteDTO cliente = ClienteDTO.fromCliente(clienteRepository.busca(codigo));
         if (Objects.isNull(cliente)) {
             throw new EntidadeNaoEncontradaException("Cliente não encontrado!");
         }
@@ -89,7 +89,7 @@ public class ClienteServiceImpl implements ClienteService {
     public void remove(String codigo) {
 
         ClienteDTO clienteDTO = busca(codigo);
-        clienteRepository.remove(UUID.fromString(clienteDTO.getCodigo()));
+        clienteRepository.remove(clienteDTO.getCodigo());
     }
 
     @Override @SneakyThrows

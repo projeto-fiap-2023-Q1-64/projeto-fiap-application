@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.infrastructure.repository;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
-import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +20,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     private SpringDataClienteRepository repository;
 
     @Override
-    public Cliente busca(UUID codigo) {
+    public Cliente busca(String codigo) {
 
         Cliente ret;
         Optional<ClienteEntity> optClienteEntity;
@@ -67,7 +66,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
-    public void remove(UUID codigo) {
+    public void remove(String codigo) {
 
         Optional<ClienteEntity> existing;
         existing = repository.findByCodigoAndDataExclusaoIsNull(codigo);

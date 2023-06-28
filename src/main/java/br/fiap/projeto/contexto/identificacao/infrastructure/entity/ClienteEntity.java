@@ -8,17 +8,16 @@ import lombok.SneakyThrows;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
 
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "clientes", uniqueConstraints = @UniqueConstraint(name = "UN_CLIENTE", columnNames = {"codigo"}))
 public class ClienteEntity {
 
     @Id
-    private UUID codigo;
+    private String codigo;
 
     private String nome;
 
@@ -31,7 +30,7 @@ public class ClienteEntity {
     public ClienteEntity() {
     }
 
-    public ClienteEntity(UUID codigo, String nome, String cpf, String email) {
+    public ClienteEntity(String codigo, String nome, String cpf, String email) {
 
         this.codigo = codigo;
         this.nome = nome;
@@ -39,7 +38,7 @@ public class ClienteEntity {
         this.email = email;
     }
 
-    public ClienteEntity(UUID codigo, String nome, Cpf cpf, Email email) {
+    public ClienteEntity(String codigo, String nome, Cpf cpf, Email email) {
 
         this(codigo, nome, cpf.getNumero(), email.getEndereco());
     }
@@ -48,7 +47,7 @@ public class ClienteEntity {
     public Cliente toCliente() {
 
         return new Cliente(
-                Optional.ofNullable(codigo).map(UUID::toString).orElse(null),
+                codigo,
                 nome,
                 cpf,
                 email
@@ -58,14 +57,14 @@ public class ClienteEntity {
     public static ClienteEntity fromCliente(Cliente cliente) {
 
         return new ClienteEntity(
-                Optional.ofNullable(cliente.getCodigo()).map(UUID::fromString).orElse(null),
+                cliente.getCodigo(),
                 cliente.getNome(),
                 cliente.getCpf(),
                 cliente.getEmail()
         );
     }
 
-    public UUID getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
