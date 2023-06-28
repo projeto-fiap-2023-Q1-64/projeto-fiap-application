@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.persistence.EntityNotFoundException;
 
 @ControllerAdvice(basePackageClasses = ProdutoController.class)
-public class ProdutoExceptionHandler {
+public class ProdutoControllerExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ProdutoResponseException> handleEntityNotFoundException(Exception e) {
         ProdutoResponseException response = new ProdutoResponseException(3001, e.getMessage(), e.getCause());

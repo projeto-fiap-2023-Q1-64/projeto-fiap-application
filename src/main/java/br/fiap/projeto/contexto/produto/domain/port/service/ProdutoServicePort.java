@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.produto.domain.port.service;
 
-import br.fiap.projeto.contexto.produto.domain.dto.ProdutoDTO;
+import br.fiap.projeto.contexto.produto.application.rest.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public interface ProdutoServicePort {
 
     List<ProdutoDTO> buscaTodos();
 
-    ProdutoDTO buscaProduto(UUID codigo);
+    ProdutoDTO buscaProduto(String codigo);
 
     List<ProdutoDTO> buscaProdutosPorCategoria(CategoriaProduto categoria);
 
@@ -18,8 +18,8 @@ public interface ProdutoServicePort {
 
     ProdutoDTO criaProduto(ProdutoDTO produtoDTO);
 
-    void removeProduto(UUID codigo);
+    void removeProduto(String codigo);
 
-    void atualizaProduto(UUID codigo, ProdutoDTO produto);
+    void atualizaProduto(String codigo, ProdutoDTO produto);
 
 }

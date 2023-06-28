@@ -11,9 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface SpringProdutoRepository extends JpaRepository<ProdutoEntity, UUID> {
-    Optional<ProdutoEntity> findByCodigo(UUID codigo);
+    Optional<ProdutoEntity> findByCodigo(String codigo);
 
     List<ProdutoEntity> findByCategoria(CategoriaProduto categoria);
 
-    void deleteByCodigo(UUID codigo);
+    void deleteByCodigo(String codigo);
 }
