@@ -2,24 +2,31 @@ package br.fiap.projeto.contexto.produto.infrastructure.entity;
 
 import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
+import lombok.ToString;
+import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
 import java.util.UUID;
 
+@ToString
 @Entity
-@Table(name = "Produtos")
+@Table(name = "Produtos", uniqueConstraints = @UniqueConstraint(name = "UN_PRODUTO", columnNames = {"nome", "categoria"}))
 public class ProdutoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID codigo;
 
+    @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
     private String descricao;
 
+    @Column(nullable = false, precision = 2)
     private Double preco;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CategoriaProduto categoria;
 
