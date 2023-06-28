@@ -6,21 +6,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MensagemErroDTO {
+    private List<String> erros;
 
-    private int code;
-    private String erro;
+    public MensagemErroDTO(List<String> erros) {
 
-    public MensagemErroDTO(int code, String erro) {
-
-        this.code = code;
-        this.erro = erro;
+        this.erros = erros;
     }
 
-    public int getCode() {
-        return code;
+    public MensagemErroDTO(String erro) {
+
+        this.erros = Arrays.asList(erro);
     }
 
-    public String getErro() {
-        return erro;
+    public List<String> getErros() {
+        return erros;
     }
 }

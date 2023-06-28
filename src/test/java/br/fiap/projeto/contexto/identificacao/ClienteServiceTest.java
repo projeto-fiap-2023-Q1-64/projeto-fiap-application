@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.identificacao;
 
 import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.exception.EntidadeNaoEncontradaException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,35 +50,37 @@ public class ClienteServiceTest {
     @Test
     public void testeInsere() {
 
-        ClienteDTO cliente = new ClienteDTO("NomeTeste", "98765432109", "teste@teste.com");
+        ClienteDTO cliente = new ClienteDTO(UUID.randomUUID().toString(), "NomeTeste", "98765432109", "teste@teste.com");
         ClienteDTO resultado = clienteService.insere(cliente);
         assertNotNull(resultado);
+        assertEquals(cliente.getCodigo(), resultado.getCodigo());
 
         List<ClienteDTO> clienteDTOS = clienteService.buscaTodos();
         assertFalse(CollectionUtils.isEmpty(clienteDTOS));
+        assertTrue(clienteDTOS.stream().anyMatch(cli -> cli.getCodigo().equals(cliente.getCodigo())));
     }
 
     @Test
     public void testeRemove() {
 
-        String codigoSaida;
-        AtomicReference<ClienteDTO> cliente, resultado;
+        String codigoEntrada, codigoSaida;
+        ClienteDTO cliente, resultado;
 
-        cliente = new AtomicReference<>();
-        resultado = new AtomicReference<>();
+        codigoEntrada = UUID.randomUUID().toString();
 
-        cliente.set(new ClienteDTO("NomeTeste", "45678912301", "teste@teste.com"));
-        resultado.set(clienteService.insere(cliente.get()));
-        codigoSaida = resultado.get().getCodigo();
+        cliente = new ClienteDTO(codigoEntrada, "NomeTeste", "45678912301", "teste@teste.com");
+        resultado = clienteService.insere(cliente);
+        codigoSaida = resultado.getCodigo();
 
-        cliente.set(clienteService.busca(codigoSaida));
+        cliente = clienteService.busca(codigoSaida);
 
         assertNotNull(cliente);
+        assertEquals(codigoEntrada, codigoSaida);
 
-        clienteService.remove(cliente.get().getCodigo());
+        clienteService.remove(codigoEntrada);
         assertThrows(
                 EntidadeNaoEncontradaException.class,
-                () -> clienteService.busca(cliente.get().getCodigo())
+                () -> clienteService.busca(codigoEntrada)
         );
         assertThrows(
                 EntidadeNaoEncontradaException.class,

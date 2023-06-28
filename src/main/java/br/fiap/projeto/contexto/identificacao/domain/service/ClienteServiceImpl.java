@@ -4,8 +4,8 @@ import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntradaInvalidaException;
+import br.fiap.projeto.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.exception.EntradaInvalidaException;
 import lombok.SneakyThrows;
 
 import java.util.List;
