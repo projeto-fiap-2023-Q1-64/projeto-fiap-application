@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
-import br.fiap.projeto.contexto.pagamento.domain.dto.PagamentoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.infrastructure.entity.PagamentoEntity;
 
@@ -91,6 +91,25 @@ public class Pagamento {
 				", status=" + status +
 				", dataPagamento=" + dataPagamento +
 				'}';
+	}
+
+	public void colocaEmProcessamento() {
+		this.setStatus(StatusPagamento.IN_PROCESS);
+		System.out.println("Notifica pedido: " + this.getCodigoPedido() + ", pagamento está em processamento.");
+	}
+
+	public void aprovaPagamento() {
+		this.setStatus(StatusPagamento.APPROVED);
+		System.out.println("Notifica aprovação do pagamento do pedido: " + this.getCodigoPedido());
+	}
+	public void cancelaPagamento() {
+		this.setStatus(StatusPagamento.CANCELLED);
+		System.out.println("Notifica cancelamento do pagamento do pedido: " + this.getCodigoPedido());
+	}
+
+	public void rejeitaPagamento() {
+		this.setStatus(StatusPagamento.REJECTED);
+		System.out.println("Notifica rejeição do pagamento do pedido: " + this.getCodigoPedido());
 	}
 }
  

@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.application.rest;
 
-import br.fiap.projeto.contexto.pagamento.domain.dto.PagamentoAprovadoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

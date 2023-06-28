@@ -2,8 +2,9 @@ package br.fiap.projeto.contexto.pagamento.domain.service;
 
 
 import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
-import br.fiap.projeto.contexto.pagamento.domain.dto.PagamentoAprovadoDTO;
-import br.fiap.projeto.contexto.pagamento.domain.dto.PagamentoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.CompraAPagarDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.domain.port.repository.PagamentoRepositoryPort;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
@@ -48,15 +49,12 @@ public class DomainPagamentoService implements PagamentoServicePort {
     @Override
     public Page<PagamentoDTO> findByStatus(StatusPagamento status, Pageable pageable) {
         Page<Pagamento> listaDePagamentos = pagamentoRepositoryPort.findByStatusPagamento(status, pageable);
-
         return listaDePagamentos.map(PagamentoDTO::new);
     }
 
     @Override
     public Page<PagamentoAprovadoDTO> findByStatusAprovado(Pageable pageable) {
-
         Page<Pagamento> listaDePagamentos = pagamentoRepositoryPort.findByStatusPagamento(StatusPagamento.APPROVED, pageable);
-
         return listaDePagamentos.map(PagamentoAprovadoDTO::new);
     }
 
@@ -76,6 +74,7 @@ public class DomainPagamentoService implements PagamentoServicePort {
 
             pagamentoRepositoryPort.findByCodigo(pagamentoDTO.getCodigo());
             iniciaStatusPagamento(pagamentoDTO);
+
             Pagamento novoPagamento = new Pagamento(pagamentoDTO);
             pagamentoRepositoryPort.salvaPagamento(novoPagamento);
             return new PagamentoDTO(novoPagamento);
@@ -98,23 +97,21 @@ public class DomainPagamentoService implements PagamentoServicePort {
         Pagamento pagamentoEmAndamento = pagamentoRepositoryPort.findByCodigo(pagamentoDTO.getCodigo());
 
         analisaStatusDoPagamento(statusAtual, statusRequest, pagamentoEmAndamento);
-
         pagamentoRepositoryPort.salvaStatus(pagamentoEmAndamento);
     }
 
 
     private void analisaStatusDoPagamento(StatusPagamento statusAtual, StatusPagamento statusRequest, Pagamento pagamentoEmAndamento) {
         if(podeSerAprovado(statusAtual, statusRequest)) {
-            transacaoAprovaPagamento(pagamentoEmAndamento);
+              pagamentoEmAndamento.aprovaPagamento();
         }
-
         if(podeSerCancelado(statusAtual, statusRequest)){
-            transacaoCancelaPagamento(pagamentoEmAndamento);
+             pagamentoEmAndamento.cancelaPagamento();
         }
-
         if(podeSerRejeitado(statusAtual, statusRequest)){
-            transacaoRejeitaPagamento(pagamentoEmAndamento);
+              pagamentoEmAndamento.rejeitaPagamento();
         }
+        pagamentoRepositoryPort.salvaStatus(pagamentoEmAndamento);
     }
 
     private boolean podeSerProcessado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
@@ -133,32 +130,6 @@ public class DomainPagamentoService implements PagamentoServicePort {
         return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.REJECTED);
     }
 
-    private void transacaoProcessaPagamento(Pagamento pagamentoPendente){
-        pagamentoPendente.setStatus(StatusPagamento.IN_PROCESS);
-        pagamentoRepositoryPort.salvaStatus(pagamentoPendente);
-    }
-
-
-    private void transacaoAprovaPagamento(Pagamento pagamentoEmAndamento) {
-        pagamentoEmAndamento.setStatus(StatusPagamento.APPROVED);
-        pagamentoRepositoryPort.salvaStatus(pagamentoEmAndamento);
-        System.out.println("Envia pedido: " + pagamentoEmAndamento.getCodigoPedido() + " para preparo na cozinha....");
-    }
-
-
-    private void transacaoCancelaPagamento(Pagamento pagamentoEmAndamento){
-        pagamentoEmAndamento.setStatus(StatusPagamento.CANCELLED);
-        pagamentoRepositoryPort.salvaStatus(pagamentoEmAndamento);
-        System.out.println("Cancelando pedido: " + pagamentoEmAndamento.getCodigoPedido());
-    }
-
-
-    private void transacaoRejeitaPagamento(Pagamento pagamentoEmAndamento){
-        pagamentoEmAndamento.setStatus(StatusPagamento.REJECTED);
-        pagamentoRepositoryPort.salvaStatus(pagamentoEmAndamento);
-        System.out.println("O pedido: " + pagamentoEmAndamento.getCodigoPedido() + "foi reijeitado.");
-    }
-
     /**
      * Realiza o processamento do Pagamento com base no Status do pagamento<br/>
      * RN - Apenas pagamentos com Status PENDENTE podem ir para EM PROCESSAMENTO<br/>
@@ -167,16 +138,11 @@ public class DomainPagamentoService implements PagamentoServicePort {
      */
     @Override
     public void processaPagamento(UUID codigo, StatusPagamento statusRequest) {
-        //busca o pagamento dado o código do pagamento existente
         Pagamento pagamento = pagamentoRepositoryPort.findByCodigo(codigo);
-        System.out.println("Status do pagamento antes: " + pagamento.getStatus());
-
-        //coloca status em Processamento
         if(podeSerProcessado(pagamento.getStatus(), statusRequest)){
-            transacaoProcessaPagamento(pagamento);
-            System.out.println("Status do pagamento no process: " + pagamento.getStatus());
+            pagamento.colocaEmProcessamento();
+            pagamentoRepositoryPort.salvaStatus(pagamento);
         }
-
         //analisa ql é o status retornado pelo gateway e ajusta o proximo status
         lidaStatusPagamento(pagamento.getStatus(), new PagamentoDTO(pagamento), statusRequest);
     }
@@ -186,13 +152,21 @@ public class DomainPagamentoService implements PagamentoServicePort {
      * Para sua implementação é necessária a instalação do SDK do MP
      * o payload é definido de forma específica para o Gateway
      */
-
     @Override
-    public void enviaGatewayDePagamento() {
+    public void enviaGatewayDePagamento(CompraAPagarDTO compraAPagarDTO) {
         System.out.println("verficando qual Gateway será usado...");
-        System.out.println("Criando modelo de acordo com o Gateway do Mercado Pago");
+        System.out.println("Criando payload de acordo com o Gateway do Mercado Pago");
         System.out.println("Enviando ao Mercado Pago a request de pagamento...");
-        System.out.println("aguardando retorno com o status do pagamento");
+        System.out.println("Criando código para Pagamento do pedido: " + compraAPagarDTO.getCodigoPedido());
+        //só vai funcionar quando a integração estiver ok, os pedidos precisam ser recuperados do domínio de Pedidos
+        geraPagamentoDoPedido(compraAPagarDTO);
+        System.out.println("Aguardando retorno com o status do pagamento");
+    }
+
+    private void geraPagamentoDoPedido(CompraAPagarDTO compraAPagarDTO) {
+        Pagamento novoPagamento = new Pagamento((criaPagamento(findByCodigoPedido(compraAPagarDTO.getCodigoPedido()))));
+        pagamentoRepositoryPort.salvaPagamento(novoPagamento);
+        new PagamentoDTO(novoPagamento);
     }
 
     /**
@@ -203,22 +177,20 @@ public class DomainPagamentoService implements PagamentoServicePort {
      */
     @Override
     public void verificaNumeroDoPedido(PagamentoDTO pagamentoDTO) {
-        //apenas verifica se o pedido que se quer pagar existe
         findByCodigoPedido(pagamentoDTO.getCodigoPedido());
-        //verifica se o pagamento está pendente
         verificaStatusPendente(pagamentoDTO.getStatus());
     }
 
     /**
      * Verifica se o Pagamento esta no estado PENDENTE<br/>
      * RN - Um pedido no estado PENDENTE só poderá ir para EM PROCESSAMENTO
+     *
      * @param status
      */
-    private boolean verificaStatusPendente(StatusPagamento status) {
+    private void verificaStatusPendente(StatusPagamento status) {
         if(!status.equals(StatusPagamento.PENDING)) {
             throw new ResourceNotFoundException("Pedido encontra-se : " + status.name());
         }
-        return true;
     }
 
     private boolean verificaTransacaoPagamentoEmAndamento(PagamentoDTO pagamentoDTO) {
@@ -226,14 +198,11 @@ public class DomainPagamentoService implements PagamentoServicePort {
     }
 
     private boolean podeIniciarPagamento(PagamentoDTO pagamentoDTO) {
-       // return pagamentoDTO.getStatus().equals(StatusPagamento.PENDING);
-        return (findByCodigoPedido(pagamentoDTO.getCodigoPedido()) != null && pagamentoDTO.getStatus().equals(StatusPagamento.PENDING));
+       return pagamentoDTO.getStatus().equals(StatusPagamento.PENDING);
     }
 
     private void iniciaStatusPagamento(PagamentoDTO pagamentoDTO){
         pagamentoDTO.setStatus(StatusPagamento.PENDING);
     }
-
-    //TODO tratar 500 quando um pedido de numero X é passado para ser pago novamente - já está no estado pendente
 
 }

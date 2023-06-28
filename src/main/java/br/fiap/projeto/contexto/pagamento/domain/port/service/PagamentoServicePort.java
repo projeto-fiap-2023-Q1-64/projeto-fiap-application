@@ -1,7 +1,8 @@
 package br.fiap.projeto.contexto.pagamento.domain.port.service;
 
-import br.fiap.projeto.contexto.pagamento.domain.dto.PagamentoAprovadoDTO;
-import br.fiap.projeto.contexto.pagamento.domain.dto.PagamentoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.CompraAPagarDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public interface PagamentoServicePort {
 
     Page<PagamentoAprovadoDTO> findByStatusAprovado(Pageable pageable);
 
-    void enviaGatewayDePagamento();
+    void enviaGatewayDePagamento(CompraAPagarDTO compraApagar);
 
 
 }

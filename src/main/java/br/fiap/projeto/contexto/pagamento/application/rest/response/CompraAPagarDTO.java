@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pagamento.domain.dto;
+package br.fiap.projeto.contexto.pagamento.application.rest.response;
 
 import java.util.Objects;
 
