@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao.domain.port.service;
 
-import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 
 import java.util.List;
 

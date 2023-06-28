@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao;
 
-import br.fiap.projeto.contexto.identificacao.domain.port.dto.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
 import br.fiap.projeto.contexto.identificacao.infrastructure.repository.SpringDataClienteRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,7 +19,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -228,7 +227,7 @@ public class ClienteControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         // Busca o cliente diretamente do repositório para garantir a exclusão lógica
-        ClienteEntity entity = clienteRepository.findById(UUID.fromString(codigo))
+        ClienteEntity entity = clienteRepository.findById(codigo)
                 .orElse(null);
         assertNotNull(entity);
         assertNotNull(entity.getDataExclusao());

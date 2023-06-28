@@ -1,8 +1,8 @@
-package br.fiap.projeto.exception;
+package br.fiap.projeto.contexto.identificacao.infrastructure.exception;
 
 public class EntradaInvalidaException extends BaseException {
 
     public EntradaInvalidaException(String message) {
-        super(message);
+        super(4002, message);
     }
 }
