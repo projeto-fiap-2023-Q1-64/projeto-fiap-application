@@ -22,7 +22,7 @@ public class PostgresClienteDataLoader {
     public void init() {
 
         List<Cliente> clientes = Arrays.asList(
-            new Cliente(UUID.randomUUID(), "Cliente1", "01234567890", "cliente1@test.com")
+            new Cliente(UUID.randomUUID().toString(), "Cliente1", "01234567890", "cliente1@test.com")
         );
         clientes.forEach(cli -> clienteRepository.insere(cli));
     }
