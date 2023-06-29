@@ -1,13 +1,13 @@
 package br.fiap.projeto.contexto.identificacao.domain.port.repository;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ClienteRepository {
 
-    Cliente busca(UUID codigo);
+    Cliente busca(String codigo);
 
     List<Cliente> buscaTodos();
 
@@ -15,5 +15,7 @@ public interface ClienteRepository {
 
     Cliente edita(Cliente cliente);
 
-    void remove(UUID codigo);
+    void remove(String codigo);
+
+    ClienteDTO buscaPorCpf(String cpf);
 }
