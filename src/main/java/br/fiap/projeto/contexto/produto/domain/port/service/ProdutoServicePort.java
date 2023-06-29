@@ -4,7 +4,6 @@ import br.fiap.projeto.contexto.produto.application.rest.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ProdutoServicePort {
 
