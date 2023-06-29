@@ -1,13 +1,13 @@
 package br.fiap.projeto.contexto.produto.domain;
 
-import br.fiap.projeto.contexto.produto.domain.dto.ProdutoDTO;
+import br.fiap.projeto.contexto.produto.application.rest.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 
 import java.util.UUID;
 
 public class Produto {
 
-    private UUID codigo;
+    private String codigo;
 
     private String nome;
 
@@ -21,7 +21,7 @@ public class Produto {
 
     private Integer tempoPreparoMin;
 
-    public Produto(UUID codigo, String nome, String descricao, Double preco, CategoriaProduto categoria, String imagem, Integer tempoPreparoMin) {
+    public Produto(String codigo, String nome, String descricao, Double preco, CategoriaProduto categoria, String imagem, Integer tempoPreparoMin) {
         this.codigo = codigo;
         this.nome = nome;
         this.descricao = descricao;
@@ -31,17 +31,7 @@ public class Produto {
         this.tempoPreparoMin = tempoPreparoMin;
     }
 
-    public Produto(ProdutoDTO produtoDTO) {
-        this.codigo = produtoDTO.getCodigo();
-        this.nome = produtoDTO.getNome();
-        this.descricao = produtoDTO.getDescricao();
-        this.preco = produtoDTO.getPreco();
-        this.categoria = CategoriaProduto.valueOf(produtoDTO.getCategoria());
-        this.imagem = produtoDTO.getImagem();
-        this.tempoPreparoMin = produtoDTO.getTempoPreparoMin();
-    }
-
-    public UUID getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
@@ -70,7 +60,7 @@ public class Produto {
     }
 
     public ProdutoDTO toProdutoDTO() {
-        return new ProdutoDTO(codigo, nome, descricao, preco, categoria.name(), imagem, tempoPreparoMin);
+        return new ProdutoDTO(codigo.toString(), nome, descricao, preco, categoria.name(), imagem, tempoPreparoMin);
     }
 }
  

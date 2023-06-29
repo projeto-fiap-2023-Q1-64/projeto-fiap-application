@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.produto.domain.service;
 
+import br.fiap.projeto.contexto.produto.application.rest.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.Produto;
-import br.fiap.projeto.contexto.produto.domain.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.domain.port.repository.ProdutoRepositoryPort;
 import br.fiap.projeto.contexto.produto.domain.port.service.ProdutoServicePort;
@@ -25,7 +25,7 @@ public class DomainProdutoService implements ProdutoServicePort {
     }
 
     @Override
-    public ProdutoDTO buscaProduto(UUID codigo) {
+    public ProdutoDTO buscaProduto(String codigo) {
         Produto produto = produtoRepositoryPort.buscaProduto(codigo);
         return produto.toProdutoDTO();
     }
@@ -43,17 +43,17 @@ public class DomainProdutoService implements ProdutoServicePort {
 
     @Override
     public ProdutoDTO criaProduto(ProdutoDTO produtoDTO) {
-        Produto produtoCriado = produtoRepositoryPort.criaProduto(new Produto(produtoDTO));
-        return produtoCriado.toProdutoDTO();
+        Produto produtoCriado = produtoRepositoryPort.criaProduto(new Produto(UUID.randomUUID().toString(), produtoDTO.getNome(), produtoDTO.getDescricao(), produtoDTO.getPreco(), CategoriaProduto.valueOf(produtoDTO.getCategoria()), produtoDTO.getImagem(), produtoDTO.getTempoPreparoMin()));
+        return ProdutoDTO.getInstance(produtoCriado);
     }
 
     @Override
-    public void removeProduto(UUID codigo) {
+    public void removeProduto(String codigo) {
         produtoRepositoryPort.removeProduto(codigo);
     }
 
     @Override
-    public void atualizaProduto(UUID codigo, ProdutoDTO produtoDTO) {
-        produtoRepositoryPort.atualizaProduto(codigo, new Produto(produtoDTO));
+    public void atualizaProduto(String codigo, ProdutoDTO produtoDTO) {
+        produtoRepositoryPort.atualizaProduto(codigo, produtoDTO.toProduto());
     }
 }

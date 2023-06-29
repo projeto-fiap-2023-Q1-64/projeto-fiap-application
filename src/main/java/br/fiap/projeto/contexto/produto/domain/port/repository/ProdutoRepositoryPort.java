@@ -4,13 +4,12 @@ import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ProdutoRepositoryPort {
 
     List<Produto> buscaTodos();
 
-    Produto buscaProduto(UUID codigo);
+    Produto buscaProduto(String codigo);
 
     List<Produto> buscaProdutosPorCategoria(CategoriaProduto categoria);
 
@@ -18,8 +17,8 @@ public interface ProdutoRepositoryPort {
 
     Produto criaProduto(Produto produto);
 
-    void removeProduto(UUID codigo);
+    void removeProduto(String codigo);
 
-    void atualizaProduto(UUID codigo, Produto produto);
+    void atualizaProduto(String codigo, Produto produto);
 
 }

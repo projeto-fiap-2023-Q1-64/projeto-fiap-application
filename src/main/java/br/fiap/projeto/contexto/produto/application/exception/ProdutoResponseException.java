@@ -3,7 +3,6 @@ package br.fiap.projeto.contexto.produto.application.exception;
 public class ProdutoResponseException {
     private Integer codigo;
     private String mensagem;
-
     private String causa;
 
     public ProdutoResponseException(Integer codigo, String mensagem, Throwable causa) {

@@ -13,7 +13,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,7 +33,7 @@ public class PostgresProdutoRepository implements ProdutoRepositoryPort {
     }
 
     @Override
-    public Produto buscaProduto(UUID codigo) {
+    public Produto buscaProduto(String codigo) {
         Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
         produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
         return produtoEntity.get().toProduto();
@@ -59,14 +58,14 @@ public class PostgresProdutoRepository implements ProdutoRepositoryPort {
 
     @Transactional
     @Override
-    public void removeProduto(UUID codigo) {
+    public void removeProduto(String codigo) {
         Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
         produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
         springProdutoRepository.deleteByCodigo(codigo);
     }
 
     @Override
-    public void atualizaProduto(UUID codigo, Produto produto) {
+    public void atualizaProduto(String codigo, Produto produto) {
         Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
         produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
         produtoEntity.get().atualizar(produto);
