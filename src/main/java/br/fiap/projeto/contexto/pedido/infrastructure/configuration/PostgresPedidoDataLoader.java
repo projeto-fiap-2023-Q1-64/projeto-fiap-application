@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pedido.infrastructure.configuration;
 
-import br.fiap.projeto.contexto.pedido.infrastructure.repository.postgres.PostgresItemPedidoRepository;
 import br.fiap.projeto.contexto.pedido.infrastructure.repository.postgres.PostgresPedidoRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +10,6 @@ import javax.annotation.PostConstruct;
 public class PostgresPedidoDataLoader {
     @Autowired
     private PostgresPedidoRepositoryPort pedidoRepository;
-    @Autowired
-    private PostgresItemPedidoRepository itemPedidoRepository;
-
     @PostConstruct
     public void init(){
         /*

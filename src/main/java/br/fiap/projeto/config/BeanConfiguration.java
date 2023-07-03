@@ -1,6 +1,5 @@
 package br.fiap.projeto.config;
 
-import br.fiap.projeto.contexto.pedido.domain.port.repository.ItemPedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import br.fiap.projeto.contexto.pedido.domain.service.DomainPedidoService;
