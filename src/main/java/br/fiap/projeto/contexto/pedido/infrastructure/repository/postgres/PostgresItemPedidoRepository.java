@@ -39,7 +39,7 @@ public class PostgresItemPedidoRepository implements ItemPedidoRepositoryPort {
     @Override
     public ItemPedido atualizaItemPedido(ItemPedido itemPedido) {
         ItemPedidoEntity itemPedidoEntity = new ItemPedidoEntity(ItemPedidoMapper.toEntity(this.buscaItemPedido(itemPedido.getCodigo())));
-        itemPedidoEntity.atualizar(itemPedidoEntity);
+        itemPedidoEntity.atualizar(ItemPedidoMapper.toEntity(itemPedido));
         return ItemPedidoMapper.toDomain(springItemPedidoRepository.save(itemPedidoEntity));
     }
     @Override

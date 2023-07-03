@@ -2,14 +2,12 @@ package br.fiap.projeto.contexto.pedido.infrastructure.repository.postgres;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;
-import br.fiap.projeto.contexto.pedido.domain.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.infrastructure.entity.PedidoEntity;
 import br.fiap.projeto.contexto.pedido.infrastructure.mapper.PedidoMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,26 +21,23 @@ public class PostgresPedidoRepositoryPort implements PedidoRepositoryPort {
         this.springPedidoRepository = springPedidoRepository;
     }
     @Override
-    public Pedido criaPedido(Pedido pedido) {
+    public Pedido salvar(Pedido pedido) {
         PedidoEntity novoPedido = springPedidoRepository.save(new PedidoEntity(PedidoMapper.toEntity(pedido)));
         return PedidoMapper.toDomain(novoPedido);
     }
     @Override
-    public Pedido buscaPedido(UUID codigo) {
+    public Optional<Pedido> buscaPedido(UUID codigo) {
         Optional<PedidoEntity> pedidoEntity = springPedidoRepository.findByCodigo(codigo);
-        pedidoEntity.orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado!"));
-        return PedidoMapper.toDomain(pedidoEntity.get());
+        if (pedidoEntity.isPresent()) {
+            return Optional.of(PedidoMapper.toDomain(pedidoEntity.get()));
+        } else {
+            return Optional.empty();
+        }
     }
     @Override
     public List<Pedido> buscaTodos() {
         List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findAll();
         return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
-    }
-    @Override
-    public Pedido atualizaPedido(UUID codigo, Pedido pedido) {
-        PedidoEntity pedidoEntity = new PedidoEntity(PedidoMapper.toEntity(this.buscaPedido(codigo)));
-        pedidoEntity.atualizar(pedidoEntity);
-        return PedidoMapper.toDomain(springPedidoRepository.save(pedidoEntity));
     }
     @Override
     public void removePedido(UUID codigo) {
@@ -54,17 +49,17 @@ public class PostgresPedidoRepositoryPort implements PedidoRepositoryPort {
         return null;
     }
     @Override
-    public void aumentarQuantidade(ProdutoPedido produto) {}
+    public void aumentarQuantidade(UUID produto) {}
     @Override
-    public void reduzirQuantidade(ProdutoPedido produto) {}
+    public void reduzirQuantidade(UUID produto) {}
     @Override
     public Integer calcularTempoTotalPreparo() {
         return null;
     }
     @Override
-    public void adicionarProduto(ProdutoPedido produto) {}
+    public void adicionarProduto(UUID produto) {}
     @Override
-    public void removerProduto(ProdutoPedido produto) {}
+    public void removerProduto(UUID produto) {}
     @Override
     public List<ItemPedido> listarItens() {
         return null;

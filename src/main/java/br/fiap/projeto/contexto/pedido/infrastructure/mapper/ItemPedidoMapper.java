@@ -2,7 +2,6 @@ package br.fiap.projeto.contexto.pedido.infrastructure.mapper;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
 import br.fiap.projeto.contexto.pedido.infrastructure.entity.ItemPedidoEntity;
-import br.fiap.projeto.contexto.pedido.infrastructure.entity.ProdutoPedidoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,15 +12,25 @@ public class ItemPedidoMapper {
     public static ItemPedidoEntity toEntity(ItemPedido itemPedido) {
         return new ItemPedidoEntity(itemPedido.getCodigo(),
                 pedidoMapper.toEntityWithoutItens(itemPedido.getPedido()),
-                new ProdutoPedidoEntity(itemPedido.getProduto()),
                 itemPedido.getQuantidade(),
-                itemPedido.getValorUnitario());
+                itemPedido.getProdutoNome(),
+                itemPedido.getProdutoDescricao(),
+                itemPedido.getValorUnitario(),
+                itemPedido.getCategoriaProduto(),
+                itemPedido.getImagem(),
+                itemPedido.getTempoPreparoMin()
+        );
     }
     public static ItemPedido toDomain(ItemPedidoEntity itemPedidoEntity) {
         return new ItemPedido(itemPedidoEntity.getCodigo(),
                 pedidoMapper.toDomainWithoutItens(itemPedidoEntity.getPedido()),
-                itemPedidoEntity.getProduto().toDomain(),
                 itemPedidoEntity.getQuantidade(),
-                itemPedidoEntity.getValorUnitario());
+                itemPedidoEntity.getProdutoNome(),
+                itemPedidoEntity.getProdutoDescricao(),
+                itemPedidoEntity.getValorUnitario(),
+                itemPedidoEntity.getCategoriaProduto(),
+                itemPedidoEntity.getImagem(),
+                itemPedidoEntity.getTempoPreparoMin()
+        );
     }
 }

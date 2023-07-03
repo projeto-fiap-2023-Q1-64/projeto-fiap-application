@@ -1,17 +1,11 @@
 package br.fiap.projeto.contexto.pedido.infrastructure.configuration;
 
-import br.fiap.projeto.contexto.pedido.domain.Pedido;
-import br.fiap.projeto.contexto.pedido.domain.ProdutoPedido;
-import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
-import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.infrastructure.repository.postgres.PostgresItemPedidoRepository;
 import br.fiap.projeto.contexto.pedido.infrastructure.repository.postgres.PostgresPedidoRepositoryPort;
-import br.fiap.projeto.contexto.pedido.infrastructure.repository.postgres.PostgresProdutoPedidoRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
 
 @Configuration
 public class PostgresPedidoDataLoader {
@@ -19,8 +13,6 @@ public class PostgresPedidoDataLoader {
     private PostgresPedidoRepositoryPort pedidoRepository;
     @Autowired
     private PostgresItemPedidoRepository itemPedidoRepository;
-    @Autowired
-    private PostgresProdutoPedidoRepositoryPort produtoPedidoRepository;
 
     @PostConstruct
     public void init(){

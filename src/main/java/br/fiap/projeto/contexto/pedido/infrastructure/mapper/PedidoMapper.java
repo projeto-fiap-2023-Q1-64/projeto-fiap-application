@@ -15,7 +15,6 @@ public class PedidoMapper {
     @Autowired
     private ItemPedidoMapper itemPedidoMapper;
     public static PedidoEntity toEntity(Pedido pedido){
-        // Mapeia e Converte Estrutura de ItensPedido (Domain) para ItensPedidoEntity
         List<ItemPedidoEntity> itensPedidoEntity = pedido.getItens().stream()
                 .map(ItemPedidoMapper::toEntity)
                 .collect(Collectors.toList());

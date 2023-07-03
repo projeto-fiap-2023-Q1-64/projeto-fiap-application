@@ -1,11 +1,19 @@
 package br.fiap.projeto.contexto.pedido.infrastructure.entity;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedidoCodigo;
+import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
-@Table(name="ItemPedido")
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="item_pedido")
 public class ItemPedidoEntity {
     @EmbeddedId
     private ItemPedidoCodigo codigo;
@@ -13,55 +21,40 @@ public class ItemPedidoEntity {
     @MapsId("pedidoCodigo")
     @JoinColumn(name = "pedido_codigo" )
     private PedidoEntity pedido;
-    @ManyToOne
-    @MapsId("produtoCodigo")
-    @JoinColumn(name = "produto_codigo")
-    private ProdutoPedidoEntity produto;
     @Column(nullable = false)
     private int quantidade;
+    @Column(nullable = false)
+    private String produtoNome;
+    @Column(nullable = false)
+    private String produtoDescricao;
     @Column(nullable = false, precision = 2)
     private double valorUnitario;
-    public ItemPedidoEntity(ItemPedidoCodigo codigo,
-                            PedidoEntity pedido,
-                            ProdutoPedidoEntity produto,
-                            int quantidade,
-                            double valorUnitario){
-        this.codigo = codigo;
-        this.pedido = pedido;
-        this.produto = produto;
-        this.quantidade = quantidade;
-        this.valorUnitario = valorUnitario;
-    }
+    @Column(nullable = false)
+    private CategoriaProduto categoriaProduto;
+    @Column(nullable = false)
+    private String imagem;
+    @Column(nullable = false)
+    private Integer tempoPreparoMin;
     public ItemPedidoEntity(ItemPedidoEntity itemPedidoEntity){
         this.codigo = itemPedidoEntity.getCodigo();
-        this.pedido = itemPedidoEntity.getPedido();
-        this.produto = itemPedidoEntity.getProduto();
+        this.pedido = new PedidoEntity(itemPedidoEntity.getPedido());
         this.quantidade = itemPedidoEntity.getQuantidade();
+        this.produtoNome = itemPedidoEntity.getProdutoNome();
+        this.produtoDescricao = itemPedidoEntity.getProdutoDescricao();
         this.valorUnitario = itemPedidoEntity.getValorUnitario();
-    }
-    public ItemPedidoCodigo getCodigo() {
-        return codigo;
-    }
-    public PedidoEntity getPedido() {
-        return pedido;
-    }
-    public ProdutoPedidoEntity getProduto() {
-        return produto;
-    }
-    public int getQuantidade() {
-        return quantidade;
-    }
-    public double getValorUnitario() {
-        return valorUnitario;
-    }
-    public ItemPedidoEntity() {
-
+        this.categoriaProduto = itemPedidoEntity.getCategoriaProduto();
+        this.imagem = itemPedidoEntity.getImagem();
+        this.tempoPreparoMin = itemPedidoEntity.getTempoPreparoMin();
     }
     public void atualizar(ItemPedidoEntity itemPedidoEntity) {
         this.codigo = itemPedidoEntity.getCodigo();
-        this.pedido = itemPedidoEntity.getPedido();
-        this.produto = itemPedidoEntity.getProduto();
+        this.pedido = new PedidoEntity(itemPedidoEntity.getPedido());
         this.quantidade = itemPedidoEntity.getQuantidade();
+        this.produtoNome = itemPedidoEntity.getProdutoNome();
+        this.produtoDescricao = itemPedidoEntity.getProdutoDescricao();
         this.valorUnitario = itemPedidoEntity.getValorUnitario();
+        this.categoriaProduto = itemPedidoEntity.getCategoriaProduto();
+        this.imagem = itemPedidoEntity.getImagem();
+        this.tempoPreparoMin = itemPedidoEntity.getTempoPreparoMin();
     }
 }

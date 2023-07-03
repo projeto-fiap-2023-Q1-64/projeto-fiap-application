@@ -1,23 +1,36 @@
 package br.fiap.projeto.contexto.pedido.domain.port.service;
 
 import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
+import br.fiap.projeto.contexto.pedido.domain.dto.PedidoCriarDTO;
 import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.dto.ProdutoPedidoDTO;
+import br.fiap.projeto.contexto.pedido.domain.exception.ItemNotFoundException;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface PedidoService {
-    PedidoDTO criaPedido(PedidoDTO pedidoDTO);
+    PedidoDTO criaPedido(PedidoCriarDTO pedidoDTO);
+
+    //-------------------------------------------------------------------------//
+    //                       MANIPULAÇÃO DE STATUS
+    //-------------------------------------------------------------------------//
+    PedidoDTO receber(UUID codigo) throws Exception;
+
+    PedidoDTO aprovar(UUID codigo) throws Exception;
     PedidoDTO buscaPedido(UUID codigo);
     List<PedidoDTO> buscaTodos();
-    PedidoDTO atualizaPedido(UUID codigo, PedidoDTO pedidoDTO);
     void removePedido(UUID codigo);
+
+    PedidoDTO prontificar(UUID codigo) throws Exception;
+
+    PedidoDTO finalizar(UUID codigo) throws Exception;
+
     Double calcularValorTotal(UUID codigo);
-    void aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO);
-    void reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO);
+    PedidoDTO aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException;
+    PedidoDTO reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException;
     Integer calcularTempoTotalPreparo(UUID codigo);
-    void adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO);
-    void removerProduto(UUID codigo, ProdutoPedidoDTO produtoDTO);
+    PedidoDTO adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO);
+    void removerProduto(UUID codigo, UUID produtoCodigo);
     List<ItemPedidoDTO> listarItens(UUID codigo);
 }

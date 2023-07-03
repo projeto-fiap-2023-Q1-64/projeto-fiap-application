@@ -2,38 +2,20 @@ package br.fiap.projeto.contexto.pedido.domain.dto;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;
-import br.fiap.projeto.contexto.pedido.domain.ProdutoPedido;
+import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class ItemPedidoDTO {
-    ItemPedidoCodigo codigo;
+    private ItemPedidoCodigo codigo;
     private Pedido pedido;
-    private ProdutoPedido produto;
     private Integer quantidade;
+    private String produtoNome;
+    private String produtoDescricao;
     private Double valorUnitario;
-    public ItemPedidoDTO ( ItemPedidoCodigo codigo,
-                           Pedido pedido,
-                           ProdutoPedido produto,
-                           Integer quantidade,
-                           Double valorUnitario ){
-        this.codigo = codigo;
-        this.pedido = pedido;
-        this.produto = produto;
-        this.quantidade = quantidade;
-        this.valorUnitario = valorUnitario;
-    }
-    public ItemPedidoCodigo getCodigo() {
-        return codigo;
-    }
-    public Pedido getPedido() {
-        return pedido;
-    }
-    public ProdutoPedido getProduto() {
-        return produto;
-    }
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-    public Double getValorUnitario() {
-        return valorUnitario;
-    }
+    private CategoriaProduto categoriaProduto;
+    private String imagem;
+    private Integer tempoPreparoMin;
 }

@@ -38,11 +38,15 @@ public class DomainItemPedidoService implements ItemPedidoService {
     @Override
     public Double calcularValorTotal(ItemPedidoCodigo codigo) {
         ItemPedidoDTO itemPedido = this.buscaItemPedido(codigo);
-        return itemPedido.getProduto().getPreco() * itemPedido.getQuantidade();
+        // TODO Ajustar logica para recuperar info do pedido
+        //return itemPedido.getProdutoCodigo * itemPedido.getQuantidade();
+        return null;
     }
     @Override
     public Integer calcularTempoTotalPreparo(ItemPedidoCodigo codigo) {
         ItemPedidoDTO itemPedido = this.buscaItemPedido(codigo);
-        return itemPedido.getProduto().getTempoPreparoMin() * itemPedido.getQuantidade();
+        // TODO Ajustar logica para recuperar info do pedido
+        //return itemPedido.getProdutoCodigo * itemPedido.getQuantidade();
+        return null;
     }
 }

@@ -1,28 +1,27 @@
 package br.fiap.projeto.contexto.pedido.domain;
 
 import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
+import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
+@Getter
+@AllArgsConstructor
 public class ItemPedido {
 	private ItemPedidoCodigo codigo;
 	private Pedido pedido;
-	private ProdutoPedido produto;
 	private Integer quantidade;
+	private String produtoNome;
+	private String produtoDescricao;
 	private Double valorUnitario;
-
-	public ItemPedido (ItemPedidoCodigo codigo,
-					   Pedido pedido,
-					   ProdutoPedido produto,
-					   Integer quantidade,
-					   Double valorUnitario ){
-		this.codigo = codigo;
-		this.pedido = pedido;
-		this.produto = produto;
-		this.quantidade = quantidade;
-		this.valorUnitario = valorUnitario;
-	}
+	private CategoriaProduto categoriaProduto;
+	private String imagem;
+	private Integer tempoPreparoMin;
 	public ItemPedido ( ItemPedidoDTO itemPedidoDTO ){
 		this.pedido = itemPedidoDTO.getPedido();
-		this.produto = itemPedidoDTO.getProduto();
 		this.quantidade = itemPedidoDTO.getQuantidade();
 		this.valorUnitario = itemPedidoDTO.getValorUnitario();
 	}
@@ -32,22 +31,13 @@ public class ItemPedido {
 	public Integer calcularTempoTotalPreparo() {
 		return null;
 	}
-	public ItemPedidoCodigo getCodigo() {
-		return codigo;
+	public void adicionarQuantidade() {
+		this.quantidade++;
 	}
-	public Pedido getPedido() {
-		return pedido;
-	}
-	public ProdutoPedido getProduto() {
-		return produto;
-	}
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-	public Double getValorUnitario() {
-		return valorUnitario;
+	public void reduzirQuantidade() {
+		this.quantidade--;
 	}
 	public ItemPedidoDTO toItemPedidoDTO() {
-		return new ItemPedidoDTO(this.codigo, this.pedido, this.produto, this.quantidade, this.valorUnitario);
+		return new ItemPedidoDTO(this.codigo, this.pedido, this.quantidade, this.produtoNome, this.produtoDescricao, this.valorUnitario, this.categoriaProduto, this.imagem, this.tempoPreparoMin);
 	}
 }
