@@ -65,23 +65,23 @@ public class PedidoController {
     //-------------------------------------------------------------------------//
     @PostMapping("/{codigo}/adicionar-produto")
     @ResponseBody
-    public PedidoDTO adicionarProduto(@PathVariable("codigo") UUID codigo, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
-        return this.pedidoService.adicionarProduto(codigo,produtoPedidoDTO);
+    public PedidoDTO adicionarProduto(@PathVariable("codigo") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
+        return this.pedidoService.adicionarProduto(codigoPedido,produtoPedidoDTO);
     }
     @PostMapping("/{codigo}/remover-produto/{produto_codigo}")
-    public void removerProduto(@PathVariable("codigo") UUID codigo, @PathVariable("produto_codigo") UUID produto_codigo) throws Exception {
-        this.pedidoService.removerProduto(codigo,produto_codigo);
+    public void removerProduto(@PathVariable("codigo") UUID codigoPedido, @PathVariable("produto_codigo") UUID produtCodigo) throws Exception {
+        this.pedidoService.removerProduto(codigoPedido,produtCodigo);
     }
     @PostMapping("/{codigo}/aumentar-qtde-produto")
     @ResponseBody
-    public PedidoDTO adicionarQuantidadeProduto(@PathVariable("codigo") UUID codigo, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
-        return this.pedidoService.aumentarQuantidade(codigo,produtoPedidoDTO);
+    public PedidoDTO adicionarQuantidadeProduto(@PathVariable("codigo") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
+        return this.pedidoService.aumentarQuantidade(codigoPedido,produtoPedidoDTO);
     }
 
     @PostMapping("/{codigo}/reduzir-qtde-produto")
     @ResponseBody
-    public PedidoDTO reduzirQuantidadeProduto(@PathVariable("codigo") UUID codigo, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
-        return this.pedidoService.reduzirQuantidade(codigo,produtoPedidoDTO);
+    public PedidoDTO reduzirQuantidadeProduto(@PathVariable("codigo") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
+        return this.pedidoService.reduzirQuantidade(codigoPedido,produtoPedidoDTO);
     }
 
 //    @GetMapping("/{codigo}")
