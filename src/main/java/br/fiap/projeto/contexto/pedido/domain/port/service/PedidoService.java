@@ -12,16 +12,14 @@ import java.util.UUID;
 
 public interface PedidoService {
     PedidoDTO criaPedido(PedidoCriarDTO pedidoDTO);
-
-    //-------------------------------------------------------------------------//
-    //                       MANIPULAÇÃO DE STATUS
-    //-------------------------------------------------------------------------//
     PedidoDTO receber(UUID codigo) throws Exception;
-
     PedidoDTO aprovar(UUID codigo) throws Exception;
     PedidoDTO buscaPedido(UUID codigo);
     List<PedidoDTO> buscaTodos();
     List<PedidoDTO> buscarTodosRecebido();
+    List<PedidoDTO> buscarTodosEmPreparacao();
+    List<PedidoDTO> buscarTodosPronto();
+    List<PedidoDTO> buscarTodosFinalizado();
     void removePedido(UUID codigo);
     PedidoDTO prontificar(UUID codigo) throws Exception;
     PedidoDTO finalizar(UUID codigo) throws Exception;

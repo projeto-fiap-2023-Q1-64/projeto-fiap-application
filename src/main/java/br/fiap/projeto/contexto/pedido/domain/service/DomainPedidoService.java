@@ -12,7 +12,6 @@ import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.domain.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.domain.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.domain.exception.ItemNotFoundException;
-import br.fiap.projeto.contexto.pedido.domain.port.repository.ItemPedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,18 +109,22 @@ public class DomainPedidoService implements PedidoService {
     //-------------------------------------------------------------------------//
     //                  RETORNO DOS PEDIDOS POR  STATUS
     //-------------------------------------------------------------------------//
+    @Override
     public List<PedidoDTO> buscarTodosRecebido(){
         List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.RECEBIDO);
         return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
     }
+    @Override
     public List<PedidoDTO> buscarTodosEmPreparacao(){
         List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
         return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
     }
+    @Override
     public List<PedidoDTO> buscarTodosPronto(){
         List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.PRONTO);
         return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
     }
+    @Override
     public List<PedidoDTO> buscarTodosFinalizado(){
         List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.FINALIZADO);
         return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());

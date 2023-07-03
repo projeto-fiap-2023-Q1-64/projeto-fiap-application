@@ -33,8 +33,26 @@ public class PedidoController {
     //-------------------------------------------------------------------------//
     @GetMapping("busca-recebidos")
     @ResponseBody
-    public ResponseEntity<List<PedidoDTO>> getProdutos() {
+    public ResponseEntity<List<PedidoDTO>> getProdutosRecebidos() {
         List<PedidoDTO> lista = this.pedidoService.buscarTodosRecebido();
+        return ResponseEntity.ok().body(lista);
+    }
+    @GetMapping("busca-em-preparacao")
+    @ResponseBody
+    public ResponseEntity<List<PedidoDTO>> getProdutosEmPreparacao() {
+        List<PedidoDTO> lista = this.pedidoService.buscarTodosEmPreparacao();
+        return ResponseEntity.ok().body(lista);
+    }
+    @GetMapping("busca-prontos")
+    @ResponseBody
+    public ResponseEntity<List<PedidoDTO>> getProdutosProntos() {
+        List<PedidoDTO> lista = this.pedidoService.buscarTodosPronto();
+        return ResponseEntity.ok().body(lista);
+    }
+    @GetMapping("busca-finalizados")
+    @ResponseBody
+    public ResponseEntity<List<PedidoDTO>> getProdutosFinalizados() {
+        List<PedidoDTO> lista = this.pedidoService.buscarTodosFinalizado();
         return ResponseEntity.ok().body(lista);
     }
     //-------------------------------------------------------------------------//
@@ -77,22 +95,9 @@ public class PedidoController {
     public PedidoDTO adicionarQuantidadeProduto(@PathVariable("codigo") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
         return this.pedidoService.aumentarQuantidade(codigoPedido,produtoPedidoDTO);
     }
-
     @PostMapping("/{codigo}/reduzir-qtde-produto")
     @ResponseBody
     public PedidoDTO reduzirQuantidadeProduto(@PathVariable("codigo") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
         return this.pedidoService.reduzirQuantidade(codigoPedido,produtoPedidoDTO);
     }
-
-//    @GetMapping("/{codigo}")
-//    @ResponseBody
-//    public PedidoDTO getPedidos(@PathVariable("codigo") UUID codigo) {
-//        return this.pedidoService.buscaPedido(codigo);
-//    }
-//
-//    @Transactional
-//    @DeleteMapping("/{codigo}")
-//    public void removerPedido(@PathVariable("codigo") UUID codigo){
-//        this.pedidoService.removePedido(codigo);
-//    }
 }
