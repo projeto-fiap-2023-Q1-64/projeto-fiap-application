@@ -25,11 +25,8 @@ import java.util.stream.Collectors;
 
 public class DomainPedidoService implements PedidoService {
     private final PedidoRepositoryPort pedidoRepositoryPort;
-    private final ItemPedidoRepositoryPort itemPedidoRepositoryPort;
-    public DomainPedidoService(PedidoRepositoryPort pedidoRepositoryPort,
-                               ItemPedidoRepositoryPort itemPedidoRepositoryPort) {
+    public DomainPedidoService(PedidoRepositoryPort pedidoRepositoryPort) {
         this.pedidoRepositoryPort = pedidoRepositoryPort;
-        this.itemPedidoRepositoryPort = itemPedidoRepositoryPort;
     }
     //-------------------------------------------------------------------------//
     //                         BASE CRUD
@@ -79,7 +76,6 @@ public class DomainPedidoService implements PedidoService {
         ItemPedido itemPedido = this.getItemPedidoByProduto(produtoCodigo,pedido.getItens());
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.REMOVER);
         pedido.getItens().remove(itemPedido);
-        //itemPedidoRepositoryPort.removeItemPedido(itemPedido.getCodigo());
         pedidoRepositoryPort.salvar(pedido);
     }
     @Override

@@ -18,8 +18,7 @@ public class BeanConfiguration {
         return new DomainProdutoService(produtoRepository);
     }
     @Bean
-    PedidoService pedidoService(PedidoRepositoryPort pedidoRepositoryPort,
-                                ItemPedidoRepositoryPort itemPedidoRepositoryPort){
-        return new DomainPedidoService(pedidoRepositoryPort, itemPedidoRepositoryPort);
+    PedidoService pedidoService(PedidoRepositoryPort pedidoRepositoryPort){
+        return new DomainPedidoService(pedidoRepositoryPort);
     }
 }
