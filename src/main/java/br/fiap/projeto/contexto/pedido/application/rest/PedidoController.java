@@ -5,9 +5,11 @@ import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.dto.ProdutoPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,6 +27,15 @@ public class PedidoController {
     @ResponseBody
     public PedidoDTO criaPedido(@RequestBody PedidoCriarDTO pedido) {
         return this.pedidoService.criaPedido(pedido);
+    }
+    //-------------------------------------------------------------------------//
+    //                        BUSCA POR STATUS
+    //-------------------------------------------------------------------------//
+    @GetMapping("busca-recebidos")
+    @ResponseBody
+    public ResponseEntity<List<PedidoDTO>> getProdutos() {
+        List<PedidoDTO> lista = this.pedidoService.buscarTodosRecebido();
+        return ResponseEntity.ok().body(lista);
     }
     //-------------------------------------------------------------------------//
     //                        ATUALIZA STATUS
@@ -66,7 +77,7 @@ public class PedidoController {
     public PedidoDTO adicionarQuantidadeProduto(@PathVariable("codigo") UUID codigo, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
         return this.pedidoService.aumentarQuantidade(codigo,produtoPedidoDTO);
     }
-    @Transactional
+
     @PostMapping("/{codigo}/reduzir-qtde-produto")
     @ResponseBody
     public PedidoDTO reduzirQuantidadeProduto(@PathVariable("codigo") UUID codigo, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {

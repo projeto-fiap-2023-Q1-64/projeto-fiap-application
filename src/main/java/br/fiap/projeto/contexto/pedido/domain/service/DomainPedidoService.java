@@ -7,9 +7,12 @@ import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.dto.PedidoCriarDTO;
 import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.dto.ProdutoPedidoDTO;
+import br.fiap.projeto.contexto.pedido.domain.enums.OperacaoProduto;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
+import br.fiap.projeto.contexto.pedido.domain.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.domain.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.domain.exception.ItemNotFoundException;
+import br.fiap.projeto.contexto.pedido.domain.port.repository.ItemPedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +25,11 @@ import java.util.stream.Collectors;
 
 public class DomainPedidoService implements PedidoService {
     private final PedidoRepositoryPort pedidoRepositoryPort;
-    public DomainPedidoService(PedidoRepositoryPort pedidoRepositoryPort) {
+    private final ItemPedidoRepositoryPort itemPedidoRepositoryPort;
+    public DomainPedidoService(PedidoRepositoryPort pedidoRepositoryPort,
+                               ItemPedidoRepositoryPort itemPedidoRepositoryPort) {
         this.pedidoRepositoryPort = pedidoRepositoryPort;
+        this.itemPedidoRepositoryPort = itemPedidoRepositoryPort;
     }
     //-------------------------------------------------------------------------//
     //                         BASE CRUD
@@ -49,7 +55,7 @@ public class DomainPedidoService implements PedidoService {
     //                MÉTODOS DE MANUPULAÇÃO DE ITENS DO PEDIDO
     //-------------------------------------------------------------------------//
     @Override
-    public PedidoDTO adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO) {
+    public PedidoDTO adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO) throws InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigo);
         ItemPedido itemPedido = new ItemPedido(
                 new ItemPedidoCodigo(codigo,
@@ -63,29 +69,33 @@ public class DomainPedidoService implements PedidoService {
                     produtoDTO.getImagem(),
                     produtoDTO.getTempoPreparoMin());
         pedido.adicionarItem(itemPedido);
+        this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
         return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
     }
     @Transactional
     @Override
-    public void removerProduto(UUID codigo, UUID produtoCodigo) {
+    public void removerProduto(UUID codigo, UUID produtoCodigo) throws InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigo);
         ItemPedido itemPedido = this.getItemPedidoByProduto(produtoCodigo,pedido.getItens());
+        this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.REMOVER);
         pedido.getItens().remove(itemPedido);
+        //itemPedidoRepositoryPort.removeItemPedido(itemPedido.getCodigo());
         pedidoRepositoryPort.salvar(pedido);
     }
     @Override
-    public PedidoDTO aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException {
+    public PedidoDTO aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException, InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigo);
         ItemPedido itemPedido = this.getItemPedidoByProduto(produtoDTO.getCodigo(),pedido.getItens());
         if(itemPedido == null){
             throw new ItemNotFoundException("Item não encontrado na lista");
         }
         itemPedido.adicionarQuantidade();
+        this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
 
         return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
     }
     @Override
-    public PedidoDTO reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException {
+    public PedidoDTO reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException, InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigo);
         ItemPedido itemPedido = this.getItemPedidoByProduto(produtoDTO.getCodigo(),pedido.getItens());
         if(itemPedido == null){
@@ -95,10 +105,30 @@ public class DomainPedidoService implements PedidoService {
                 this.removerProduto(codigo, produtoDTO.getCodigo());
             } else {
                 itemPedido.reduzirQuantidade();
+                this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.SUBTRAIR);
                 return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
             }
         }
         return null;
+    }
+    //-------------------------------------------------------------------------//
+    //                  RETORNO DOS PEDIDOS POR  STATUS
+    //-------------------------------------------------------------------------//
+    public List<PedidoDTO> buscarTodosRecebido(){
+        List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.RECEBIDO);
+        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+    }
+    public List<PedidoDTO> buscarTodosEmPreparacao(){
+        List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
+        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+    }
+    public List<PedidoDTO> buscarTodosPronto(){
+        List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.PRONTO);
+        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+    }
+    public List<PedidoDTO> buscarTodosFinalizado(){
+        List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.FINALIZADO);
+        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
     }
     //-------------------------------------------------------------------------//
     //                       MANIPULAÇÃO DE STATUS
@@ -148,24 +178,34 @@ public class DomainPedidoService implements PedidoService {
     //-------------------------------------------------------------------------//
     //                          MÉTODOS AUXILIARES
     //-------------------------------------------------------------------------//
-    private void atualizaValorTotal(){
-
+    private void atualizaValorTotal(Pedido pedido, ItemPedido itemPedido, OperacaoProduto operacao) throws InvalidOperacaoProdutoException {
+        Double valor = pedido.getValorTotal();
+        switch (operacao){
+            case REMOVER:
+                valor -= ( itemPedido.getValorUnitario() * itemPedido.getQuantidade() );
+                break;
+            case SUBTRAIR:
+                valor -= itemPedido.getValorUnitario();
+                break;
+            case ADICIONAR:
+                valor += itemPedido.getValorUnitario();
+                break;
+            default:
+                throw new InvalidOperacaoProdutoException("Operação inválida!");
+        }
+        pedido.atualizarValorTotal(valor);
     }
     @Override
-    public Double calcularValorTotal(UUID codigo) {
+    public Integer calcularTempoTotalPreparo(UUID codigo) {
         PedidoDTO pedido = this.buscaPedido(codigo);
-        Double retorno = 0d;
+        Integer retorno = 0;
 
         //Foreach para percorrer os itens e calcular o valor total
         List<ItemPedido> listaItens = pedido.getItens();
         for (ItemPedido i : listaItens) {
-            retorno += i.getValorUnitario() * i.getQuantidade();
+            retorno += i.getTempoPreparoMin() * i.getQuantidade();
         }
         return retorno;
-    }
-    @Override
-    public Integer calcularTempoTotalPreparo(UUID codigo) {
-        return null;
     }
     private ItemPedido getItemPedidoByProduto(UUID codigoProduto, List<ItemPedido> itemPedidos){
         return itemPedidos.stream()

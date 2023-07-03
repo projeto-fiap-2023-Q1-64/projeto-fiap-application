@@ -31,8 +31,8 @@ public class Pedido {
 		this.status = StatusPedido.INICIADO;
 		this.valorTotal = 0d;
 	}
-	public Double calcularValorTotal() {
-		return null;
+	public void atualizarValorTotal(Double novoValor){
+		this.valorTotal = novoValor;
 	}
 	public void aumentarQuantidade(UUID produto) {}
 	public void reduzirQuantidade(UUID produto) {}

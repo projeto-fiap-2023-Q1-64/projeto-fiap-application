@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.pedido.infrastructure.repository.postgres;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;
+import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.infrastructure.entity.PedidoEntity;
 import br.fiap.projeto.contexto.pedido.infrastructure.mapper.PedidoMapper;
@@ -22,8 +23,8 @@ public class PostgresPedidoRepositoryPort implements PedidoRepositoryPort {
     }
     @Override
     public Pedido salvar(Pedido pedido) {
-        PedidoEntity novoPedido = springPedidoRepository.save(new PedidoEntity(PedidoMapper.toEntity(pedido)));
-        return PedidoMapper.toDomain(novoPedido);
+        PedidoEntity pedidoEntity = springPedidoRepository.save(new PedidoEntity(PedidoMapper.toEntity(pedido)));
+        return PedidoMapper.toDomain(pedidoEntity);
     }
     @Override
     public Optional<Pedido> buscaPedido(UUID codigo) {
@@ -37,6 +38,11 @@ public class PostgresPedidoRepositoryPort implements PedidoRepositoryPort {
     @Override
     public List<Pedido> buscaTodos() {
         List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findAll();
+        return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
+    }
+    @Override
+    public List<Pedido> buscaPedidosPorStatus(StatusPedido statusPedido) {
+        List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findByStatusEquals(statusPedido);
         return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
     }
     @Override
