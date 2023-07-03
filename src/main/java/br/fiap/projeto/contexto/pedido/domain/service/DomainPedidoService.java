@@ -92,6 +92,7 @@ public class DomainPedidoService implements PedidoService {
         System.out.println("atualizou total");
         return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
     }
+    @Transactional
     @Override
     public PedidoDTO reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigoPedido);
@@ -220,8 +221,8 @@ public class DomainPedidoService implements PedidoService {
      * Busca pedido pelo código e retorna um objeto de Pedido
      * Utilizar pora tratamentos internos somente para facilitar a busca minimizando a necessidade
      * de alterar o tipo de objeto
-     * @param codigo
-     * @return
+     * @param codigo - Codigo do pedido
+     * @return retorna um objeto do tipo pedido da camada de domínio
      */
     private Pedido buscar(UUID codigo) {
         Optional<Pedido> optionalPedido = pedidoRepositoryPort.buscaPedido(codigo);
