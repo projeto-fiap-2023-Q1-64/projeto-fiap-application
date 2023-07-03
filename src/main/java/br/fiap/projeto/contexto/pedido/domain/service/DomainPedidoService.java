@@ -51,10 +51,10 @@ public class DomainPedidoService implements PedidoService {
     //                MÉTODOS DE MANUPULAÇÃO DE ITENS DO PEDIDO
     //-------------------------------------------------------------------------//
     @Override
-    public PedidoDTO adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO) throws InvalidOperacaoProdutoException {
-        Pedido pedido = this.buscar(codigo);
+    public PedidoDTO adicionarProduto(UUID codigoPedido, ProdutoPedidoDTO produtoDTO) throws InvalidOperacaoProdutoException {
+        Pedido pedido = this.buscar(codigoPedido);
         ItemPedido itemPedido = new ItemPedido(
-                new ItemPedidoCodigo(codigo,
+                new ItemPedidoCodigo(codigoPedido,
                     produtoDTO.getCodigo()),
                     pedido,
                     1,
@@ -70,34 +70,37 @@ public class DomainPedidoService implements PedidoService {
     }
     @Transactional
     @Override
-    public void removerProduto(UUID codigo, UUID produtoCodigo) throws InvalidOperacaoProdutoException {
-        Pedido pedido = this.buscar(codigo);
-        ItemPedido itemPedido = this.getItemPedidoByProduto(produtoCodigo,pedido.getItens());
+    public void removerProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException {
+        Pedido pedido = this.buscar(codigoPedido);
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.REMOVER);
         pedido.getItens().remove(itemPedido);
         pedidoRepositoryPort.salvar(pedido);
     }
     @Override
-    public PedidoDTO aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException, InvalidOperacaoProdutoException {
-        Pedido pedido = this.buscar(codigo);
-        ItemPedido itemPedido = this.getItemPedidoByProduto(produtoDTO.getCodigo(),pedido.getItens());
+    public PedidoDTO aumentarQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
+        Pedido pedido = this.buscar(codigoPedido);
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         if(itemPedido == null){
+            System.out.println("não encontrou");
             throw new ItemNotFoundException("Item não encontrado na lista");
         }
+        System.out.println("encontrou");
         itemPedido.adicionarQuantidade();
+        System.out.println("adicionou quantidade");
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
-
+        System.out.println("atualizou total");
         return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
     }
     @Override
-    public PedidoDTO reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException, InvalidOperacaoProdutoException {
-        Pedido pedido = this.buscar(codigo);
-        ItemPedido itemPedido = this.getItemPedidoByProduto(produtoDTO.getCodigo(),pedido.getItens());
+    public PedidoDTO reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
+        Pedido pedido = this.buscar(codigoPedido);
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         if(itemPedido == null){
             throw new ItemNotFoundException("Item não encontrado na lista");
         }else{
             if(itemPedido.getQuantidade() <= 1){
-                this.removerProduto(codigo, produtoDTO.getCodigo());
+                this.removerProduto(codigoPedido, codigoProduto);
             } else {
                 itemPedido.reduzirQuantidade();
                 this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.SUBTRAIR);

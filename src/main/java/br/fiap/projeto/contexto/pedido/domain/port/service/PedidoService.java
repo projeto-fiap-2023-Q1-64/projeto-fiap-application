@@ -23,10 +23,10 @@ public interface PedidoService {
     void removePedido(UUID codigo);
     PedidoDTO prontificar(UUID codigo) throws Exception;
     PedidoDTO finalizar(UUID codigo) throws Exception;
-    PedidoDTO aumentarQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException, InvalidOperacaoProdutoException;
-    PedidoDTO reduzirQuantidade(UUID codigo, ProdutoPedidoDTO produtoDTO) throws ItemNotFoundException, InvalidOperacaoProdutoException;
+    PedidoDTO adicionarProduto(UUID codigoPedido, ProdutoPedidoDTO produtoDTO) throws InvalidOperacaoProdutoException;
+    PedidoDTO aumentarQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException;
+    PedidoDTO reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException;
+    void removerProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException;
     Integer calcularTempoTotalPreparo(UUID codigo);
-    PedidoDTO adicionarProduto(UUID codigo, ProdutoPedidoDTO produtoDTO) throws InvalidOperacaoProdutoException;
-    void removerProduto(UUID codigo, UUID produtoCodigo) throws InvalidOperacaoProdutoException;
     List<ItemPedidoDTO> listarItens(UUID codigo);
 }
