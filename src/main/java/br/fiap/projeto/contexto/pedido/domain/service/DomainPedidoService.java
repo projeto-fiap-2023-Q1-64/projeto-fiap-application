@@ -12,6 +12,7 @@ import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.domain.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.domain.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.domain.exception.ItemNotFoundException;
+import br.fiap.projeto.contexto.pedido.domain.exception.NoItensException;
 import br.fiap.projeto.contexto.pedido.domain.port.repository.PedidoRepositoryPort;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,8 +141,12 @@ public class DomainPedidoService implements PedidoService {
     public PedidoDTO receber(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.INICIADO)){
-            pedido.atualizarStatus(StatusPedido.RECEBIDO);
-            // TODO - CHAMADA PARA PAGAMENTO
+            if(pedido.getItens().isEmpty()){
+                throw new NoItensException(codigo.toString());
+            }else {
+                pedido.atualizarStatus(StatusPedido.RECEBIDO);
+                // TODO - CHAMADA PARA PAGAMENTO
+            }
         }else{
             throw new InvalidStatusException("Status inválido!");
         }
