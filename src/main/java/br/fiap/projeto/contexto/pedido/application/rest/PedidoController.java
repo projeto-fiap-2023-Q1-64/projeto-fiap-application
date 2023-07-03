@@ -43,7 +43,7 @@ public class PedidoController {
     @PatchMapping("/{codigo}/receber")
     @ResponseBody
     public PedidoDTO receberPedido(@PathVariable("codigo") UUID codigo) throws Exception {
-        return this.pedidoService.aprovar(codigo);
+        return this.pedidoService.receber(codigo);
     }
     @PatchMapping("/{codigo}/aprovar")
     @ResponseBody
