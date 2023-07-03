@@ -54,6 +54,7 @@ public class DomainPedidoService implements PedidoService {
     @Override
     public PedidoDTO adicionarProduto(UUID codigoPedido, ProdutoPedidoDTO produtoDTO) throws InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigoPedido);
+        // TODO - Implementar busca correta do Produto
         ItemPedido itemPedido = new ItemPedido(
                 new ItemPedidoCodigo(codigoPedido,
                     produtoDTO.getCodigo()),
@@ -83,14 +84,10 @@ public class DomainPedidoService implements PedidoService {
         Pedido pedido = this.buscar(codigoPedido);
         ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         if(itemPedido == null){
-            System.out.println("não encontrou");
             throw new ItemNotFoundException("Item não encontrado na lista");
         }
-        System.out.println("encontrou");
         itemPedido.adicionarQuantidade();
-        System.out.println("adicionou quantidade");
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
-        System.out.println("atualizou total");
         return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
     }
     @Transactional
@@ -101,11 +98,11 @@ public class DomainPedidoService implements PedidoService {
         if(itemPedido == null){
             throw new ItemNotFoundException("Item não encontrado na lista");
         }else{
+            this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.SUBTRAIR);
             if(itemPedido.getQuantidade() <= 1){
                 this.removerProduto(codigoPedido, codigoProduto);
             } else {
                 itemPedido.reduzirQuantidade();
-                this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.SUBTRAIR);
                 return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
             }
         }
