@@ -85,7 +85,7 @@ public class PedidoController {
     public PedidoDTO adicionarProduto(@PathVariable("codigo_pedido") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
         return this.pedidoService.adicionarProduto(codigoPedido,produtoPedidoDTO);
     }
-    @PatchMapping("/{codigo_pedido}/remover-produto/{produto_codigo}")
+    @DeleteMapping("/{codigo_pedido}/remover-produto/{produto_codigo}")
     public void removerProduto(@PathVariable("codigo_pedido") UUID codigoPedido, @PathVariable("produto_codigo") UUID produtoCodigo) throws Exception {
         this.pedidoService.removerProduto(codigoPedido,produtoCodigo);
     }
