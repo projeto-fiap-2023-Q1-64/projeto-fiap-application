@@ -2,7 +2,6 @@ package br.fiap.projeto.contexto.pedido.domain.port.repository;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 
 import java.util.List;

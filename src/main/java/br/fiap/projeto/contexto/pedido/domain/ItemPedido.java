@@ -4,9 +4,6 @@ import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
