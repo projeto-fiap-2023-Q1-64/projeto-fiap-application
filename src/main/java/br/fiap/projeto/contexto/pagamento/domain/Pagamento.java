@@ -111,5 +111,22 @@ public class Pagamento {
 		this.setStatus(StatusPagamento.REJECTED);
 		System.out.println("Notifica rejeição do pagamento do pedido: " + this.getCodigoPedido());
 	}
+
+	public boolean podeSerProcessado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
+		return statusAtual.equals(StatusPagamento.PENDING) && statusRequest.equals(StatusPagamento.IN_PROCESS);
+	}
+
+	public boolean podeSerAprovado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
+		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.APPROVED);
+	}
+
+	public boolean podeSerCancelado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
+		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.CANCELLED);
+	}
+
+	public boolean podeSerRejeitado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
+		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.REJECTED);
+	}
+
 }
  

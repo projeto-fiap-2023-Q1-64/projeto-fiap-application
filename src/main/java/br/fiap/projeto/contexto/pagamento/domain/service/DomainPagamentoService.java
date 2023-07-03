@@ -102,32 +102,19 @@ public class DomainPagamentoService implements PagamentoServicePort {
 
 
     private void analisaStatusDoPagamento(StatusPagamento statusAtual, StatusPagamento statusRequest, Pagamento pagamentoEmAndamento) {
-        if(podeSerAprovado(statusAtual, statusRequest)) {
+        if(pagamentoEmAndamento.podeSerProcessado(statusAtual, statusRequest)){
+            pagamentoEmAndamento.colocaEmProcessamento();
+        }
+        if(pagamentoEmAndamento.podeSerAprovado(statusAtual, statusRequest)) {
               pagamentoEmAndamento.aprovaPagamento();
         }
-        if(podeSerCancelado(statusAtual, statusRequest)){
+        if(pagamentoEmAndamento.podeSerCancelado(statusAtual, statusRequest)){
              pagamentoEmAndamento.cancelaPagamento();
         }
-        if(podeSerRejeitado(statusAtual, statusRequest)){
+        if(pagamentoEmAndamento.podeSerRejeitado(statusAtual, statusRequest)){
               pagamentoEmAndamento.rejeitaPagamento();
         }
         pagamentoRepositoryPort.salvaStatus(pagamentoEmAndamento);
-    }
-
-    private boolean podeSerProcessado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-        return statusAtual.equals(StatusPagamento.PENDING) && statusRequest.equals(StatusPagamento.IN_PROCESS);
-    }
-
-    private boolean podeSerAprovado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-        return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.APPROVED);
-    }
-
-    private boolean podeSerCancelado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-        return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.CANCELLED);
-    }
-
-    private boolean podeSerRejeitado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-        return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.REJECTED);
     }
 
     /**
@@ -139,10 +126,6 @@ public class DomainPagamentoService implements PagamentoServicePort {
     @Override
     public void processaPagamento(UUID codigo, StatusPagamento statusRequest) {
         Pagamento pagamento = pagamentoRepositoryPort.findByCodigo(codigo);
-        if(podeSerProcessado(pagamento.getStatus(), statusRequest)){
-            pagamento.colocaEmProcessamento();
-            pagamentoRepositoryPort.salvaStatus(pagamento);
-        }
         //analisa ql é o status retornado pelo gateway e ajusta o proximo status
         lidaStatusPagamento(pagamento.getStatus(), new PagamentoDTO(pagamento), statusRequest);
     }
