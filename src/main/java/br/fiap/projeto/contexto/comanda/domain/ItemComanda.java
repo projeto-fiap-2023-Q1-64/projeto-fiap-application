@@ -1,27 +1,49 @@
 package br.fiap.projeto.contexto.comanda.domain;
 
-import br.fiap.projeto.contexto.comanda.domain.vo.ProdutoComanda;
+import java.util.UUID;
+
+import br.fiap.projeto.contexto.comanda.domain.dto.ItemComandaDTO;
+import br.fiap.projeto.contexto.produto.domain.Produto;
 
 public class ItemComanda {
- 
-	private ProdutoComanda produto;
-	 
-	private Integer quantidade;
 
-	public ProdutoComanda getProduto() {
+	private UUID codigoProduto;
+	private UUID codigoPedido;
+	private Produto produto;
+	private int qtde;
+
+	public ItemComanda(UUID codigoProduto, UUID codigoPedido, Produto produto, int qtde) {
+		this.codigoProduto = codigoProduto;
+		this.codigoPedido = codigoPedido;
+		this.produto = produto;
+		this.qtde = qtde;
+	}
+
+	public ItemComanda(ItemComandaDTO itemComandaDTO) {
+		this.codigoProduto = itemComandaDTO.getCodigoProduto();
+		this.codigoPedido = itemComandaDTO.getCodigoPedido();
+		this.produto = itemComandaDTO.getProduto();
+		this.qtde = itemComandaDTO.getQtde();
+	}
+
+	public UUID getCodigoProduto() {
+		return codigoProduto;
+	}
+
+	public UUID getCodigoPedido() {
+		return codigoPedido;
+	}
+
+	public Produto getProduto() {
 		return produto;
 	}
 
-	public void setProduto(ProdutoComanda produto) {
-		this.produto = produto;
+	public int getQtde() {
+		return qtde;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
+	public ItemComandaDTO toItemComandaDTO() {
+		return new ItemComandaDTO(codigoProduto, codigoPedido, produto, qtde);
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
 }
- 
