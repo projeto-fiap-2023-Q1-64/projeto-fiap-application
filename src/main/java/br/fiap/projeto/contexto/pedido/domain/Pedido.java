@@ -1,88 +1,54 @@
 package br.fiap.projeto.contexto.pedido.domain;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import br.fiap.projeto.contexto.pedido.domain.dto.PedidoCriarDTO;
+import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class Pedido {
  
-	private Long codigo;
-	 
-	private List<ItemPedido> itens;
-	 
-	private Long cliente;
-	 
+	private UUID codigo;
+	private List<ItemPedido> itens = new ArrayList<>();
+	private UUID cliente;
 	private StatusPedido status;
-	 
 	private Double valorTotal;
-	 
-	public Double calcularValorTotal() {
-		return null;
+    public Pedido(PedidoDTO pedidoDTO) {
+		this.codigo = pedidoDTO.getCodigo();
+		this.itens = pedidoDTO.getItens();
+		this.cliente = pedidoDTO.getCliente();
+		this.status = pedidoDTO.getStatus();
+		this.valorTotal = pedidoDTO.getValorTotal();
+    }
+	public Pedido(PedidoCriarDTO pedidoCriarDTO){
+		this.cliente = pedidoCriarDTO.getCliente();
+		this.status = StatusPedido.INICIADO;
+		this.valorTotal = 0d;
 	}
-	 
-	public void adicionarProduto(ProdutoPedido produto) {
-	 
+	public void atualizarValorTotal(Double novoValor){
+		this.valorTotal = novoValor;
 	}
-	 
-	public void removerProduto(ProdutoPedido produto) {
-	 
+	public void aumentarQuantidade(UUID produto) {}
+	public void reduzirQuantidade(UUID produto) {}
+	public Integer calcularTempoTotalPreparo() {return null;}
+	public void adicionarItem(ItemPedido itemPedido) {
+		this.itens.add(itemPedido);
 	}
-	 
+	public void removerProduto(UUID produto) {}
 	public List<ItemPedido> listarItens() {
 		return null;
 	}
-	 
-	public void aumentarQuantidade(ProdutoPedido produto) {
-	 
-	}
-	 
-	public void reduzirQuantidade(ProdutoPedido produto) {
-	 
-	}
-	 
-	public Integer calcularTempoTotalPreparo() {
-		return null;
-	}
-
-	public Long getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(Long codigo) {
-		this.codigo = codigo;
-	}
-
-	public List<ItemPedido> getItens() {
-		return itens;
-	}
-
-	public void setItens(List<ItemPedido> itens) {
-		this.itens = itens;
-	}
-
-	public Long getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Long cliente) {
-		this.cliente = cliente;
-	}
-
-	public StatusPedido getStatus() {
-		return status;
-	}
-
-	public void setStatus(StatusPedido status) {
+	public void atualizarStatus(StatusPedido status){
 		this.status = status;
 	}
-
-	public Double getValorTotal() {
-		return valorTotal;
+	public PedidoDTO toPedidoDTO() {
+		return new PedidoDTO( codigo, itens, cliente, status, valorTotal);
 	}
-
-	public void setValorTotal(Double valorTotal) {
-		this.valorTotal = valorTotal;
-	}
-	
 }
  

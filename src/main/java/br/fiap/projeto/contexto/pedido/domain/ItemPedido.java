@@ -1,54 +1,40 @@
 package br.fiap.projeto.contexto.pedido.domain;
 
+import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
+import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public class ItemPedido {
- 
+	private ItemPedidoCodigo codigo;
 	private Pedido pedido;
-	 
-	private ProdutoPedido produto;
-	 
 	private Integer quantidade;
-	 
+	private String produtoNome;
+	private String produtoDescricao;
 	private Double valorUnitario;
-	 
+	private CategoriaProduto categoriaProduto;
+	private String imagem;
+	private Integer tempoPreparoMin;
+	public ItemPedido ( ItemPedidoDTO itemPedidoDTO ){
+		this.pedido = itemPedidoDTO.getPedido();
+		this.quantidade = itemPedidoDTO.getQuantidade();
+		this.valorUnitario = itemPedidoDTO.getValorUnitario();
+	}
 	public Double calcularValorTotal() {
 		return null;
 	}
-	 
 	public Integer calcularTempoTotalPreparo() {
 		return null;
 	}
-
-	public Pedido getPedido() {
-		return pedido;
+	public void adicionarQuantidade() {
+		this.quantidade++;
 	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
+	public void reduzirQuantidade() {
+		this.quantidade--;
 	}
-
-	public ProdutoPedido getProduto() {
-		return produto;
+	public ItemPedidoDTO toItemPedidoDTO() {
+		return new ItemPedidoDTO(this.codigo, this.pedido, this.quantidade, this.produtoNome, this.produtoDescricao, this.valorUnitario, this.categoriaProduto, this.imagem, this.tempoPreparoMin);
 	}
-
-	public void setProduto(ProdutoPedido produto) {
-		this.produto = produto;
-	}
-
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	public Double getValorUnitario() {
-		return valorUnitario;
-	}
-
-	public void setValorUnitario(Double valorUnitario) {
-		this.valorUnitario = valorUnitario;
-	}
-	
 }
- 

@@ -14,8 +14,7 @@ import java.util.UUID;
 public class ProdutoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID codigo;
+    private String codigo;
 
     @Column(nullable = false)
     private String nome;
@@ -38,7 +37,7 @@ public class ProdutoEntity {
     }
 
     public ProdutoEntity(Produto produto) {
-        this.codigo = produto.getCodigo();
+        this.codigo = produto.getCodigo().toString();
         this.nome = produto.getNome();
         this.descricao = produto.getDescricao();
         this.preco = produto.getPreco();

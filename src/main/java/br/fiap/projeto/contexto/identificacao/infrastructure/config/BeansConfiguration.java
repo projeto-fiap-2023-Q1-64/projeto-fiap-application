@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeansConfiguration {
-
     @Bean
     public ClienteService clienteService(ClienteRepository clienteRepository) {
         return new ClienteServiceImpl(clienteRepository);
