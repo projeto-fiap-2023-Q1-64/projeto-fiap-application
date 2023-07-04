@@ -19,7 +19,7 @@ public class PostgresProdutoDataLoader {
 
     @PostConstruct
     public void init() {
-        List<Produto> list = Arrays.asList(new Produto(UUID.fromString("28894d3e-5f18-40da-93c7-49440b91f36b"), "Podrão", "Tudo que tem direito", 1.0, CategoriaProduto.LANCHE, "https://via.placeholder.com/200/200", 12));
+        List<Produto> list = Arrays.asList(new Produto("28894d3e-5f18-40da-93c7-49440b91f36b", "Podrão", "Tudo que tem direito", 1.0, CategoriaProduto.LANCHE, "https://via.placeholder.com/200/200", 12));
         list.stream().forEach(p -> produtoRepository.criaProduto(p));
     }
 }
