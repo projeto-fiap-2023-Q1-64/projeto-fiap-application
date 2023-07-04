@@ -7,16 +7,16 @@ import br.fiap.projeto.contexto.produto.domain.Produto;
 
 public class ItemComanda {
 
-	private UUID codigoProduto;
-	private UUID codigoPedido;
-	private Produto produto;
+	private ItemComandaChave chave;
+	private ProdutoComanda produtocomanda;
 	private int qtde;
+	private Comanda comanda;
 
-	public ItemComanda(UUID codigoProduto, UUID codigoPedido, Produto produto, int qtde) {
-		this.codigoProduto = codigoProduto;
+	public ItemComanda(ItemComandaChave chave, ProdutoComanda produtoComanda, int qtde, Comanda comanda) {
 		this.codigoPedido = codigoPedido;
-		this.produto = produto;
+		this.produtocomanda = produtoComanda;
 		this.qtde = qtde;
+		this.comanda = comanda;
 	}
 
 	public ItemComanda(ItemComandaDTO itemComandaDTO) {
@@ -24,6 +24,7 @@ public class ItemComanda {
 		this.codigoPedido = itemComandaDTO.getCodigoPedido();
 		this.produto = itemComandaDTO.getProduto();
 		this.qtde = itemComandaDTO.getQtde();
+		this.comanda = itemComandaDTO.getComanda();
 	}
 
 	public UUID getCodigoProduto() {
@@ -43,7 +44,7 @@ public class ItemComanda {
 	}
 
 	public ItemComandaDTO toItemComandaDTO() {
-		return new ItemComandaDTO(codigoProduto, codigoPedido, produto, qtde);
+		return new ItemComandaDTO(chave, codigoProduto, codigoPedido, produto, qtde);
 	}
 
 }

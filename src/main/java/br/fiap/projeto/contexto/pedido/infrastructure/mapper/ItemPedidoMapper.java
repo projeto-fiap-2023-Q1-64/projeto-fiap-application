@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 public class ItemPedidoMapper {
     @Autowired
     private static PedidoMapper pedidoMapper;
+
     public static ItemPedidoEntity toEntity(ItemPedido itemPedido) {
+
         return new ItemPedidoEntity(itemPedido.getCodigo(),
                 pedidoMapper.toEntityWithoutItens(itemPedido.getPedido()),
                 itemPedido.getQuantidade(),
@@ -18,9 +20,9 @@ public class ItemPedidoMapper {
                 itemPedido.getValorUnitario(),
                 itemPedido.getCategoriaProduto(),
                 itemPedido.getImagem(),
-                itemPedido.getTempoPreparoMin()
-        );
+                itemPedido.getTempoPreparoMin());
     }
+
     public static ItemPedido toDomain(ItemPedidoEntity itemPedidoEntity) {
         return new ItemPedido(itemPedidoEntity.getCodigo(),
                 pedidoMapper.toDomainWithoutItens(itemPedidoEntity.getPedido()),
@@ -30,7 +32,6 @@ public class ItemPedidoMapper {
                 itemPedidoEntity.getValorUnitario(),
                 itemPedidoEntity.getCategoriaProduto(),
                 itemPedidoEntity.getImagem(),
-                itemPedidoEntity.getTempoPreparoMin()
-        );
+                itemPedidoEntity.getTempoPreparoMin());
     }
 }

@@ -25,6 +25,8 @@ public class ProdutoComandaEntity {
     @Column(nullable = false)
     private String descricao;
 
+    ProdutoComanda produto;
+
     public ProdutoComandaEntity(ProdutoComanda produtoComanda) {
         this.codigo = produtoComanda.getCodigo();
         this.nome = produtoComanda.getNome();
@@ -38,7 +40,8 @@ public class ProdutoComandaEntity {
     }
 
     public ProdutoComanda toProdutoComanda() {
-        return new ProdutoComanda(codigo, nome, descricao);
+        return new ProdutoComanda(produto.getCodigo(), produto.getCodigoProduto(), produto.getNome(),
+                produto.getDescricao());
     }
 
 }

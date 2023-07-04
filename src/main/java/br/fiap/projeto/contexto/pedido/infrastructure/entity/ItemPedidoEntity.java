@@ -12,13 +12,13 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="item_pedido")
+@Table(name = "item_pedido")
 public class ItemPedidoEntity {
     @EmbeddedId
     private ItemPedidoCodigo codigo;
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("pedidoCodigo")
-    @JoinColumn(name = "pedido_codigo" )
+    @JoinColumn(name = "pedido_codigo")
     private PedidoEntity pedido;
     @Column(nullable = false)
     private int quantidade;
@@ -34,7 +34,9 @@ public class ItemPedidoEntity {
     private String imagem;
     @Column(nullable = false)
     private Integer tempoPreparoMin;
-    public ItemPedidoEntity(ItemPedidoEntity itemPedidoEntity){
+
+    public ItemPedidoEntity(ItemPedidoEntity itemPedidoEntity) {
+
         this.codigo = itemPedidoEntity.getCodigo();
         this.pedido = new PedidoEntity(itemPedidoEntity.getPedido());
         this.quantidade = itemPedidoEntity.getQuantidade();
@@ -45,6 +47,7 @@ public class ItemPedidoEntity {
         this.imagem = itemPedidoEntity.getImagem();
         this.tempoPreparoMin = itemPedidoEntity.getTempoPreparoMin();
     }
+
     public void atualizar(ItemPedidoEntity itemPedidoEntity) {
         this.codigo = itemPedidoEntity.getCodigo();
         this.pedido = new PedidoEntity(itemPedidoEntity.getPedido());

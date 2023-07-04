@@ -9,14 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Embeddable
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 public class ItemComandaChave {
 
     @Column(name = "codigo_produto")
-    private UUID codigoProduto;
+    private UUID codigoProdutoComanda;
 
     @Column(name = "codigo_comanda")
     private UUID codigoComanda;

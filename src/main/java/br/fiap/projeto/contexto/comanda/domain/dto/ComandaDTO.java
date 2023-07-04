@@ -4,23 +4,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import br.fiap.projeto.contexto.comanda.domain.ItemComanda;
-import br.fiap.projeto.contexto.comanda.domain.ProdutoComanda;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
 
 public class ComandaDTO {
 
+	@JsonProperty("codigo")
 	private UUID codigoPedido;
 
-	private List<ItemComanda> itens;
+	private List<ItemComandaDTO> itens;
 
 	private StatusComanda status;
 
 	private Date dataComanda;
 
-	private ProdutoComanda produto;
-
-	public ComandaDTO(UUID codigoPedido, List<ItemComanda> itens, StatusComanda status, Date dataComanda) {
+	public ComandaDTO(UUID codigoPedido, List<ItemComandaDTO> itens, StatusComanda status,
+			Date dataComanda) {
 		this.codigoPedido = codigoPedido;
 		this.itens = itens;
 		this.status = status;
@@ -31,7 +31,7 @@ public class ComandaDTO {
 		return codigoPedido;
 	}
 
-	public List<ItemComanda> getItens() {
+	public List<ItemComandaDTO> getItens() {
 		return itens;
 	}
 
@@ -42,7 +42,5 @@ public class ComandaDTO {
 	public Date getDataComanda() {
 		return dataComanda;
 	}
-
-	
 
 }
