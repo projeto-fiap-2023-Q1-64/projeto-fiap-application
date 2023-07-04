@@ -12,5 +12,7 @@ public interface SpringDataClienteRepository extends JpaRepository<ClienteEntity
 
     List<ClienteEntity> findAllByDataExclusaoIsNull();
     ClienteEntity findByCpfAndDataExclusaoIsNull(String cpf);
+
+    ClienteEntity findByEmailAndDataExclusaoIsNull(String email);
     Optional<ClienteEntity> findByCodigoAndDataExclusaoIsNull(String codigo);
 }

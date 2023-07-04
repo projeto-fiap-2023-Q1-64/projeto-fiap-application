@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 
 import java.util.Optional;
 
-public class ClienteResponseDTO {
+public class ClienteDTO {
 
     private String codigo;
 
@@ -17,17 +17,17 @@ public class ClienteResponseDTO {
 
     private String email;
 
-    public ClienteResponseDTO() {
+    public ClienteDTO() {
     }
 
-    public ClienteResponseDTO(String codigo, String nome, String cpf, String email) {
+    public ClienteDTO(String codigo, String nome, String cpf, String email) {
         this.codigo = codigo;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
     }
 
-    public ClienteResponseDTO(String nome, String cpf, String email) {
+    public ClienteDTO(String nome, String cpf, String email) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -55,12 +55,12 @@ public class ClienteResponseDTO {
         return new Cliente(codigo, nome, cpf, email);
     }
 
-    public static ClienteResponseDTO fromCliente(Cliente cliente) {
+    public static ClienteDTO fromCliente(Cliente cliente) {
 
         if (cliente == null) {
             return null;
         }
-        return new ClienteResponseDTO(
+        return new ClienteDTO(
                 cliente.getCodigo(),
                 cliente.getNome(),
                 Optional.ofNullable(cliente.getCpf()).map(Cpf::getNumero).orElse(null),

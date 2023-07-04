@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao;
 
 import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
-import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteResponseDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
 import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,8 +25,8 @@ public class ClienteServiceTest {
     @Test
     public void testeBusca() {
 
-        List<ClienteResponseDTO> clienteResponseDTOS = clienteService.buscaTodos();
-        assertFalse(CollectionUtils.isEmpty(clienteResponseDTOS));
+        List<ClienteDTO> clienteDTOS = clienteService.buscaTodos();
+        assertFalse(CollectionUtils.isEmpty(clienteDTOS));
     }
 
     @Test
@@ -35,7 +34,7 @@ public class ClienteServiceTest {
 
         String cpf = "09876543210";
         ClienteRequestDTO request = new ClienteRequestDTO("TesteBusca", cpf, "teste@busca.com");
-        ClienteResponseDTO cliente;
+        ClienteDTO cliente;
         cliente = clienteService.insere(request);
 
         assertNotNull(cliente);
@@ -43,7 +42,7 @@ public class ClienteServiceTest {
         assertNotNull(cliente.getCpf());
         assertEquals(cpf, cliente.getCpf());
 
-        ClienteResponseDTO clienteBusca = clienteService.buscaPorCpf(cpf);
+        ClienteDTO clienteBusca = clienteService.buscaPorCpf(cpf);
         assertNotNull(clienteBusca);
         assertNotNull(clienteBusca.getCpf());
         assertNotNull(clienteBusca.getCodigo());
@@ -54,11 +53,11 @@ public class ClienteServiceTest {
     public void testeInsere() {
 
         ClienteRequestDTO cliente = new ClienteRequestDTO("NomeTeste", "98765432109", "teste@teste.com");
-        ClienteResponseDTO resultado = clienteService.insere(cliente);
+        ClienteDTO resultado = clienteService.insere(cliente);
         assertNotNull(resultado);
 
-        List<ClienteResponseDTO> clienteResponseDTOS = clienteService.buscaTodos();
-        assertFalse(CollectionUtils.isEmpty(clienteResponseDTOS));
+        List<ClienteDTO> clienteDTOS = clienteService.buscaTodos();
+        assertFalse(CollectionUtils.isEmpty(clienteDTOS));
     }
 
     @Test
@@ -66,7 +65,7 @@ public class ClienteServiceTest {
 
         String codigoSaida;
         AtomicReference<ClienteRequestDTO> cliente;
-        AtomicReference<ClienteResponseDTO> resultado;
+        AtomicReference<ClienteDTO> resultado;
 
         cliente = new AtomicReference<>();
         resultado = new AtomicReference<>();

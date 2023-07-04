@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.application.rest;
 
 import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
-import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteResponseDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,31 +20,31 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ClienteResponseDTO busca(String codigo) {
+    public ClienteDTO busca(String codigo) {
 
         return clienteService.busca(codigo);
     }
 
     @GetMapping("/cpf")
-    public ClienteResponseDTO buscaPorCpf(@RequestParam String cpf) {
+    public ClienteDTO buscaPorCpf(@RequestParam String cpf) {
 
         return clienteService.buscaPorCpf(cpf);
     }
 
     @GetMapping("/todos")
-    public List<ClienteResponseDTO> buscaTodos() {
+    public List<ClienteDTO> buscaTodos() {
 
         return clienteService.buscaTodos();
     }
 
     @PostMapping
-    public ResponseEntity<ClienteResponseDTO> insere(@RequestBody ClienteRequestDTO cliente) {
+    public ResponseEntity<ClienteDTO> insere(@RequestBody ClienteRequestDTO cliente) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.insere(cliente));
     }
 
     @PutMapping
-    public ClienteResponseDTO edita(@RequestBody ClienteResponseDTO cliente) {
+    public ClienteDTO edita(@RequestBody ClienteDTO cliente) {
 
         return clienteService.edita(cliente);
     }
