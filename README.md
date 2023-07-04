@@ -10,6 +10,8 @@
 ## Entrega
 [docker-compose.yml](entrega/docker-compose.yml)
 
+[live swagger](https://projeto-fiap-64.cloud/swagger-ui/index.html#/)
+
 ---
 ## Comandos do docker
 ### Iniciar containers (aplicação e banco)
