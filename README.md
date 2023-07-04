@@ -7,6 +7,10 @@
 - Richard Cardoso
 
 ---
+## Entrega
+[docker-compose.yml](entrega/docker-compose.yml)
+
+---
 ## Comandos do docker
 ### Iniciar containers (aplicação e banco)
 ```
