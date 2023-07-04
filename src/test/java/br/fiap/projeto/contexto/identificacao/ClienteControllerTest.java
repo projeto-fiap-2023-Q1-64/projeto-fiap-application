@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao;
 
-import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteResponseDTO;
 import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
 import br.fiap.projeto.contexto.identificacao.infrastructure.repository.SpringDataClienteRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -54,9 +54,9 @@ public class ClienteControllerTest {
         MvcResult result = resultActions.andReturn();
         String sContent = result.getResponse().getContentAsString();
 
-        List<ClienteDTO> clienteDTOS = mapper.readValue(sContent, new TypeReference<List<ClienteDTO>>(){});
+        List<ClienteResponseDTO> clienteResponseDTOS = mapper.readValue(sContent, new TypeReference<List<ClienteResponseDTO>>(){});
 
-        assertFalse(CollectionUtils.isEmpty(clienteDTOS));
+        assertFalse(CollectionUtils.isEmpty(clienteResponseDTOS));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ClienteControllerTest {
 
         String cpf = CPF_GENERATOR.get();
 
-        ClienteDTO cliente = new ClienteDTO("TesteBusca", cpf, "teste@busca.com");
+        ClienteResponseDTO cliente = new ClienteResponseDTO("TesteBusca", cpf, "teste@busca.com");
         String sCliente = mapper.writeValueAsString(cliente);
 
         mockMvc.perform(MockMvcRequestBuilders.post(CAMINHO_RAIZ)
@@ -79,10 +79,10 @@ public class ClienteControllerTest {
 
         MvcResult result = resultActions.andReturn();
         String sContent = result.getResponse().getContentAsString();
-        ClienteDTO clienteDTO = mapper.readValue(sContent, ClienteDTO.class);
+        ClienteResponseDTO clienteResponseDTO = mapper.readValue(sContent, ClienteResponseDTO.class);
 
-        assertNotNull(clienteDTO);
-        assertEquals(clienteDTO.getCpf(), cpf);
+        assertNotNull(clienteResponseDTO);
+        assertEquals(clienteResponseDTO.getCpf(), cpf);
 
     }
 
@@ -107,7 +107,7 @@ public class ClienteControllerTest {
     public void testeInsere() throws Exception {
 
         String cpf = CPF_GENERATOR.get();
-        ClienteDTO cliente = new ClienteDTO("TesteBusca", cpf, "teste@busca.com");
+        ClienteResponseDTO cliente = new ClienteResponseDTO("TesteBusca", cpf, "teste@busca.com");
         String sCliente = mapper.writeValueAsString(cliente);
 
         mockMvc.perform(MockMvcRequestBuilders.post(CAMINHO_RAIZ)
@@ -128,7 +128,7 @@ public class ClienteControllerTest {
         String email1 = "teste@insere.com";
         String email2 = "teste@edita.com";
 
-        ClienteDTO cliente;
+        ClienteResponseDTO cliente;
         String sCliente;
         String codigo;
         String sContent;
@@ -136,7 +136,7 @@ public class ClienteControllerTest {
         ResultActions resultActions;
         MvcResult result;
 
-        cliente = new ClienteDTO(nome1, cpf1, email1);
+        cliente = new ClienteResponseDTO(nome1, cpf1, email1);
         sCliente = mapper.writeValueAsString(cliente);
 
         // Cria o cliente
@@ -149,13 +149,13 @@ public class ClienteControllerTest {
         // Recupera os dados do cliente criado
         result = resultActions.andReturn();
         sContent = result.getResponse().getContentAsString();
-        cliente = mapper.readValue(sContent, ClienteDTO.class);
+        cliente = mapper.readValue(sContent, ClienteResponseDTO.class);
 
         // Salva o código para a validação final
         codigo = cliente.getCodigo();
 
         // Edita o nome cliente
-        cliente = new ClienteDTO(cliente.getCodigo(), nome2, cpf2, email2);
+        cliente = new ClienteResponseDTO(cliente.getCodigo(), nome2, cpf2, email2);
         sCliente = mapper.writeValueAsString(cliente);
         mockMvc.perform(MockMvcRequestBuilders.put(CAMINHO_RAIZ)
                         .contentType(APPLICATION_JSON)
@@ -176,7 +176,7 @@ public class ClienteControllerTest {
         // Recupera os dados do cliente buscado
         result = resultActions.andReturn();
         sContent = result.getResponse().getContentAsString();
-        cliente = mapper.readValue(sContent, ClienteDTO.class);
+        cliente = mapper.readValue(sContent, ClienteResponseDTO.class);
 
         // Valida se os dados foram atualizados
         assertEquals(cliente.getEmail(), email2);
@@ -188,9 +188,9 @@ public class ClienteControllerTest {
     public void testeRemove() throws Exception {
 
         String codigo;
-        ClienteDTO cliente, resultado;
+        ClienteResponseDTO cliente, resultado;
 
-        cliente = new ClienteDTO("NomeTeste", CPF_GENERATOR.get(), "teste@teste.com");
+        cliente = new ClienteResponseDTO("NomeTeste", CPF_GENERATOR.get(), "teste@teste.com");
         String sCliente = mapper.writeValueAsString(cliente);
 
         // Insere o cliente
@@ -201,7 +201,7 @@ public class ClienteControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated());
         MvcResult result = resultActions.andReturn();
         String sContent = result.getResponse().getContentAsString();
-        resultado = mapper.readValue(sContent, ClienteDTO.class);
+        resultado = mapper.readValue(sContent, ClienteResponseDTO.class);
         codigo = resultado.getCodigo();
 
         // Busca o cliente usando o código
@@ -211,7 +211,7 @@ public class ClienteControllerTest {
 
         result = resultActions.andReturn();
         sContent = result.getResponse().getContentAsString();
-        cliente = mapper.readValue(sContent, ClienteDTO.class);
+        cliente = mapper.readValue(sContent, ClienteResponseDTO.class);
 
         assertNotNull(cliente);
 
