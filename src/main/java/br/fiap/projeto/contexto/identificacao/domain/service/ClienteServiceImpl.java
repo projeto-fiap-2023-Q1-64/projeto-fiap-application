@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.produto.infrastructure.repository.postgres.service;
+package br.fiap.projeto.contexto.identificacao.domain.service;
 
 import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;

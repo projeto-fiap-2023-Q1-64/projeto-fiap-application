@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.identificacao.infrastructure.config;
 
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.contexto.produto.infrastructure.repository.postgres.service.ClienteServiceImpl;
+import br.fiap.projeto.contexto.identificacao.domain.service.ClienteServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
