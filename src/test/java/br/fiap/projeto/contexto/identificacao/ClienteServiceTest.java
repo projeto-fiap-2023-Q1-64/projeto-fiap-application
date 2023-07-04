@@ -70,7 +70,7 @@ public class ClienteServiceTest {
         cliente = new AtomicReference<>();
         resultado = new AtomicReference<>();
 
-        cliente.set(new ClienteRequestDTO("NomeTeste", "45678912301", "teste@teste.com"));
+        cliente.set(new ClienteRequestDTO("NomeTeste", "45678912301", "teste2@teste.com"));
         resultado.set(clienteService.insere(cliente.get()));
         codigoSaida = resultado.get().getCodigo();
 
