@@ -10,6 +10,8 @@
 ## Entrega
 [docker-compose.yml](entrega/docker-compose.yml)
 
+[live swagger](https://projeto-fiap-64.cloud/swagger-ui/index.html#/)
+
 ---
 ## Comandos do docker
 ### Iniciar containers (aplicação e banco)
@@ -19,6 +21,14 @@ docker-compose up --force-recreate --build
 ### Parar e remover containers (aplicação e banco)
 ```
 docker-compose down -v
+```
+### Atualizar a imagem no repositório remoto
+```
+docker login
+
+#informar usuário e senha
+
+docker push rm350010/projeto-fiap-1:latest
 ```
 ### Para acessar o swagger
 
