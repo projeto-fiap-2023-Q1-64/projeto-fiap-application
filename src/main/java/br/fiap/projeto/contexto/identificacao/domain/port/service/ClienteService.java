@@ -1,21 +1,21 @@
 package br.fiap.projeto.contexto.identificacao.domain.port.service;
 
 import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
-import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteResponseDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 
 import java.util.List;
 
 public interface ClienteService {
 
-    ClienteResponseDTO busca(String codigo);
+    ClienteDTO busca(String codigo);
 
-    List<ClienteResponseDTO> buscaTodos();
+    List<ClienteDTO> buscaTodos();
 
-    ClienteResponseDTO insere(ClienteRequestDTO cliente);
+    ClienteDTO insere(ClienteRequestDTO cliente);
 
-    ClienteResponseDTO edita(ClienteResponseDTO cliente);
+    ClienteDTO edita(ClienteDTO cliente);
 
     void remove(String codigo);
 
-    ClienteResponseDTO buscaPorCpf(String cpf);
+    ClienteDTO buscaPorCpf(String cpf);
 }

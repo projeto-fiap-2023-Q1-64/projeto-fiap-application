@@ -10,7 +10,9 @@ public class Cliente {
 	public final static String EMAIL_AUSENTE = "Informe o e-mail!";
 	public final static String NOME_AUSENTE = "Informe o nome!";
 	public final static String ENTIDADE_NAO_ENCONTRADA = "Cliente não encontrado!";
-	public final static String ENTIDADE_DUPLICADA = "Esse cpf já está cadastrado!";
+	public final static String CPF_DUPLICADO = "Esse cpf já está cadastrado!";
+
+	public final static String EMAIL_DUPLICADO = "Esse e-mail já está cadastrado!";
 	public final static String CODIGO_AUSENTE = "Informe o código do cliente!";
  
 	private final String codigo;

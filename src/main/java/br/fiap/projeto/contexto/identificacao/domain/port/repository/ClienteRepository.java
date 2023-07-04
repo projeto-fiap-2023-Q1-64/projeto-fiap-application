@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.domain.port.repository;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
-import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteResponseDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 
 import java.util.List;
 
@@ -17,5 +17,7 @@ public interface ClienteRepository {
 
     void remove(String codigo);
 
-    ClienteResponseDTO buscaPorCpf(String cpf);
+    ClienteDTO buscaPorCpf(String cpf);
+
+    ClienteDTO buscaPorEmail(String email);
 }

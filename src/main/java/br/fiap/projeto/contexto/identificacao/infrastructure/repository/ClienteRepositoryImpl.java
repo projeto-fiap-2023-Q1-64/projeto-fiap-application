@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.infrastructure.repository;
 
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
-import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteResponseDTO;
+import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,11 +77,21 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
-    public ClienteResponseDTO buscaPorCpf(String cpf) {
+    public ClienteDTO buscaPorCpf(String cpf) {
 
         ClienteEntity entity = repository.findByCpfAndDataExclusaoIsNull(cpf);
         if (Objects.nonNull(entity)) {
-            return ClienteResponseDTO.fromCliente(entity.toCliente());
+            return ClienteDTO.fromCliente(entity.toCliente());
+        }
+        return null;
+    }
+
+    @Override
+    public ClienteDTO buscaPorEmail(String email) {
+
+        ClienteEntity entity = repository.findByEmailAndDataExclusaoIsNull(email);
+        if (Objects.nonNull(entity)) {
+            return ClienteDTO.fromCliente(entity.toCliente());
         }
         return null;
     }
