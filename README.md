@@ -20,6 +20,14 @@ docker-compose up --force-recreate --build
 ```
 docker-compose down -v
 ```
+### Atualizar a imagem no repositório remoto
+```
+docker login
+
+#informar usuário e senha
+
+docker push rm350010/projeto-fiap-1:latest
+```
 ### Para acessar o swagger
 
 > http://localhost:8080/swagger-ui/index.html
