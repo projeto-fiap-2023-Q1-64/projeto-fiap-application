@@ -1,25 +1,36 @@
 package br.fiap.projeto.contexto.comanda.infrastructure.entity;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-import br.fiap.projeto.contexto.comanda.domain.ItemComanda;
 import br.fiap.projeto.contexto.comanda.domain.ItemComandaChave;
+import br.fiap.projeto.contexto.comanda.infrastructure.mapper.ComandaMapper;
 import br.fiap.projeto.contexto.produto.domain.Produto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "itemcomanda")
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "item_comanda")
 
 public class ItemComandaEntity {
 
     @EmbeddedId
     private ItemComandaChave chave;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("codigoItem")
+    @JoinColumn(name = "codigo_item")
+    private ComandaEntity comanda;
 
     @Column(nullable = false)
     private Produto produto;
@@ -27,45 +38,22 @@ public class ItemComandaEntity {
     @Column(nullable = false)
     private int qtde;
 
-    @ManyToOne
-    @JoinColumn(name = "codigoPedido")
-
-    private ComandaEntity comanda;
-
-    public ItemComandaEntity() {
-
+    public ItemComandaEntity(ItemComandaEntity itemComandaEntity) {
+        this.chave = itemComandaEntity.getChave();
+        this.comanda = new ComandaEntity(itemComandaEntity.getComanda());
+        this.produto = itemComandaEntity.getProduto();
+        this.qtde = itemComandaEntity.getQtde();
     }
 
-    public ItemComandaEntity(UUID codigoPedido, ItemComanda itemComanda) {
-        this.chave = new ItemComandaChave(codigoPedido, itemComanda.getCodigoProduto());
-        this.produto = itemComanda.getProduto();
-        this.qtde = itemComanda.getQtde();
+    public void atualizar(ItemComandaEntity itemComandaEntity) {
+        this.chave = itemComandaEntity.getChave();
+        this.comanda = new ComandaEntity(itemComandaEntity.getComanda());
+        this.produto = itemComandaEntity.getProduto();
+        this.qtde = itemComandaEntity.getQtde();
     }
 
-    public void atualizar(ItemComanda itemComanda) {
-        this.chave = new ItemComandaChave(itemComanda.getCodigoPedido(), itemComanda.getCodigoProduto());
-        this.produto = itemComanda.getProduto();
-        this.qtde = itemComanda.getQtde();
-    }
-
-    public ItemComanda toitemComanda() {
-        return new ItemComanda(this.chave.getCodigoComanda(), this.chave.getCodigoProduto(), produto, qtde);
-    }
-
-    public UUID getCodigoProduto() {
-        return chave.getCodigoProduto();
-    }
-
-    public UUID getCodigoPedido() {
-        return chave.getCodigoComanda();
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public int getQtde() {
-        return qtde;
+    public ItemComanda toItemComanda() {
+        return new ItemComanda(chave, comanda.getCodigoPedido(), produto, qtde, ComandaMapper.toEntity(comanda));
     }
 
 }

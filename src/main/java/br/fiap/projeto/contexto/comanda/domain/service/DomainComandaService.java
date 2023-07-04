@@ -38,6 +38,4 @@ public class DomainComandaService implements ComandaServicePort {
         return comandas.stream().map(Comanda::toComandaDTO).collect(Collectors.toList());
     }
 
-   
-
 }
