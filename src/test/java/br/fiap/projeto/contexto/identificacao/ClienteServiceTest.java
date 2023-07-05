@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.identificacao;
 
 import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
 import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
 import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class ClienteServiceTest {
     @Test
     public void testeBusca() {
 
-        List<ClienteDTO> clienteDTOS = clienteService.buscaTodos();
+        List<Cliente> clienteDTOS = clienteService.buscaTodos();
         assertFalse(CollectionUtils.isEmpty(clienteDTOS));
     }
 
@@ -34,29 +35,29 @@ public class ClienteServiceTest {
 
         String cpf = "09876543210";
         ClienteRequestDTO request = new ClienteRequestDTO("TesteBusca", cpf, "teste@busca.com");
-        ClienteDTO cliente;
+        Cliente cliente;
         cliente = clienteService.insere(request);
 
         assertNotNull(cliente);
         assertNotNull(cliente.getCpf());
         assertNotNull(cliente.getCpf());
-        assertEquals(cpf, cliente.getCpf());
+        assertEquals(cpf, cliente.getCpf().getNumero());
 
-        ClienteDTO clienteBusca = clienteService.buscaPorCpf(cpf);
+        Cliente clienteBusca = clienteService.buscaPorCpf(cpf);
         assertNotNull(clienteBusca);
         assertNotNull(clienteBusca.getCpf());
         assertNotNull(clienteBusca.getCodigo());
-        assertEquals(cpf, clienteBusca.getCpf());
+        assertEquals(cpf, clienteBusca.getCpf().getNumero());
     }
 
     @Test
     public void testeInsere() {
 
         ClienteRequestDTO cliente = new ClienteRequestDTO("NomeTeste", "98765432109", "teste@teste.com");
-        ClienteDTO resultado = clienteService.insere(cliente);
+        Cliente resultado = clienteService.insere(cliente);
         assertNotNull(resultado);
 
-        List<ClienteDTO> clienteDTOS = clienteService.buscaTodos();
+        List<Cliente> clienteDTOS = clienteService.buscaTodos();
         assertFalse(CollectionUtils.isEmpty(clienteDTOS));
     }
 
@@ -65,7 +66,7 @@ public class ClienteServiceTest {
 
         String codigoSaida;
         AtomicReference<ClienteRequestDTO> cliente;
-        AtomicReference<ClienteDTO> resultado;
+        AtomicReference<Cliente> resultado;
 
         cliente = new AtomicReference<>();
         resultado = new AtomicReference<>();
