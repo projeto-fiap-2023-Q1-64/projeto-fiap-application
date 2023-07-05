@@ -1,17 +1,24 @@
 package br.fiap.projeto.contexto.comanda.domain.port.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import br.fiap.projeto.contexto.comanda.domain.dto.ComandaDTO;
+import br.fiap.projeto.contexto.comanda.domain.dto.CriarComandaDTO;
+import br.fiap.projeto.contexto.comanda.domain.exception.InvalidStatusException;
 
 public interface ComandaServicePort {
 
-    List<ComandaDTO> buscaComandaPendente();
+    List<ComandaDTO> buscaComandaRecebido();
 
-    List<ComandaDTO> buscaComandaPronto();
+    List<ComandaDTO> buscaComandaPreparacao();
 
-    ComandaDTO criaComanda(ComandaDTO comandaDTO);
+    List<ComandaDTO> buscaComandaFinalizado();
 
-    void atualizaComanda(ComandaDTO comandaDTO);
+    ComandaDTO criarComanda(CriarComandaDTO criarComandaDTO);
+
+    ComandaDTO preparar(UUID codigoPedido) throws InvalidStatusException;
+
+    ComandaDTO finalizar(UUID codigoPedido) throws InvalidStatusException;
 
 }

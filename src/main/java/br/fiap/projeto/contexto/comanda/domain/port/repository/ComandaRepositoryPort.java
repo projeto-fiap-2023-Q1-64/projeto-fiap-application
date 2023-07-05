@@ -1,17 +1,18 @@
 package br.fiap.projeto.contexto.comanda.domain.port.repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import br.fiap.projeto.contexto.comanda.domain.Comanda;
+import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
 
 public interface ComandaRepositoryPort {
 
-    List<Comanda> buscaComandaPendente();
+    List<Comanda> buscaPorStatus(StatusComanda statusComanda);
 
-    List<Comanda> buscaComandaPronto();
+    Comanda salvar(Comanda comanda);
 
-    Comanda criaComanda(Comanda comanda);
-
-    void atualizaComanda(Comanda comanda);
+    Optional<Comanda> buscar(UUID codigoComanda);
 
 }

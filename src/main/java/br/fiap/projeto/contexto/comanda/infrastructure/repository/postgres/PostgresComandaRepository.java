@@ -2,18 +2,17 @@ package br.fiap.projeto.contexto.comanda.infrastructure.repository.postgres;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import br.fiap.projeto.contexto.comanda.domain.Comanda;
+import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.domain.port.repository.ComandaRepositoryPort;
 import br.fiap.projeto.contexto.comanda.infrastructure.entity.ComandaEntity;
-import br.fiap.projeto.contexto.comanda.infrastructure.mapper.ComandaMapper;
 
 @Component
 @Primary
@@ -27,31 +26,23 @@ public class PostgresComandaRepository implements ComandaRepositoryPort {
     }
 
     @Override
-    public List<Comanda> buscaComandaPendente() {
-        List<ComandaEntity> resultados = springComandaRepository.findByStatus(2);
+    public List<Comanda> buscaPorStatus(StatusComanda statusComanda) {
+        List<ComandaEntity> resultados = springComandaRepository.findByStatus(statusComanda);
         return resultados.stream().map(ComandaEntity::toComanda).collect(Collectors.toList());
     }
 
     @Override
-    public List<Comanda> buscaComandaPronto() {
-        List<ComandaEntity> resultados = springComandaRepository.findByStatus(3);
-        return resultados.stream().map(ComandaEntity::toComanda).collect(Collectors.toList());
-    }
-
-    @Override
-    public Comanda criaComanda(Comanda comanda) {
-        ComandaEntity comandaSalva = springComandaRepository.save(new ComandaEntity(ComandaMapper.toEntity(comanda)));
+    public Comanda salvar(Comanda comanda) {
+        ComandaEntity comandaSalva = springComandaRepository.save(new ComandaEntity(comanda));
         return comandaSalva.toComanda();
-
     }
 
     @Override
-    public void atualizaComanda(Comanda comanda) {
-        Optional<ComandaEntity> comandaEntity = springComandaRepository
-                .findByCategoria(ComandaMapper.toEntity(comanda));
-        comandaEntity.orElseThrow(() -> new EntityNotFoundException("Comanda não encontrado!"));
-        comandaEntity.get().atualizar(ComandaMapper.toEntity(comanda));
-        springComandaRepository.save(comandaEntity.get());
+    public Optional<Comanda> buscar(UUID codigoComanda) {
+        Optional<ComandaEntity> comandaEntity = springComandaRepository.findById(codigoComanda);
+        if (comandaEntity.isPresent()) {
+            return Optional.of(comandaEntity.get().toComanda());
+        }
+        return Optional.empty();
     }
-
 }
