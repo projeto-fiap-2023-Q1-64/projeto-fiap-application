@@ -107,7 +107,7 @@ public class ClienteControllerTest {
     public void testeInsere() throws Exception {
 
         String cpf = CPF_GENERATOR.get();
-        ClienteDTO cliente = new ClienteDTO("TesteBusca", cpf, "teste@busca.com");
+        ClienteDTO cliente = new ClienteDTO("TesteBusca", cpf, "teste3@busca.com");
         String sCliente = mapper.writeValueAsString(cliente);
 
         mockMvc.perform(MockMvcRequestBuilders.post(CAMINHO_RAIZ)

@@ -3,10 +3,8 @@ package br.fiap.projeto.contexto.produto.infrastructure.entity;
 import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 import lombok.ToString;
-import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @ToString
 @Entity
@@ -37,16 +35,7 @@ public class ProdutoEntity {
     }
 
     public ProdutoEntity(Produto produto) {
-        this.codigo = produto.getCodigo().toString();
-        this.nome = produto.getNome();
-        this.descricao = produto.getDescricao();
-        this.preco = produto.getPreco();
-        this.categoria = produto.getCategoria();
-        this.imagem = produto.getImagem();
-        this.tempoPreparoMin = produto.getTempoPreparoMin();
-    }
-
-    public void atualizar(Produto produto) {
+        this.codigo = produto.getCodigo();
         this.nome = produto.getNome();
         this.descricao = produto.getDescricao();
         this.preco = produto.getPreco();

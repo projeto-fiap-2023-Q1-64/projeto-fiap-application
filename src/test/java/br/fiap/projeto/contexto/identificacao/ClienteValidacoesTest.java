@@ -3,7 +3,7 @@ package br.fiap.projeto.contexto.identificacao;
 import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntradaInvalidaException;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

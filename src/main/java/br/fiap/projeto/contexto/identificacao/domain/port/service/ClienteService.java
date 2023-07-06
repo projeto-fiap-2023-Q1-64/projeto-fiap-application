@@ -1,20 +1,24 @@
 package br.fiap.projeto.contexto.identificacao.domain.port.service;
 
+import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
 import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntradaInvalidaException;
 
 import java.util.List;
 
 public interface ClienteService {
 
-    ClienteDTO busca(String codigo);
+    Cliente busca(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
 
-    List<ClienteDTO> buscaTodos();
+    List<Cliente> buscaTodos();
 
-    ClienteDTO insere(ClienteDTO cliente);
+    Cliente insere(ClienteRequestDTO cliente) throws EntradaInvalidaException;
 
-    ClienteDTO edita(ClienteDTO cliente);
+    Cliente edita(Cliente cliente) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
 
-    void remove(String codigo);
+    void remove(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
 
-    ClienteDTO buscaPorCpf(String cpf);
+    Cliente buscaPorCpf(String cpf) throws EntidadeNaoEncontradaException;
 }

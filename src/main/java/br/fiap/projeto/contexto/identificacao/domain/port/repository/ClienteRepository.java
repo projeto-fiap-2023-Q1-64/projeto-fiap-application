@@ -18,4 +18,6 @@ public interface ClienteRepository {
     void remove(String codigo);
 
     ClienteDTO buscaPorCpf(String cpf);
+
+    ClienteDTO buscaPorEmail(String email);
 }
