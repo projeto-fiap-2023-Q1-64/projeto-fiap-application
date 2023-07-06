@@ -1,9 +1,9 @@
 package br.fiap.projeto.contexto.identificacao.application.rest.exception;
 
 import br.fiap.projeto.contexto.identificacao.application.rest.ClienteController;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.BaseException;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.identificacao.domain.exception.BaseException;
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntradaInvalidaException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
