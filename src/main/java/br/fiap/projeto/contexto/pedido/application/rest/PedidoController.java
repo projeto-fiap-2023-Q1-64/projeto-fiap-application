@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.pedido.application.rest;
 
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.domain.dto.ProdutoPedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.request.ProdutoPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

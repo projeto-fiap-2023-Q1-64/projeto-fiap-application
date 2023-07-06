@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

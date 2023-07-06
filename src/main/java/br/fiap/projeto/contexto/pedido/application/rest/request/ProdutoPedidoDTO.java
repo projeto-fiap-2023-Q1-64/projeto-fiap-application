@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pedido.domain.dto;
+package br.fiap.projeto.contexto.pedido.application.rest.request;
 
 import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
 import lombok.AllArgsConstructor;

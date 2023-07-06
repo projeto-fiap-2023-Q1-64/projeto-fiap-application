@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pedido.domain.dto;
+package br.fiap.projeto.contexto.pedido.application.rest.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
