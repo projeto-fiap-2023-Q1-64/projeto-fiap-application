@@ -84,11 +84,6 @@ public class PedidoController {
     //-------------------------------------------------------------------------//
     //                MÉTODOS DE MANUPULAÇÃO DE ITENS DO PEDIDO
     //-------------------------------------------------------------------------//
-//    @PostMapping("/{codigo_pedido}/adicionar-produto")
-//    @ResponseBody
-//    public PedidoDTO adicionarProduto(@PathVariable("codigo_pedido") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
-//        return this.pedidoService.adicionarProduto(codigoPedido,produtoPedidoDTO);
-//    }
     @PostMapping("/{codigo_pedido}/adicionar-produto/{codigo_produto}")
     @ResponseBody
     public ResponseEntity<PedidoDTO> adicionarProduto(@PathVariable("codigo_pedido") UUID codigoPedido,
