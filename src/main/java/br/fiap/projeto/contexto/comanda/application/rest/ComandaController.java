@@ -79,6 +79,7 @@ public class ComandaController {
     ResponseEntity<ComandaDTO> finalizar(@PathVariable("codigo-comanda") UUID codigoComando)
             throws InvalidStatusException {
         ComandaDTO finalizarComandaDTO = this.comandaServicePort.finalizar(codigoComando);
+        // Enviar chamada para o pedido
         return ResponseEntity.status(HttpStatus.CREATED).body(finalizarComandaDTO);
     }
 
