@@ -34,9 +34,6 @@ public class Pedido {
 	public void atualizarValorTotal(Double novoValor){
 		this.valorTotal = novoValor;
 	}
-	public void aumentarQuantidade(UUID produto) {}
-	public void reduzirQuantidade(UUID produto) {}
-	public Integer calcularTempoTotalPreparo() {return null;}
 	public void adicionarItem(ItemPedido itemPedido) {
 		this.itens.add(itemPedido);
 	}

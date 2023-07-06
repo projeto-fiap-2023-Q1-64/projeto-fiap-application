@@ -34,26 +34,4 @@ public class ItemPedidoEntity {
     private String imagem;
     @Column(nullable = false)
     private Integer tempoPreparoMin;
-    public ItemPedidoEntity(ItemPedidoEntity itemPedidoEntity){
-        this.codigo = itemPedidoEntity.getCodigo();
-        this.pedido = new PedidoEntity(itemPedidoEntity.getPedido());
-        this.quantidade = itemPedidoEntity.getQuantidade();
-        this.produtoNome = itemPedidoEntity.getProdutoNome();
-        this.produtoDescricao = itemPedidoEntity.getProdutoDescricao();
-        this.valorUnitario = itemPedidoEntity.getValorUnitario();
-        this.categoriaProduto = itemPedidoEntity.getCategoriaProduto();
-        this.imagem = itemPedidoEntity.getImagem();
-        this.tempoPreparoMin = itemPedidoEntity.getTempoPreparoMin();
-    }
-    public void atualizar(ItemPedidoEntity itemPedidoEntity) {
-        this.codigo = itemPedidoEntity.getCodigo();
-        this.pedido = new PedidoEntity(itemPedidoEntity.getPedido());
-        this.quantidade = itemPedidoEntity.getQuantidade();
-        this.produtoNome = itemPedidoEntity.getProdutoNome();
-        this.produtoDescricao = itemPedidoEntity.getProdutoDescricao();
-        this.valorUnitario = itemPedidoEntity.getValorUnitario();
-        this.categoriaProduto = itemPedidoEntity.getCategoriaProduto();
-        this.imagem = itemPedidoEntity.getImagem();
-        this.tempoPreparoMin = itemPedidoEntity.getTempoPreparoMin();
-    }
 }
