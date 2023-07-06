@@ -9,7 +9,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Cliente {
     private String codigo;
-    private String nome;
-    private String cpf;
-    private String email;
 }

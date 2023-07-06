@@ -4,7 +4,8 @@ import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
 import br.fiap.projeto.contexto.pedido.application.rest.request.ProdutoPedidoDTO;
 import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
-import br.fiap.projeto.contexto.pedido.infrastructure.integration.ProdutoIntegration;
+import br.fiap.projeto.contexto.pedido.infrastructure.integration.PedidoClienteIntegration;
+import br.fiap.projeto.contexto.pedido.infrastructure.integration.PedidoProdutoIntegration;
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +18,26 @@ import java.util.UUID;
 @RequestMapping("/pedidos")
 public class PedidoController {
     private final PedidoService pedidoService;
-    private final ProdutoIntegration produtoIntegration;
+    private final PedidoProdutoIntegration pedidoProdutoIntegration;
+    private final PedidoClienteIntegration pedidoClienteIntegration;
     @Autowired
-    public PedidoController(PedidoService pedidoService, ProdutoIntegration produtoIntegration) {
+    public PedidoController(PedidoService pedidoService, PedidoProdutoIntegration pedidoProdutoIntegration, PedidoClienteIntegration pedidoClienteIntegration) {
         this.pedidoService = pedidoService;
-        this.produtoIntegration = produtoIntegration;
+        this.pedidoProdutoIntegration = pedidoProdutoIntegration;
+        this.pedidoClienteIntegration = pedidoClienteIntegration;
     }
     //-------------------------------------------------------------------------//
     //                         BASE CRUD
     //-------------------------------------------------------------------------//
-    @PostMapping
+
+    @PostMapping("/{codigo_cliente}")
     @ResponseBody
-    public PedidoDTO criaPedido(@RequestBody PedidoCriarDTO pedido) {
-        return this.pedidoService.criaPedido(pedido);
+    public PedidoDTO criaPedido(@PathVariable("codigo_cliente") String codigoCliente) {
+        PedidoCriarDTO pedidoCriarDTO = null;
+        if( !codigoCliente.equals(null) && !codigoCliente.isEmpty()) {
+            pedidoCriarDTO = new PedidoCriarDTO(pedidoClienteIntegration.busca(codigoCliente));
+        }
+        return this.pedidoService.criaPedido(pedidoCriarDTO);
     }
     //-------------------------------------------------------------------------//
     //                        BUSCA POR STATUS
@@ -89,7 +97,7 @@ public class PedidoController {
     public ResponseEntity<PedidoDTO> adicionarProduto(@PathVariable("codigo_pedido") UUID codigoPedido,
                                       @PathVariable("codigo_produto") UUID codigoProduto) throws Exception {
         // TODO - Implementar tratamentos de Erro
-        Produto produto = produtoIntegration.getProduto(codigoProduto);
+        Produto produto = pedidoProdutoIntegration.getProduto(codigoProduto);
         ProdutoPedidoDTO produtoPedidoDTO = new ProdutoPedidoDTO(produto);
         return ResponseEntity.ok().body(this.pedidoService.adicionarProduto(codigoPedido, produtoPedidoDTO));
     }

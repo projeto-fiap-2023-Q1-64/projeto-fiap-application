@@ -27,7 +27,9 @@ public class Pedido {
 		this.valorTotal = pedidoDTO.getValorTotal();
     }
 	public Pedido(PedidoCriarDTO pedidoCriarDTO){
-		this.cliente = pedidoCriarDTO.getCliente();
+		if(pedidoCriarDTO != null) {
+			this.cliente = pedidoCriarDTO.getCliente();
+		}
 		this.status = StatusPedido.INICIADO;
 		this.valorTotal = 0d;
 	}

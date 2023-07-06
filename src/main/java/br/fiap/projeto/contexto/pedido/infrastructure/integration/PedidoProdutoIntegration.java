@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.UUID;
 
-@FeignClient(value="produtoIntegration", url = "http://localhost:8080/")
-public interface ProdutoIntegration {
+@FeignClient(value="pedidoProdutoIntegration", url = "http://localhost:8080/")
+public interface PedidoProdutoIntegration {
     @RequestMapping(method = RequestMethod.GET, value = "produtos/{codigo}")
     public Produto getProduto(@PathVariable("codigo") UUID codigo);
 }
