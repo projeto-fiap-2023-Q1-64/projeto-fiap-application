@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -33,21 +32,15 @@ public class PostgresProdutoRepository implements ProdutoRepositoryPort {
     }
 
     @Override
-    public Produto buscaProduto(String codigo) {
+    public Optional<Produto> buscaProduto(String codigo) {
         Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
-        produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
-        return produtoEntity.get().toProduto();
+        return produtoEntity.map(ProdutoEntity::toProduto);
     }
 
     @Override
     public List<Produto> buscaProdutosPorCategoria(CategoriaProduto categoria) {
         List<ProdutoEntity> resultados = springProdutoRepository.findByCategoria(categoria);
         return resultados.stream().map(ProdutoEntity::toProduto).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<String> buscaCategoriasDeProdutos() {
-        return Arrays.stream(CategoriaProduto.values()).map(c -> c.name()).collect(Collectors.toList());
     }
 
     @Override
@@ -59,16 +52,11 @@ public class PostgresProdutoRepository implements ProdutoRepositoryPort {
     @Transactional
     @Override
     public void removeProduto(String codigo) {
-        Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
-        produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
         springProdutoRepository.deleteByCodigo(codigo);
     }
 
     @Override
-    public void atualizaProduto(String codigo, Produto produto) {
-        Optional<ProdutoEntity> produtoEntity = springProdutoRepository.findByCodigo(codigo);
-        produtoEntity.orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
-        produtoEntity.get().atualizar(produto);
-        springProdutoRepository.save(produtoEntity.get());
+    public void atualizaProduto(Produto produto) {
+        springProdutoRepository.save(new ProdutoEntity(produto));
     }
 }

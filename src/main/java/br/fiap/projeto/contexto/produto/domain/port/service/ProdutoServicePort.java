@@ -1,24 +1,26 @@
 package br.fiap.projeto.contexto.produto.domain.port.service;
 
-import br.fiap.projeto.contexto.produto.application.rest.dto.ProdutoDTO;
+import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
+import br.fiap.projeto.contexto.produto.domain.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.produto.domain.exception.ProdutoNaoEncontradoException;
 
 import java.util.List;
 
 public interface ProdutoServicePort {
 
-    List<ProdutoDTO> buscaTodos();
+    List<Produto> buscaTodos();
 
-    ProdutoDTO buscaProduto(String codigo);
+    Produto buscaProduto(String codigo) throws ProdutoNaoEncontradoException;
 
-    List<ProdutoDTO> buscaProdutosPorCategoria(CategoriaProduto categoria);
+    List<Produto> buscaProdutosPorCategoria(CategoriaProduto categoria);
 
     List<String> getCategoriasDeProdutos();
 
-    ProdutoDTO criaProduto(ProdutoDTO produtoDTO);
+    Produto criaProduto(Produto produto) throws EntradaInvalidaException;
 
-    void removeProduto(String codigo);
+    void removeProduto(String codigo) throws ProdutoNaoEncontradoException;
 
-    void atualizaProduto(String codigo, ProdutoDTO produto);
+    void atualizaProduto(String codigo, Produto produto) throws ProdutoNaoEncontradoException;
 
 }
