@@ -20,19 +20,19 @@ public class PostgresPagamentoDataLoader {
     @PostConstruct
     public void init(){
         List<Pagamento> pagamentoList = Arrays.asList(
-                new Pagamento(null, 1L, StatusPagamento.IN_PROCESS, new Date()),
-                new Pagamento(null, 2L, StatusPagamento.IN_PROCESS, new Date()),
-                new Pagamento(null, 3L, StatusPagamento.APPROVED, new Date()),
-                new Pagamento(null, 4L, StatusPagamento.APPROVED, new Date()),
-                new Pagamento(null, 5L, StatusPagamento.APPROVED, new Date()),
-                new Pagamento(null, 6L, StatusPagamento.APPROVED, new Date()),
-                new Pagamento(null, 7L, StatusPagamento.APPROVED, new Date()),
-                new Pagamento(null, 8L, StatusPagamento.APPROVED, new Date()),
-                new Pagamento(null, 9L, StatusPagamento.REJECTED, new Date()),
-                new Pagamento(null, 10L, StatusPagamento.CANCELLED, new Date()),
-                new Pagamento(null, 11L, StatusPagamento.PENDING, new Date()),
-                new Pagamento(null, 12L, StatusPagamento.PENDING, new Date()),
-                new Pagamento(null, 13L, StatusPagamento.PENDING, new Date())
+                new Pagamento(null, "1", StatusPagamento.IN_PROCESS, new Date()),
+                new Pagamento(null, "2", StatusPagamento.IN_PROCESS, new Date()),
+                new Pagamento(null, "3", StatusPagamento.APPROVED, new Date()),
+                new Pagamento(null, "4", StatusPagamento.APPROVED, new Date()),
+                new Pagamento(null, "5", StatusPagamento.APPROVED, new Date()),
+                new Pagamento(null, "6", StatusPagamento.APPROVED, new Date()),
+                new Pagamento(null, "7", StatusPagamento.APPROVED, new Date()),
+                new Pagamento(null, "8", StatusPagamento.APPROVED, new Date()),
+                new Pagamento(null, "9", StatusPagamento.REJECTED, new Date()),
+                new Pagamento(null, "10", StatusPagamento.CANCELLED, new Date()),
+                new Pagamento(null, "11", StatusPagamento.PENDING, new Date()),
+                new Pagamento(null, "12", StatusPagamento.PENDING, new Date()),
+                new Pagamento(null, "13", StatusPagamento.PENDING, new Date())
                 );
 
         pagamentoList.forEach(pagamento -> pagamentoRepository.salvaPagamento(pagamento));

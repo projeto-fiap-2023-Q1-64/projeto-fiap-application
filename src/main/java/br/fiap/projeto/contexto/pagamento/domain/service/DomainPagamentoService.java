@@ -1,8 +1,9 @@
 package br.fiap.projeto.contexto.pagamento.domain.service;
 
 
+import br.fiap.projeto.contexto.pagamento.application.rest.PedidosAPagarController;
 import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
-import br.fiap.projeto.contexto.pagamento.application.rest.response.CompraAPagarDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
@@ -10,17 +11,19 @@ import br.fiap.projeto.contexto.pagamento.domain.port.repository.PagamentoReposi
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.UnprocessablePaymentException;
+import br.fiap.projeto.contexto.pedido.domain.Pedido;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-
-
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class DomainPagamentoService implements PagamentoServicePort {
 
     private final PagamentoRepositoryPort pagamentoRepositoryPort;
+
 
     public DomainPagamentoService(PagamentoRepositoryPort pagamentoRepositoryPort) {
         this.pagamentoRepositoryPort = pagamentoRepositoryPort;
@@ -40,8 +43,8 @@ public class DomainPagamentoService implements PagamentoServicePort {
     }
 
     @Override
-    public PagamentoDTO findByCodigoPedido(Long codigoPedido) {
-        Optional<Pagamento> possivelPagamento = pagamentoRepositoryPort.findByCodigoPedido(codigoPedido);
+    public PagamentoDTO findByCodigoPedido(String codigoPedido) {
+        Optional<Pagamento> possivelPagamento = Optional.ofNullable(pagamentoRepositoryPort.findByCodigoPedido(codigoPedido));
         Pagamento pagamento = possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Pedido com ID " + codigoPedido + " não foi encontrado."));
         return new PagamentoDTO(pagamento);
     }
@@ -56,6 +59,24 @@ public class DomainPagamentoService implements PagamentoServicePort {
     public Page<PagamentoAprovadoDTO> findByStatusAprovado(Pageable pageable) {
         Page<Pagamento> listaDePagamentos = pagamentoRepositoryPort.findByStatusPagamento(StatusPagamento.APPROVED, pageable);
         return listaDePagamentos.map(PagamentoAprovadoDTO::new);
+    }
+
+    /**
+     * Recebe os pedidos da API de pedidos recebidos e que vão para o gateway de pagamento
+     * @param pedidosAPagarDTO
+     */
+    @Override
+    public void recebePedidosAPagar(PedidoAPagarDTO pedidosAPagarDTO) {
+        Pagamento novoPagamento = new Pagamento(pedidosAPagarDTO);
+        pagamentoRepositoryPort.salvaPedidosAPagar(novoPagamento);
+        System.out.println("Código de pagamento: " + novoPagamento.getCodigo());
+        System.out.println("Novo pagamento criado para o pedido: " + novoPagamento.getCodigoPedido());
+    }
+
+    @Override
+    public List<PedidoAPagarDTO> buscaPedidosAPagar() {
+       List<Pagamento> listaPedidosAPagar = pagamentoRepositoryPort.findByStatusPagamento(StatusPagamento.PENDING);
+       return listaPedidosAPagar.stream().map(PedidoAPagarDTO::new).collect(Collectors.toList());
     }
 
     /**
@@ -136,20 +157,21 @@ public class DomainPagamentoService implements PagamentoServicePort {
      * o payload é definido de forma específica para o Gateway
      */
     @Override
-    public void enviaGatewayDePagamento(CompraAPagarDTO compraAPagarDTO) {
+    public void enviaGatewayDePagamento(PedidoAPagarDTO pedidoAPagarDTO) {
         System.out.println("verficando qual Gateway será usado...");
         System.out.println("Criando payload de acordo com o Gateway do Mercado Pago");
         System.out.println("Enviando ao Mercado Pago a request de pagamento...");
-        System.out.println("Criando código para Pagamento do pedido: " + compraAPagarDTO.getCodigoPedido());
+        System.out.println("Criando código para Pagamento do pedido: " + pedidoAPagarDTO.getCodigoPedido());
         //só vai funcionar quando a integração estiver ok, os pedidos precisam ser recuperados do domínio de Pedidos
-        geraPagamentoDoPedido(compraAPagarDTO);
+        geraPagamentoDoPedido(pedidoAPagarDTO);
         System.out.println("Aguardando retorno com o status do pagamento");
     }
 
-    private void geraPagamentoDoPedido(CompraAPagarDTO compraAPagarDTO) {
-        Pagamento novoPagamento = new Pagamento((criaPagamento(findByCodigoPedido(compraAPagarDTO.getCodigoPedido()))));
+
+    private void geraPagamentoDoPedido(PedidoAPagarDTO pedidoAPagarDTO) {
+      //  Pagamento novoPagamento = new Pagamento((criaPagamento(findByCodigoPedido(pedidoAPagarDTO.getCodigoPedido()))));
+        Pagamento novoPagamento = new Pagamento(pedidoAPagarDTO);
         pagamentoRepositoryPort.salvaPagamento(novoPagamento);
-        new PagamentoDTO(novoPagamento);
     }
 
     /**
@@ -176,14 +198,17 @@ public class DomainPagamentoService implements PagamentoServicePort {
         }
     }
 
+    //TODO enviar verificação para classe PagamentoDTO
     private boolean verificaTransacaoPagamentoEmAndamento(PagamentoDTO pagamentoDTO) {
         return (findByCodigoPedido(pagamentoDTO.getCodigoPedido()) != null && pagamentoDTO.getStatus().equals(StatusPagamento.PENDING));
     }
 
+    //TODO enviar verificação para classe PagamentoDTO
     private boolean podeIniciarPagamento(PagamentoDTO pagamentoDTO) {
        return pagamentoDTO.getStatus().equals(StatusPagamento.PENDING);
     }
 
+    //TODO enviar verificação para classe PagamentoDTO
     private void iniciaStatusPagamento(PagamentoDTO pagamentoDTO){
         pagamentoDTO.setStatus(StatusPagamento.PENDING);
     }

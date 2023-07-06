@@ -8,11 +8,11 @@ import java.util.Objects;
 
 public class PagamentoAprovadoDTO {
 
-    private Long codigoPedido;
+    private String codigoPedido;
     private Date dataPagamento;
 
 
-    public PagamentoAprovadoDTO(Long codigoPedido, Date dataPagamento) {
+    public PagamentoAprovadoDTO(String codigoPedido, Date dataPagamento) {
         this.codigoPedido = codigoPedido;
         this.dataPagamento = dataPagamento;
     }
@@ -22,11 +22,11 @@ public class PagamentoAprovadoDTO {
         setDataPagamento(pagamento.getDataPagamento());
     }
 
-    public Long getCodigoPedido() {
+    public String getCodigoPedido() {
         return codigoPedido;
     }
 
-    public void setCodigoPedido(Long codigoPedido) {
+    public void setCodigoPedido(String codigoPedido) {
         this.codigoPedido = codigoPedido;
     }
 

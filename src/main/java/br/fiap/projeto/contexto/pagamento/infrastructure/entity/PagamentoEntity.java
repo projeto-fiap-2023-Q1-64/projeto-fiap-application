@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.infrastructure.entity;
 
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 
@@ -15,14 +16,13 @@ public class PagamentoEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID codigo;
 
-    //TODO relacionamento OneToOne
-    private Long codigoPedido;
+    private String codigoPedido;
 
     @Enumerated(EnumType.STRING)
     private StatusPagamento statusPagamento;
     private Date dataPagamento;
 
-    public PagamentoEntity(UUID codigo, Long codigoPedido, StatusPagamento statusPagamento, Date dataPagamento) {
+    public PagamentoEntity(UUID codigo, String codigoPedido, StatusPagamento statusPagamento, Date dataPagamento) {
         this.codigo = codigo;
         this.codigoPedido = codigoPedido;
         this.statusPagamento = statusPagamento;
@@ -39,6 +39,15 @@ public class PagamentoEntity {
 
     }
 
+    /**
+     * Teste de criação de pagamentos consumindo os pedidos que chegam da API
+     * @param pedidosAPagarDTO
+     */
+    public PagamentoEntity(PedidoAPagarDTO pedidosAPagarDTO) {
+        this.codigoPedido = pedidosAPagarDTO.getCodigoPedido();
+        this.statusPagamento = StatusPagamento.PENDING;
+    }
+
     public UUID getCodigo() {
         return codigo;
     }
@@ -47,11 +56,11 @@ public class PagamentoEntity {
         this.codigo = codigo;
     }
 
-    public Long getCodigoPedido() {
+    public String getCodigoPedido() {
         return codigoPedido;
     }
 
-    public void setCodigoPedido(Long codigoPedido) {
+    public void setCodigoPedido(String codigoPedido) {
         this.codigoPedido = codigoPedido;
     }
 

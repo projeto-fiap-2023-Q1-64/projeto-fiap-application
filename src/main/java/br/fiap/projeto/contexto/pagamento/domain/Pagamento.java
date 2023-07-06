@@ -2,22 +2,24 @@ package br.fiap.projeto.contexto.pagamento.domain;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.infrastructure.entity.PagamentoEntity;
 
 public class Pagamento {
 
 	private UUID codigo;
-	private Long codigoPedido;
+	private String codigoPedido;
 	 
 	private StatusPagamento status;
 	 
 	private Date dataPagamento;
 
-	public Pagamento(UUID codigo, Long codigoPedido, StatusPagamento status, Date dataPagamento) {
+	public Pagamento(UUID codigo, String codigoPedido, StatusPagamento status, Date dataPagamento) {
 		this.codigo = codigo;
 		this.codigoPedido = codigoPedido;
 		this.status = status;
@@ -39,6 +41,11 @@ public class Pagamento {
 		this.setStatus(pagamentoEntity.getStatusPagamento());
 	}
 
+	public Pagamento(PedidoAPagarDTO pedidosAPagarDTO) {
+		this.setCodigoPedido(pedidosAPagarDTO.getCodigoPedido());
+	}
+
+
 	public UUID getCodigo() {
 		return codigo;
 	}
@@ -47,11 +54,11 @@ public class Pagamento {
 		this.codigo = codigo;
 	}
 
-	public Long getCodigoPedido() {
+	public String getCodigoPedido() {
 		return codigoPedido;
 	}
 
-	public void setCodigoPedido(Long codigoPedido) {
+	public void setCodigoPedido(String codigoPedido) {
 		this.codigoPedido = codigoPedido;
 	}
 
