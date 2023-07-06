@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @Configuration
 public class PostgresProdutoDataLoader {

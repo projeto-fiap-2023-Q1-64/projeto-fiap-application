@@ -1,9 +1,6 @@
 package br.fiap.projeto.contexto.produto.domain;
 
-import br.fiap.projeto.contexto.produto.application.rest.dto.ProdutoDTO;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
-
-import java.util.UUID;
 
 public class Produto {
 
@@ -20,6 +17,15 @@ public class Produto {
     private String imagem;
 
     private Integer tempoPreparoMin;
+
+    public Produto(String nome, String descricao, Double preco, CategoriaProduto categoria, String imagem, Integer tempoPreparoMin) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.categoria = categoria;
+        this.imagem = imagem;
+        this.tempoPreparoMin = tempoPreparoMin;
+    }
 
     public Produto(String codigo, String nome, String descricao, Double preco, CategoriaProduto categoria, String imagem, Integer tempoPreparoMin) {
         this.codigo = codigo;
@@ -59,8 +65,5 @@ public class Produto {
         return tempoPreparoMin;
     }
 
-    public ProdutoDTO toProdutoDTO() {
-        return new ProdutoDTO(codigo.toString(), nome, descricao, preco, categoria.name(), imagem, tempoPreparoMin);
-    }
 }
  
