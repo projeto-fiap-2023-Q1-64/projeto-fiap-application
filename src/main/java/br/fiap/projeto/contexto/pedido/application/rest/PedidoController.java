@@ -1,9 +1,11 @@
 package br.fiap.projeto.contexto.pedido.application.rest;
 
 import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.application.rest.request.ProdutoPedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
+import br.fiap.projeto.contexto.pedido.infrastructure.integration.ProdutoIntegration;
+import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,11 @@ import java.util.UUID;
 @RequestMapping("/pedidos")
 public class PedidoController {
     private final PedidoService pedidoService;
+    private final ProdutoIntegration produtoIntegration;
     @Autowired
-    public PedidoController(PedidoService pedidoService) {
+    public PedidoController(PedidoService pedidoService, ProdutoIntegration produtoIntegration) {
         this.pedidoService = pedidoService;
+        this.produtoIntegration = produtoIntegration;
     }
     //-------------------------------------------------------------------------//
     //                         BASE CRUD
@@ -80,10 +84,19 @@ public class PedidoController {
     //-------------------------------------------------------------------------//
     //                MÉTODOS DE MANUPULAÇÃO DE ITENS DO PEDIDO
     //-------------------------------------------------------------------------//
-    @PostMapping("/{codigo_pedido}/adicionar-produto")
+//    @PostMapping("/{codigo_pedido}/adicionar-produto")
+//    @ResponseBody
+//    public PedidoDTO adicionarProduto(@PathVariable("codigo_pedido") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
+//        return this.pedidoService.adicionarProduto(codigoPedido,produtoPedidoDTO);
+//    }
+    @PostMapping("/{codigo_pedido}/adicionar-produto/{codigo_produto}")
     @ResponseBody
-    public PedidoDTO adicionarProduto(@PathVariable("codigo_pedido") UUID codigoPedido, @RequestBody ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
-        return this.pedidoService.adicionarProduto(codigoPedido,produtoPedidoDTO);
+    public ResponseEntity<PedidoDTO> adicionarProduto(@PathVariable("codigo_pedido") UUID codigoPedido,
+                                      @PathVariable("codigo_produto") UUID codigoProduto) throws Exception {
+        // TODO - Implementar tratamentos de Erro
+        Produto produto = produtoIntegration.getProduto(codigoProduto);
+        ProdutoPedidoDTO produtoPedidoDTO = new ProdutoPedidoDTO(produto);
+        return ResponseEntity.ok().body(this.pedidoService.adicionarProduto(codigoPedido, produtoPedidoDTO));
     }
     @DeleteMapping("/{codigo_pedido}/remover-produto/{produto_codigo}")
     public void removerProduto(@PathVariable("codigo_pedido") UUID codigoPedido, @PathVariable("produto_codigo") UUID produtoCodigo) throws Exception {

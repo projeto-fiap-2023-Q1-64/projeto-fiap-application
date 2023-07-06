@@ -1,6 +1,7 @@
 package br.fiap.projeto.contexto.pedido.application.rest.request;
 
 import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
+import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.Produto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,4 +17,13 @@ public class ProdutoPedidoDTO {
     private CategoriaProduto categoria;
     private String imagem;
     private Integer tempoPreparoMin;
+    public ProdutoPedidoDTO(Produto produto){
+        this.codigo = UUID.fromString(produto.getCodigo());
+        this.nome = produto.getNome();
+        this.descricao = produto.getDescricao();
+        this.preco = produto.getPreco();
+        this.categoria = CategoriaProduto.valueOf(produto.getCategoria());
+        this.imagem = produto.getImagem();
+        this.tempoPreparoMin = produto.getTempoPreparoMin();
+    }
 }
