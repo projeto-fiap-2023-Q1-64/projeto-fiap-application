@@ -1,13 +1,12 @@
 package br.fiap.projeto.contexto.identificacao.domain.service;
 
 import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
-import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.identificacao.domain.port.repository.ClienteRepository;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntidadeNaoEncontradaException;
-import br.fiap.projeto.contexto.identificacao.infrastructure.exception.EntradaInvalidaException;
-import lombok.SneakyThrows;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,8 +23,8 @@ public class ClienteServiceImpl implements ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    @Override @SneakyThrows
-    public Cliente busca(String codigo) {
+    @Override
+    public Cliente busca(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
 
         if (codigo == null) {
             throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
@@ -44,8 +43,8 @@ public class ClienteServiceImpl implements ClienteService {
         return clienteRepository.buscaTodos();
     }
 
-    @Override @SneakyThrows
-    public Cliente insere(ClienteRequestDTO ref) {
+    @Override
+    public Cliente insere(ClienteRequestDTO ref) throws EntradaInvalidaException {
 
         Cliente cliente;
         ClienteDTO clienteDTO;
@@ -64,8 +63,8 @@ public class ClienteServiceImpl implements ClienteService {
         return clienteRepository.insere(cliente);
     }
 
-    @Override @SneakyThrows
-    public Cliente edita(Cliente clienteDTO) {
+    @Override
+    public Cliente edita(Cliente clienteDTO) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
 
         ClienteDTO existente;
         Cliente cliente;
@@ -81,14 +80,14 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void remove(String codigo) {
+    public void remove(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
 
         ClienteDTO clienteDTO = ClienteDTO.fromCliente(busca(codigo));
         clienteRepository.remove(clienteDTO.getCodigo());
     }
 
-    @Override @SneakyThrows
-    public Cliente buscaPorCpf(String cpf) {
+    @Override
+    public Cliente buscaPorCpf(String cpf) throws EntidadeNaoEncontradaException {
 
         ClienteDTO ret = clienteRepository.buscaPorCpf(cpf);
         if (ret == null) {

@@ -3,6 +3,7 @@ package br.fiap.projeto.contexto.identificacao.application.rest;
 import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
 import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
 import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,13 +21,13 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping
+    @GetMapping @SneakyThrows
     public ClienteDTO busca(String codigo) {
 
         return ClienteDTO.fromCliente(clienteService.busca(codigo));
     }
 
-    @GetMapping("/cpf")
+    @GetMapping("/cpf") @SneakyThrows
     public ClienteDTO buscaPorCpf(@RequestParam String cpf) {
 
         return ClienteDTO.fromCliente(clienteService.buscaPorCpf(cpf));
@@ -40,19 +41,19 @@ public class ClienteController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping @SneakyThrows
     public ResponseEntity<ClienteDTO> insere(@RequestBody ClienteRequestDTO cliente) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ClienteDTO.fromCliente(clienteService.insere(cliente)));
     }
 
-    @PutMapping
+    @PutMapping @SneakyThrows
     public ClienteDTO edita(@RequestBody ClienteDTO cliente) {
 
         return ClienteDTO.fromCliente(clienteService.edita(cliente.toCliente()));
     }
 
-    @DeleteMapping
+    @DeleteMapping @SneakyThrows
     public void remove(@RequestParam String codigo) {
 
         clienteService.remove(codigo);
