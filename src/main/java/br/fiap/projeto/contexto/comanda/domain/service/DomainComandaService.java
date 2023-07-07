@@ -14,7 +14,7 @@ import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.domain.port.repository.ComandaRepositoryPort;
 import br.fiap.projeto.contexto.comanda.domain.port.service.ComandaServicePort;
 import br.fiap.projeto.contexto.comanda.infrastructure.exception.InvalidStatusException;
-import br.fiap.projeto.contexto.pedido.domain.service.DomainPedidoService;
+import br.fiap.projeto.contexto.comanda.infrastructure.integration.ComandaPedidoIntegration;
 
 public class DomainComandaService implements ComandaServicePort {
 
@@ -75,7 +75,7 @@ public class DomainComandaService implements ComandaServicePort {
 
     @Override
     public ComandaDTO finalizar(UUID codigoPedido) throws InvalidStatusException {
-        DomainPedidoService pedido;
+        final ComandaPedidoIntegration comandaPedidoIntegration;
         Comanda comanda = this.buscar(codigoPedido);
         if (comanda.getStatus().equals(StatusComanda.EM_PREPARACAO)) {
             comanda.atualizaStatus(StatusComanda.FINALIZADO);
@@ -93,5 +93,11 @@ public class DomainComandaService implements ComandaServicePort {
         optionalComanda.orElseThrow(() -> new EntityNotFoundException("Comanda não encontrada!"));
         return optionalComanda.get();
     }
+
+    private void enviarStatusPedido(UUID codigoPedido) {
+
+    }
+
+    // comandaPedidoIntegration.prontificar(codigoPedido);
 
 }

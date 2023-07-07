@@ -50,6 +50,7 @@ public class Comanda {
 
 	public void atualizaStatus(StatusComanda statusComanda) {
 		this.status = statusComanda;
+
 	}
 
 }
