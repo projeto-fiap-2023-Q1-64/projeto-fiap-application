@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.pedido.domain;
 
-import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.ItemPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,17 +17,7 @@ public class ItemPedido {
 	private CategoriaProduto categoriaProduto;
 	private String imagem;
 	private Integer tempoPreparoMin;
-	public ItemPedido ( ItemPedidoDTO itemPedidoDTO ){
-		this.pedido = itemPedidoDTO.getPedido();
-		this.quantidade = itemPedidoDTO.getQuantidade();
-		this.valorUnitario = itemPedidoDTO.getValorUnitario();
-	}
-	public Double calcularValorTotal() {
-		return null;
-	}
-	public Integer calcularTempoTotalPreparo() {
-		return null;
-	}
+
 	public void adicionarQuantidade() {
 		this.quantidade++;
 	}
