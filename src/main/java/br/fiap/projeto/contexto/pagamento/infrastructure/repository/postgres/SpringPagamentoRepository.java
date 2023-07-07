@@ -8,17 +8,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface SpringPagamentoRepository extends JpaRepository<PagamentoEntity, UUID> {
-    Optional<Pagamento> findByCodigoPedido(Long codigoPedido);
+    PagamentoEntity findByCodigoPedido(String codigoPedido);
 
-    Pagamento findByCodigo(UUID codigo);
+    PagamentoEntity findByCodigo(UUID codigo);
 
     Page<PagamentoEntity> findByStatusPagamento(StatusPagamento status, Pageable pageable);
 
-    // Pagamento save(Pagamento novoPagamento); tá na jpa
+    List<PagamentoEntity> findByStatusPagamento(StatusPagamento status);
+    /**
+     * Teste para verificar consumo dos pedidos a pagar via API Pedidos
+     *
+     * @return
+     */
+    List<PagamentoEntity> findAll();
+
 
 }
