@@ -69,7 +69,6 @@ public class DomainPagamentoService implements PagamentoServicePort {
     public void recebePedidosAPagar(PedidoAPagarDTO pedidosAPagarDTO) {
         Pagamento novoPagamento = new Pagamento(pedidosAPagarDTO);
         pagamentoRepositoryPort.salvaPedidosAPagar(novoPagamento);
-        System.out.println("Código de pagamento: " + novoPagamento.getCodigo());
         System.out.println("Novo pagamento criado para o pedido: " + novoPagamento.getCodigoPedido());
     }
 
@@ -101,6 +100,19 @@ public class DomainPagamentoService implements PagamentoServicePort {
             return new PagamentoDTO(novoPagamento);
 
     }
+
+    /**
+     * Persiste o código do Pedido recebido e ao persistir o pagamento é criado para aquele pedido
+     * TODO elaborar fluxo de exeções que não estão sendo tratadas
+     * @param pedidoAPagarDTO
+     * @return
+     */
+    @Override
+    public PedidoAPagarDTO criaPagamentoViaGateway(PedidoAPagarDTO pedidoAPagarDTO)  {
+        pagamentoRepositoryPort.salvaPagamento(new Pagamento(pedidoAPagarDTO));
+        return new PedidoAPagarDTO(new PagamentoDTO(pedidoAPagarDTO));
+    }
+
 
     /**
      * Verifica o status atual do Pagamento e atualiza conforme a requisição recebida<br/>
@@ -163,13 +175,21 @@ public class DomainPagamentoService implements PagamentoServicePort {
         System.out.println("Enviando ao Mercado Pago a request de pagamento...");
         System.out.println("Criando código para Pagamento do pedido: " + pedidoAPagarDTO.getCodigoPedido());
         //só vai funcionar quando a integração estiver ok, os pedidos precisam ser recuperados do domínio de Pedidos
-        geraPagamentoDoPedido(pedidoAPagarDTO);
+
+        verificaPedidoAPagarParaCriarPagamento(pedidoAPagarDTO);
+
         System.out.println("Aguardando retorno com o status do pagamento");
+    }
+
+    private void verificaPedidoAPagarParaCriarPagamento(PedidoAPagarDTO pedidoAPagarDTO) {
+        Optional<PedidoAPagarDTO> possivelPagamentoParaEstePedido = pagamentoRepositoryPort.findByCodigoPedidoAPagar(pedidoAPagarDTO.getCodigoPedido());
+        if(possivelPagamentoParaEstePedido.isPresent()) {
+            geraPagamentoDoPedido(pedidoAPagarDTO);
+        }else throw new UnprocessablePaymentException("Pagamento para o pedido " + pedidoAPagarDTO.getCodigoPedido() + "não pode ser processado.");
     }
 
 
     private void geraPagamentoDoPedido(PedidoAPagarDTO pedidoAPagarDTO) {
-      //  Pagamento novoPagamento = new Pagamento((criaPagamento(findByCodigoPedido(pedidoAPagarDTO.getCodigoPedido()))));
         Pagamento novoPagamento = new Pagamento(pedidoAPagarDTO);
         pagamentoRepositoryPort.salvaPagamento(novoPagamento);
     }

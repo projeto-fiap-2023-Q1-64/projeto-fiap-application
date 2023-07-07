@@ -14,6 +14,8 @@ import java.util.UUID;
 public interface PagamentoRepositoryPort {
 
     Pagamento findByCodigoPedido(String codigoPedido);
+
+    Optional<PedidoAPagarDTO> findByCodigoPedidoAPagar(String codigoPedido);
     
     void salvaPagamento(Pagamento pagamento);
 
@@ -26,7 +28,10 @@ public interface PagamentoRepositoryPort {
     Page<Pagamento> findByStatusPagamento(StatusPagamento status, Pageable pageable);
 
     List<Pagamento> findByStatusPagamento(StatusPagamento status);
+
     void salvaPedidosAPagar(Pagamento pedidosAPagar);
 
     List<Pagamento> findAllByCodigoPedido();
+
+
 }

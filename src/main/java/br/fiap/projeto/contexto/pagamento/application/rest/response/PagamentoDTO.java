@@ -33,8 +33,14 @@ public class PagamentoDTO {
         this.dataPagamento = pagamento.getDataPagamento();
     }
 
+//    public PagamentoDTO(PedidoAPagarDTO pedidoAPagarDTO){
+//        this.codigoPedido = pedidoAPagarDTO.getCodigoPedido();
+//    }
+
     public PagamentoDTO(PedidoAPagarDTO pedidoAPagarDTO){
-        this.codigoPedido = pedidoAPagarDTO.getCodigoPedido();
+        this.setCodigoPedido(pedidoAPagarDTO.getCodigoPedido());
+        this.setStatus(pedidoAPagarDTO.getStatusPagamento());
+        this.setDataPagamento(pedidoAPagarDTO.getDataPagamento());
     }
 
     public UUID getCodigo() {

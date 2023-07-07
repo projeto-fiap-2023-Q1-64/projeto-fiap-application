@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.pagamento.application.rest.response;
 
 
 import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
+import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 
 import java.util.Date;
 import java.util.Objects;
@@ -10,16 +11,24 @@ public class PagamentoAprovadoDTO {
 
     private String codigoPedido;
     private Date dataPagamento;
+    private StatusPagamento statusPagamento;
 
-
-    public PagamentoAprovadoDTO(String codigoPedido, Date dataPagamento) {
+    public PagamentoAprovadoDTO(String codigoPedido, Date dataPagamento, StatusPagamento statusPagamento) {
         this.codigoPedido = codigoPedido;
         this.dataPagamento = dataPagamento;
+        this.statusPagamento = statusPagamento;
     }
 
     public PagamentoAprovadoDTO(Pagamento pagamento){
-        setCodigoPedido(pagamento.getCodigoPedido());
-        setDataPagamento(pagamento.getDataPagamento());
+        this.setCodigoPedido(pagamento.getCodigoPedido());
+        this.setDataPagamento(pagamento.getDataPagamento());
+        this.setStatusPagamento(pagamento.getStatus());
+    }
+
+    public PagamentoAprovadoDTO(PagamentoDTO pagamentoDTO) {
+        this.setCodigoPedido(pagamentoDTO.getCodigoPedido());
+        this.setDataPagamento(pagamentoDTO.getDataPagamento());
+        this.setStatusPagamento(pagamentoDTO.getStatus());
     }
 
     public String getCodigoPedido() {
@@ -30,13 +39,20 @@ public class PagamentoAprovadoDTO {
         this.codigoPedido = codigoPedido;
     }
 
+    public void setDataPagamento(Date dataPagamento) {
+        this.dataPagamento = dataPagamento;
+    }
+
+    public void setStatusPagamento(StatusPagamento statusPagamento) {
+        this.statusPagamento = statusPagamento;
+    }
 
     public Date getDataPagamento() {
         return dataPagamento;
     }
 
-    public void setDataPagamento(Date dataPagamento) {
-        this.dataPagamento = dataPagamento;
+    public StatusPagamento getStatusPagamento() {
+        return statusPagamento;
     }
 
     @Override

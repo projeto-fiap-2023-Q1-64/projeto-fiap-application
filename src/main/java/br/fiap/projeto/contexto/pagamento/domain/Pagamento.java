@@ -43,6 +43,8 @@ public class Pagamento {
 
 	public Pagamento(PedidoAPagarDTO pedidosAPagarDTO) {
 		this.setCodigoPedido(pedidosAPagarDTO.getCodigoPedido());
+		this.setStatus(StatusPagamento.PENDING);
+		this.setDataPagamento(new Date());
 	}
 
 

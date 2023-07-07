@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.infrastructure.repository.postgres;
 
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.domain.port.repository.PagamentoRepositoryPort;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,13 @@ public class PostgresPagamentoRepository implements PagamentoRepositoryPort {
         PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigoPedido(codigoPedido);
         return new Pagamento(pagamentoEntity);
     }
+
+    @Override
+    public Optional<PedidoAPagarDTO> findByCodigoPedidoAPagar(String codigoPedido) {
+        PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigoPedido(codigoPedido);
+        return Optional.of(new PedidoAPagarDTO(new Pagamento(pagamentoEntity)));
+    }
+
     @Override
     public void salvaPagamento(Pagamento pagamento) {
         springPagamentoRepository.save(new PagamentoEntity(pagamento));

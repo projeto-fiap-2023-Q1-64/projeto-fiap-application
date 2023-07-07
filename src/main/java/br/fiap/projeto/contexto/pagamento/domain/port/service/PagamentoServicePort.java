@@ -16,6 +16,8 @@ public interface PagamentoServicePort {
 
     PagamentoDTO criaPagamento(PagamentoDTO pagamentoDTO) throws Exception;
 
+    PedidoAPagarDTO criaPagamentoViaGateway(PedidoAPagarDTO pedidoAPagarDTO);
+
     void lidaStatusPagamento(StatusPagamento statusAtual, PagamentoDTO pagamentoDTO, StatusPagamento statusRequest);
 
     void processaPagamento(UUID codigo, StatusPagamento status);
@@ -32,7 +34,7 @@ public interface PagamentoServicePort {
 
     Page<PagamentoAprovadoDTO> findByStatusAprovado(Pageable pageable);
 
-    void enviaGatewayDePagamento(PedidoAPagarDTO compraApagar);
+    void enviaGatewayDePagamento(PedidoAPagarDTO pedidoAPagarDTOApagar);
 
     void recebePedidosAPagar(PedidoAPagarDTO paginaDePedidosAPagar);
 

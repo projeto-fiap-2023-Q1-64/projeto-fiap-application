@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.application.rest;
 
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
 import br.fiap.projeto.contexto.pagamento.infrastructure.integration.PedidoIntegration;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,12 +28,31 @@ public class PedidosAPagarController {
     }
 
     /**
+     * Gera um pagamento para um pedido que é passado no corpo da requisição
+     * TODO verificar o fluxo de exceção
+     * @param pedidoAPagarDTO
+     * @return
+     */
+    @PostMapping(value="/inicia-pagamento")
+    @Transactional
+    public ResponseEntity<PedidoAPagarDTO> iniciaPagamento(@RequestBody PedidoAPagarDTO pedidoAPagarDTO)  {
+        pagamentoServicePort.criaPagamentoViaGateway(pedidoAPagarDTO);
+        URI novoRecursoDePagamentoCriadoUri = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(pedidoAPagarDTO.getCodigoPedido()).toUri();
+        return ResponseEntity.created(novoRecursoDePagamentoCriadoUri).body(pedidoAPagarDTO);
+    }
+
+
+
+    /**
      * Recupera os pedidos que foram iniciados e podem ser pagos
+     *
+     * TODO verificar o fluxo ao receber os pedidos do endpoint
+     * externalizado pelo domínio de pedido
      *
      * @return
      */
     @GetMapping(value="/todos-a-pagar")
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<List<Pedido>> listaPedidosAPagar(){
         List<Pedido> listaDePedidosAPagar = pedidoIntegration.buscaPedidosAPagar();
         pagamentoServicePort.recebePedidosAPagar(new PedidoAPagarDTO(listaDePedidosAPagar));
@@ -49,10 +71,17 @@ public class PedidosAPagarController {
         pagamentoServicePort.enviaGatewayDePagamento(pedidoAPagarDTO);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * Retorna uma lista de Pagamentos que estão no status PENDING,
+     * simulando que foram enviados oa Gateway de Pagamento
+     * @return
+     */
     @GetMapping(value="/todos-enviados-gateway")
     public ResponseEntity<List<PedidoAPagarDTO>> listaPedidos(){
         List<PedidoAPagarDTO> pedidosAPagar = pagamentoServicePort.buscaPedidosAPagar();
         return ResponseEntity.ok().body(pedidosAPagar);
     }
+
 
 }
