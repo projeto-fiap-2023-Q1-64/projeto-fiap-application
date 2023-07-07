@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.comanda.domain.exception;
+package br.fiap.projeto.contexto.comanda.infrastructure.exception;
 
 public class InvalidStatusException extends Exception {
 

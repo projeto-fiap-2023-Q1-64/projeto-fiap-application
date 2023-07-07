@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.fiap.projeto.contexto.comanda.domain.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.domain.dto.CriarComandaDTO;
-import br.fiap.projeto.contexto.comanda.domain.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.comanda.domain.port.service.ComandaServicePort;
+import br.fiap.projeto.contexto.comanda.infrastructure.exception.InvalidStatusException;
 
 @RestController
 @RequestMapping("/comandas")
