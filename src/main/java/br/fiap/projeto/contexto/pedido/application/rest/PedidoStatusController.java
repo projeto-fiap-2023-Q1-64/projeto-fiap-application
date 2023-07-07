@@ -39,9 +39,9 @@ public class PedidoStatusController {
         List<PedidoDTO> lista = this.pedidoService.buscarTodosPronto();
         return ResponseEntity.ok().body(lista);
     }
-    @GetMapping("busca-finalizados")
+    @GetMapping("busca-entregues")
     @ResponseBody
-    public ResponseEntity<List<PedidoDTO>> getProdutosFinalizados() {
+    public ResponseEntity<List<PedidoDTO>> getProdutosEntregues() {
         List<PedidoDTO> lista = this.pedidoService.buscarTodosFinalizado();
         return ResponseEntity.ok().body(lista);
     }
