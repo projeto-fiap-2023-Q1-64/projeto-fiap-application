@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.identificacao.infrastructure.exception;
+package br.fiap.projeto.contexto.identificacao.domain.exception;
 
 public class EntidadeNaoEncontradaException extends BaseException {
 

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,16 +27,15 @@ public class Pedido {
 		this.valorTotal = pedidoDTO.getValorTotal();
     }
 	public Pedido(PedidoCriarDTO pedidoCriarDTO){
-		this.cliente = pedidoCriarDTO.getCliente();
+		if(pedidoCriarDTO != null) {
+			this.cliente = pedidoCriarDTO.getCliente();
+		}
 		this.status = StatusPedido.INICIADO;
 		this.valorTotal = 0d;
 	}
 	public void atualizarValorTotal(Double novoValor){
 		this.valorTotal = novoValor;
 	}
-	public void aumentarQuantidade(UUID produto) {}
-	public void reduzirQuantidade(UUID produto) {}
-	public Integer calcularTempoTotalPreparo() {return null;}
 	public void adicionarItem(ItemPedido itemPedido) {
 		this.itens.add(itemPedido);
 	}

@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pedido.domain.dto;
+package br.fiap.projeto.contexto.pedido.application.rest.response;
 
 import br.fiap.projeto.contexto.pedido.domain.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;

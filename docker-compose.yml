@@ -8,7 +8,7 @@ services:
       - "5432:5432"
     restart: always
   projeto-fiap:
-    image: projeto-fiap:latest
+    image: rm350010/projeto-fiap-1:latest
     environment:
       - "SPRING_CONFIG_ADDITIONAL_LOCATION=classpath:application-docker.properties"
     build:

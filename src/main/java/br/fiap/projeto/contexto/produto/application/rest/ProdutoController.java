@@ -1,18 +1,20 @@
 package br.fiap.projeto.contexto.produto.application.rest;
 
-import br.fiap.projeto.contexto.produto.application.rest.dto.ProdutoDTO;
+import br.fiap.projeto.contexto.produto.application.rest.request.ProdutoDTORequest;
+import br.fiap.projeto.contexto.produto.application.rest.response.ProdutoDTOResponse;
+import br.fiap.projeto.contexto.produto.domain.Produto;
 import br.fiap.projeto.contexto.produto.domain.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.domain.port.service.ProdutoServicePort;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.websocket.server.PathParam;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/produtos")
@@ -27,23 +29,26 @@ public class ProdutoController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<ProdutoDTO>> getProdutos() {
-        List<ProdutoDTO> lista = this.produtoServicePort.buscaTodos();
-        return ResponseEntity.ok().body(lista);
+    public ResponseEntity<List<ProdutoDTOResponse>> getProdutos() {
+        List<Produto> lista = this.produtoServicePort.buscaTodos();
+        List<ProdutoDTOResponse> listaDTO = lista.stream().map(ProdutoDTOResponse::newInstanseByProduto).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listaDTO);
     }
 
+    @SneakyThrows
     @GetMapping("/{codigo}")
     @ResponseBody
-    public ResponseEntity<ProdutoDTO> getProduto(@PathVariable("codigo") String codigo) {
-        ProdutoDTO produtoDTO = this.produtoServicePort.buscaProduto(codigo);
-        return ResponseEntity.status(HttpStatus.OK).body(produtoDTO);
+    public ResponseEntity<ProdutoDTOResponse> getProduto(@PathVariable("codigo") String codigo) {
+        Produto produto = this.produtoServicePort.buscaProduto(codigo);
+        return ResponseEntity.status(HttpStatus.OK).body(ProdutoDTOResponse.newInstanseByProduto(produto));
     }
 
     @GetMapping("/por-categoria")
     @ResponseBody
-    public ResponseEntity<List<ProdutoDTO>> getProdutosPorCategoria(@PathParam("categoria") CategoriaProduto categoria) {
-        List<ProdutoDTO> lista = this.produtoServicePort.buscaProdutosPorCategoria(categoria);
-        return ResponseEntity.ok(lista);
+    public ResponseEntity<List<ProdutoDTOResponse>> getProdutosPorCategoria(@PathParam("categoria") CategoriaProduto categoria) {
+        List<Produto> lista = this.produtoServicePort.buscaProdutosPorCategoria(categoria);
+        List<ProdutoDTOResponse> listaDTO = lista.stream().map(ProdutoDTOResponse::newInstanseByProduto).collect(Collectors.toList());
+        return ResponseEntity.ok(listaDTO);
     }
 
     @GetMapping("/categorias")
@@ -53,12 +58,14 @@ public class ProdutoController {
         return ResponseEntity.ok(lista);
     }
 
+    @SneakyThrows
     @PostMapping
-    public ResponseEntity<ProdutoDTO> criaProduto(@RequestBody ProdutoDTO produtoDTO) {
-        ProdutoDTO produtoCriado = this.produtoServicePort.criaProduto(produtoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(produtoCriado);
+    public ResponseEntity<ProdutoDTOResponse> criaProduto(@RequestBody ProdutoDTORequest produtoDTORequest) {
+        Produto produtoCriado = this.produtoServicePort.criaProduto(produtoDTORequest.toProduto());
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProdutoDTOResponse.newInstanseByProduto(produtoCriado));
     }
 
+    @SneakyThrows
     @Transactional
     @DeleteMapping("/{codigo}")
     public ResponseEntity<Void> removeProduto(@PathVariable("codigo") String codigo) {
@@ -66,9 +73,10 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
+    @SneakyThrows
     @PutMapping("/{codigo}")
-    public ResponseEntity<Void> atualizaProduto(@PathVariable String codigo, @RequestBody ProdutoDTO produtoDTO) {
-        this.produtoServicePort.atualizaProduto(codigo, produtoDTO);
+    public ResponseEntity<Void> atualizaProduto(@PathVariable String codigo, @RequestBody ProdutoDTORequest produtoDTO) {
+        this.produtoServicePort.atualizaProduto(codigo, produtoDTO.toProduto());
         return ResponseEntity.ok().build();
     }
 }

@@ -1,9 +1,9 @@
 package br.fiap.projeto.contexto.pedido.domain.port.service;
 
-import br.fiap.projeto.contexto.pedido.domain.dto.ItemPedidoDTO;
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.domain.dto.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.domain.dto.ProdutoPedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.ItemPedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.request.ProdutoPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.domain.exception.ItemNotFoundException;
 

@@ -85,4 +85,14 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         }
         return null;
     }
+
+    @Override
+    public ClienteDTO buscaPorEmail(String email) {
+
+        ClienteEntity entity = repository.findByEmailAndDataExclusaoIsNull(email);
+        if (Objects.nonNull(entity)) {
+            return ClienteDTO.fromCliente(entity.toCliente());
+        }
+        return null;
+    }
 }

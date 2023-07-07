@@ -20,7 +20,6 @@ public class PedidoEntity {
     private UUID codigo;
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ItemPedidoEntity> itens;
-    @Column(nullable = false)
     private UUID cliente;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

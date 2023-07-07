@@ -2,20 +2,26 @@ package br.fiap.projeto.contexto.produto.application.exception.handler;
 
 import br.fiap.projeto.contexto.produto.application.exception.ProdutoResponseException;
 import br.fiap.projeto.contexto.produto.application.rest.ProdutoController;
+import br.fiap.projeto.contexto.produto.domain.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.produto.domain.exception.ProdutoNaoEncontradoException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.persistence.EntityNotFoundException;
-
 @ControllerAdvice(basePackageClasses = ProdutoController.class)
 public class ProdutoExceptionHandler {
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ProdutoResponseException> handleEntityNotFoundException(Exception e) {
-        ProdutoResponseException response = new ProdutoResponseException(3001, e.getMessage(), e.getCause());
+    @ExceptionHandler(ProdutoNaoEncontradoException.class)
+    public ResponseEntity<ProdutoResponseException> handleEntityNotFoundException(ProdutoNaoEncontradoException e) {
+        ProdutoResponseException response = new ProdutoResponseException(e.getCode(), e.getMessage(), e.getCause());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(EntradaInvalidaException.class)
+    public ResponseEntity<ProdutoResponseException> handleEntradaInvalidaException(EntradaInvalidaException e) {
+        ProdutoResponseException response = new ProdutoResponseException(e.getCode(), e.getMessage(), e.getCause());
+        return ResponseEntity.unprocessableEntity().body(response);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
