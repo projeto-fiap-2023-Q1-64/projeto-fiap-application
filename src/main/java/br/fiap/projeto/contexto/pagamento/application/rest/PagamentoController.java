@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.application.rest;
 
-import br.fiap.projeto.contexto.pagamento.application.rest.response.CompraAPagarDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoStatusDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
@@ -15,10 +15,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/pagamentos")
+@RequestMapping("/pagamentos")
 public class PagamentoController {
 
 
@@ -44,7 +45,7 @@ public class PagamentoController {
 
     }
 
-    @PostMapping(value="/processa-pagamento")
+    @PostMapping(value="/inicia-pagamento")
     @Transactional
     public ResponseEntity<PagamentoDTO> iniciaPagamento(@RequestBody PagamentoDTO pagamentoDTO) throws Exception {
         pagamentoServicePort.criaPagamento(pagamentoDTO);
@@ -52,7 +53,7 @@ public class PagamentoController {
         return ResponseEntity.created(novoRecursoDePagamentoCriadoUri).body(pagamentoDTO);
     }
 
-    @PatchMapping(value="/processa-pagamento/{codigo}")
+    @PatchMapping(value="/atualiza-pagamento/{codigo}")
     @Transactional
     public ResponseEntity<Void> atualizaPagamento(@PathVariable("codigo") UUID codigo, @RequestBody PagamentoStatusDTO pagamentoStatusDTO){
         pagamentoServicePort.processaPagamento(codigo, pagamentoStatusDTO.getStatus());
@@ -64,13 +65,6 @@ public class PagamentoController {
     public ResponseEntity <Page<PagamentoDTO>> listaDePagamentos(@PathVariable ("status") StatusPagamento status, Pageable pageable){
         Page<PagamentoDTO> paginaPagamentoPorStatus = pagamentoServicePort.findByStatus(status, pageable);
         return ResponseEntity.ok().body(paginaPagamentoPorStatus);
-    }
-
-    @PostMapping(value="/url-do-gateway")
-    @Transactional
-    public ResponseEntity<Void> enviaCompraParaGateway(@RequestBody CompraAPagarDTO compraAPagarDTO) {
-        pagamentoServicePort.enviaGatewayDePagamento(compraAPagarDTO);
-        return ResponseEntity.ok().build();
     }
 
 }
