@@ -37,6 +37,7 @@ public class PedidoController {
         if( codigoCliente != null && !codigoCliente.isEmpty()) {
             Cliente cliente = pedidoClienteIntegration.busca(codigoCliente);
             if(cliente == null){
+                // TODO - Implementar tratamentos de Erro
                 throw new ObjectNotFoundException(codigoCliente, "cliente");
             }else {
                 pedidoCriarDTO = new PedidoCriarDTO(cliente);
