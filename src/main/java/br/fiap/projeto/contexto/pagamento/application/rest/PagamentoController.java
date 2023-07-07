@@ -15,9 +15,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
+/**
+ * Simula os endpoints que podem ser utilizados para processamentos internos do domínio de pagamento
+ */
 @RestController
 @RequestMapping("/pagamentos")
 public class PagamentoController {
@@ -30,6 +32,11 @@ public class PagamentoController {
         this.pagamentoServicePort = pagamentoServicePort;
     }
 
+    /**
+     * Busca pagamento passando um código de pagamento existente
+     * @param codigo
+     * @return
+     */
     @GetMapping(value="/{codigo}")
     @Transactional
     public ResponseEntity<PagamentoDTO> buscaPagamentoPorCodigo(@PathVariable("codigo") UUID codigo){
@@ -37,6 +44,11 @@ public class PagamentoController {
         return ResponseEntity.ok().body(pagamentoDTO);
     }
 
+    /**
+     * Busca todos os Pagamentos, sem filtro
+     * @param pageable
+     * @return
+     */
     @GetMapping(value="/todos")
     @Transactional
     public ResponseEntity<Page<PagamentoDTO>> listaPagamentos(Pageable pageable){
@@ -45,6 +57,25 @@ public class PagamentoController {
 
     }
 
+    /**
+     * Busca todos os Pagamentos com filtro de Status
+     * @param status
+     * @param pageable
+     * @return
+     */
+    @GetMapping(value="/por-status/{status}")
+    @Transactional
+    public ResponseEntity <Page<PagamentoDTO>> listaDePagamentos(@PathVariable ("status") StatusPagamento status, Pageable pageable){
+        Page<PagamentoDTO> paginaPagamentoPorStatus = pagamentoServicePort.findByStatus(status, pageable);
+        return ResponseEntity.ok().body(paginaPagamentoPorStatus);
+    }
+
+    /**
+     * Simula a criação de um pagamento sem um código de pedido, utilizada aantes da Integração com o Gateway
+     * @param pagamentoDTO
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value="/inicia-pagamento")
     @Transactional
     public ResponseEntity<PagamentoDTO> iniciaPagamento(@RequestBody PagamentoDTO pagamentoDTO) throws Exception {
@@ -53,18 +84,19 @@ public class PagamentoController {
         return ResponseEntity.created(novoRecursoDePagamentoCriadoUri).body(pagamentoDTO);
     }
 
+    /**
+     * Atualiza os status de um Pagamento que está em processamento, simulando que o Gateway retorna a situação
+     * e é passado no corpo da requisição o novo Status do Pagamento: APPROVED, REJECTED ou CANCELLED
+     *
+     * @param codigo
+     * @param pagamentoStatusDTO
+     * @return
+     */
     @PatchMapping(value="/atualiza-pagamento/{codigo}")
     @Transactional
     public ResponseEntity<Void> atualizaPagamento(@PathVariable("codigo") UUID codigo, @RequestBody PagamentoStatusDTO pagamentoStatusDTO){
         pagamentoServicePort.processaPagamento(codigo, pagamentoStatusDTO.getStatus());
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping(value="/por-status/{status}")
-    @Transactional
-    public ResponseEntity <Page<PagamentoDTO>> listaDePagamentos(@PathVariable ("status") StatusPagamento status, Pageable pageable){
-        Page<PagamentoDTO> paginaPagamentoPorStatus = pagamentoServicePort.findByStatus(status, pageable);
-        return ResponseEntity.ok().body(paginaPagamentoPorStatus);
     }
 
 }
