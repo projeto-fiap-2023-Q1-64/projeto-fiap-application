@@ -11,7 +11,7 @@ public class PagamentoDTO {
 
     private UUID codigo;
 
-    private Long codigoPedido;
+    private String codigoPedido;
 
     private StatusPagamento status;
 
@@ -19,7 +19,7 @@ public class PagamentoDTO {
 
     public PagamentoDTO(){}
 
-    public PagamentoDTO(UUID codigo, Long codigoPedido, StatusPagamento status, Date dataPagamento) {
+    public PagamentoDTO(UUID codigo, String codigoPedido, StatusPagamento status, Date dataPagamento) {
         this.codigo = codigo;
         this.status = status;
         this.codigoPedido = codigoPedido;
@@ -33,8 +33,14 @@ public class PagamentoDTO {
         this.dataPagamento = pagamento.getDataPagamento();
     }
 
-    public PagamentoDTO(CompraAPagarDTO compraAPagarDTO){
-        this.codigoPedido = compraAPagarDTO.getCodigoPedido();
+//    public PagamentoDTO(PedidoAPagarDTO pedidoAPagarDTO){
+//        this.codigoPedido = pedidoAPagarDTO.getCodigoPedido();
+//    }
+
+    public PagamentoDTO(PedidoAPagarDTO pedidoAPagarDTO){
+        this.setCodigoPedido(pedidoAPagarDTO.getCodigoPedido());
+        this.setStatus(pedidoAPagarDTO.getStatusPagamento());
+        this.setDataPagamento(pedidoAPagarDTO.getDataPagamento());
     }
 
     public UUID getCodigo() {
@@ -45,11 +51,11 @@ public class PagamentoDTO {
         this.codigo = codigo;
     }
 
-    public Long getCodigoPedido() {
+    public String getCodigoPedido() {
         return codigoPedido;
     }
 
-    public void setCodigoPedido(Long codigoPedido) {
+    public void setCodigoPedido(String codigoPedido) {
         this.codigoPedido = codigoPedido;
     }
 

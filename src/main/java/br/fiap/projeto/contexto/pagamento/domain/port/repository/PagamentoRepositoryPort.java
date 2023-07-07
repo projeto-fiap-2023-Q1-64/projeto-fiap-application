@@ -1,17 +1,21 @@
 package br.fiap.projeto.contexto.pagamento.domain.port.repository;
 
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface PagamentoRepositoryPort {
 
-    Optional<Pagamento> findByCodigoPedido(Long codigoPedido);
+    Pagamento findByCodigoPedido(String codigoPedido);
+
+    Optional<PedidoAPagarDTO> findByCodigoPedidoAPagar(String codigoPedido);
     
     void salvaPagamento(Pagamento pagamento);
 
@@ -22,4 +26,12 @@ public interface PagamentoRepositoryPort {
     Page<Pagamento> findAll(Pageable pageable);
 
     Page<Pagamento> findByStatusPagamento(StatusPagamento status, Pageable pageable);
+
+    List<Pagamento> findByStatusPagamento(StatusPagamento status);
+
+    void salvaPedidosAPagar(Pagamento pedidosAPagar);
+
+    List<Pagamento> findAllByCodigoPedido();
+
+
 }
