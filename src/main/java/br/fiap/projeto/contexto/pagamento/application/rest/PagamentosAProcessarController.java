@@ -45,6 +45,10 @@ public class PagamentosAProcessarController {
     @Transactional
     public ResponseEntity<List<Pedido>> listaPedidosAPagar(){
         List<Pedido> listaDePedidosAPagar = pedidoIntegration.buscaPedidosAPagar();
+        if(listaDePedidosAPagar.size()==0){
+            return ResponseEntity.noContent().build();
+        }
+        System.out.println("CONTROLLER: Um novo pedido está pronto para ser pago pagamento...");
         pagamentoServicePort.recebePedidosAPagar(new PedidoAPagarDTO(listaDePedidosAPagar));
         return ResponseEntity.ok().body(listaDePedidosAPagar);
     }
@@ -66,10 +70,14 @@ public class PagamentosAProcessarController {
     }
 
     /**
-     * #3 Após ter criado o Pagamento, é despachado/redirecionado ao url do gateway para
+     * #3 Após ter criado o Pagamento, é despachado/redirecionado ao gateway para
      * que seja processado pelo Sistema Externo
      *
-     * Envia ao Gateway de pagamento o pedido recebido
+     * WIP: A intenção é manter somente este endpoint, ao enviar para o Gateway já será criado um código de pagamento
+     * substituindo a etapa 2.
+     *
+     * Nota: Verificar se é interessante manter esse endpoint com as responsabilidades de:
+     * enviar ao gateway e criar o código de pagamento que será utilizado no processament interno deste domínio
      *
      * @param pedidoAPagarDTO
      * @return

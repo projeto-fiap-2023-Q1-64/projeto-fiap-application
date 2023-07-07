@@ -49,7 +49,11 @@ public class PagamentosAprovadosController {
      * #2 Permite a pesquisa de um status de pagamento através do código de Pedido, simulando a
      * interação entre o domínio de Pedido que verifica se o mesmo já foi pago e está Aprovado.
      *
-     * TODO verificar o nome da DTO, a consulta nem sempre vai retornar um APROVADO (manter a consistência nos nomes)
+     *TODO #1 Adicionar Exception para tratar caso o domínio de pedido consulte um pedido que ainda não existe dentro do
+     * contexto de pagamento
+     *
+     *TODO #2 verificar o nome da DTO, a consulta nem sempre vai retornar um APROVADO (manter a consistência nos nomes)
+     *
      * @param codigoPedido
      * @return
      */

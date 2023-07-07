@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name="Pagamento")
+@Table(name="pagamentos")
 public class PagamentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -8,6 +8,7 @@ import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.domain.port.repository.PagamentoRepositoryPort;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
+import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.ResourceAlreadyInProcessException;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.UnprocessablePaymentException;
 import org.springframework.data.domain.Page;
@@ -69,7 +70,7 @@ public class DomainPagamentoService implements PagamentoServicePort {
     public void recebePedidosAPagar(PedidoAPagarDTO pedidosAPagarDTO) {
         Pagamento novoPagamento = new Pagamento(pedidosAPagarDTO);
         pagamentoRepositoryPort.salvaPedidosAPagar(novoPagamento);
-        System.out.println("Novo pagamento criado para o pedido: " + novoPagamento.getCodigoPedido());
+        System.out.println("DOMAIN SERVICE: Novo pagamento criado para o pedido: " + novoPagamento.getCodigoPedido());
     }
 
     /**
@@ -91,8 +92,18 @@ public class DomainPagamentoService implements PagamentoServicePort {
      */
     @Override
     public PedidoAPagarDTO criaPagamentoViaGateway(PedidoAPagarDTO pedidoAPagarDTO)  {
-        pagamentoRepositoryPort.salvaPagamento(new Pagamento(pedidoAPagarDTO));
+        verificaSeJaExistePagamentoParaOPedido(pedidoAPagarDTO);
         return new PedidoAPagarDTO(new PagamentoDTO(pedidoAPagarDTO));
+    }
+
+    private void verificaSeJaExistePagamentoParaOPedido(PedidoAPagarDTO pedidoAPagarDTO) {
+        Pagamento pagamento = pagamentoRepositoryPort.findByCodigoPedido(pedidoAPagarDTO.getCodigoPedido());
+        if((pagamento.getCodigoPedido().isEmpty()) || (pagamento.getCodigoPedido() == null)){
+            System.out.println("Um pagamento está sendo criado para o pedido: " + pedidoAPagarDTO.getCodigoPedido());
+            pagamentoRepositoryPort.salvaPagamento(new Pagamento(pedidoAPagarDTO));
+        }else{
+            throw new ResourceAlreadyInProcessException("Pedido:  " + pedidoAPagarDTO.getCodigoPedido() +" já possui pagamento PENDNETE.");
+        }
     }
 
     /**
@@ -105,26 +116,12 @@ public class DomainPagamentoService implements PagamentoServicePort {
         System.out.println("verficando qual Gateway será usado...");
         System.out.println("Criando payload de acordo com o Gateway do Mercado Pago");
         System.out.println("Enviando ao Mercado Pago a request de pagamento...");
-        System.out.println("Criando código para Pagamento do pedido: " + pedidoAPagarDTO.getCodigoPedido());
-        //só vai funcionar quando a integração estiver ok, os pedidos precisam ser recuperados do domínio de Pedidos
+        System.out.println("Chamando evento que cria código para Pagamento do pedido: " + pedidoAPagarDTO.getCodigoPedido());
 
-        verificaPedidoAPagarParaCriarPagamento(pedidoAPagarDTO);
+        verificaSeJaExistePagamentoParaOPedido(pedidoAPagarDTO);
 
-        System.out.println("Aguardando retorno com o status do pagamento");
+        System.out.println("Aguardando retorno do Gateway com o Status do pagamento enviado.");
     }
-
-    private void verificaPedidoAPagarParaCriarPagamento(PedidoAPagarDTO pedidoAPagarDTO) {
-        Optional<PedidoAPagarDTO> possivelPagamentoParaEstePedido = pagamentoRepositoryPort.findByCodigoPedidoAPagar(pedidoAPagarDTO.getCodigoPedido());
-        if(possivelPagamentoParaEstePedido.isPresent()) {
-            geraPagamentoDoPedido(pedidoAPagarDTO);
-        }else throw new UnprocessablePaymentException("Pagamento para o pedido " + pedidoAPagarDTO.getCodigoPedido() + "não pode ser processado.");
-    }
-
-    private void geraPagamentoDoPedido(PedidoAPagarDTO pedidoAPagarDTO) {
-        Pagamento novoPagamento = new Pagamento(pedidoAPagarDTO);
-        pagamentoRepositoryPort.salvaPagamento(novoPagamento);
-    }
-
 
     /**
      * Cria um novo Pagamento com base no payload da requisição
