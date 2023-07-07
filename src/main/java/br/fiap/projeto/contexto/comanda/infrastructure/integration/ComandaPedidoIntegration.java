@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.fiap.projeto.contexto.pedido.domain.Pedido;
+import br.fiap.projeto.contexto.comanda.infrastructure.integration.port.PedidoDTO;
 
 @FeignClient(value = "comandaPedidoIntegration", url = "http://localhost:8080/")
 public interface ComandaPedidoIntegration {
     @PatchMapping("/{codigo}/prontificar")
 
     @ResponseBody
-    public Pedido prontificar(@PathVariable("codigo") UUID codigoPedido);
+    public PedidoDTO prontificar(@PathVariable("codigo") UUID codigoPedido);
 }

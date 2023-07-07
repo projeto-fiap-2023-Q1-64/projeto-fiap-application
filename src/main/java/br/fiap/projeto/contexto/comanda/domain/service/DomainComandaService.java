@@ -15,13 +15,17 @@ import br.fiap.projeto.contexto.comanda.domain.port.repository.ComandaRepository
 import br.fiap.projeto.contexto.comanda.domain.port.service.ComandaServicePort;
 import br.fiap.projeto.contexto.comanda.infrastructure.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.comanda.infrastructure.integration.ComandaPedidoIntegration;
+import br.fiap.projeto.contexto.comanda.infrastructure.integration.port.PedidoDTO;
 
 public class DomainComandaService implements ComandaServicePort {
 
     private final ComandaRepositoryPort comandaRepositoryPort;
+    private final ComandaPedidoIntegration comandaPedidoIntegration;
 
-    public DomainComandaService(ComandaRepositoryPort comandaRepositoryPort) {
+    public DomainComandaService(ComandaRepositoryPort comandaRepositoryPort,
+            ComandaPedidoIntegration comandaPedidoIntegration) {
         this.comandaRepositoryPort = comandaRepositoryPort;
+        this.comandaPedidoIntegration = comandaPedidoIntegration;
     }
 
     // ---------------------------------------------------------------------------------
@@ -75,13 +79,17 @@ public class DomainComandaService implements ComandaServicePort {
 
     @Override
     public ComandaDTO finalizar(UUID codigoPedido) throws InvalidStatusException {
-        final ComandaPedidoIntegration comandaPedidoIntegration;
+
         Comanda comanda = this.buscar(codigoPedido);
         if (comanda.getStatus().equals(StatusComanda.EM_PREPARACAO)) {
             comanda.atualizaStatus(StatusComanda.FINALIZADO);
-        } else {
-            throw new InvalidStatusException(comanda.getStatus().toString());
+            PedidoDTO pedidoDTO = enviarStatusPedido(codigoPedido);
+            if (pedidoDTO == null) {
+                throw new InvalidStatusException(comanda.getStatus().toString());
+            }
+
         }
+
         return comandaRepositoryPort.salvar(comanda).toComandaDTO();
     }
     // ---------------------------------------------------------------------------------
@@ -94,10 +102,8 @@ public class DomainComandaService implements ComandaServicePort {
         return optionalComanda.get();
     }
 
-    private void enviarStatusPedido(UUID codigoPedido) {
-
+    private PedidoDTO enviarStatusPedido(UUID codigoPedido) {
+        return comandaPedidoIntegration.prontificar(codigoPedido);
     }
-
-    // comandaPedidoIntegration.prontificar(codigoPedido);
 
 }
