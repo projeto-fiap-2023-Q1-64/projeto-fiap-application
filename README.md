@@ -10,6 +10,8 @@
 ---
 ## Entrega
 
+Roteiro do fluxo principal -> https://liniis.notion.site/Walkthrough-Fluxo-de-Eventos-da-Lanchonete-Totem-f18dfb5a87674d93899a6bbde1ae1695
+
 Docker compose com imagem do dockerhub -> [docker-compose.yml](entrega/docker-compose.yml)
 
 Swagger (cloud) -> [live swagger](https://projeto-fiap-64.cloud/swagger-ui/index.html#/)
