@@ -37,7 +37,7 @@ public class PedidoPagamentoController {
             Pagamento pagamento = pedidoPagamentoIntegration.buscaStatusPagamentoPorCodigoPedido(codigo.toString());
             // Verifica se encontrou o pagamento e se ele está aprovado
             if(pagamento != null && pagamento.getStatusPagamento().getDescricao().equals(StatusPagamento.APPROVED.getDescricao())){
-                pedidoDTO = this.pedidoService.aprovar(codigo);
+                pedidoDTO = this.pedidoService.pagar(codigo);
             }else{
                 //TODO: tratar erro aqui
                 System.out.println("Pedido não encontrado ou não aprovado!");
@@ -47,19 +47,6 @@ public class PedidoPagamentoController {
             //TODO: tratar erro aqui
             System.out.println("Erro ao realizar integração!");
             throw new Exception("Erro ao realizar integração!",e);
-        }
-        try{
-            Comanda comanda = pedidoComandaIntegration.criaComanda(new CriaComanda(codigo));
-            // Verifica se criou comanda
-            if(comanda == null || comanda.getCodigoComanda().toString().isEmpty()){
-                //TODO: tratar erro aqui
-                System.out.println("Erro na criação da comanda!");
-                throw new Exception("Erro na criação da comanda!");
-            }
-        }catch (Exception e){
-            //TODO: tratar erro aqui
-            System.out.println("Erro na integração com a Comanda!");
-            throw new Exception("Erro na integração com a Comanda!");
         }
         return pedidoDTO;
     }
