@@ -4,9 +4,11 @@ import br.fiap.projeto.contexto.pedido.application.rest.response.ItemPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.CategoriaProduto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ItemPedido {
 	private ItemPedidoCodigo codigo;
 	private Pedido pedido;
