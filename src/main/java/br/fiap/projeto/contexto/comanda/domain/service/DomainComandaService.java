@@ -81,16 +81,19 @@ public class DomainComandaService implements ComandaServicePort {
     public ComandaDTO finalizar(UUID codigoComanda) throws InvalidStatusException {
 
         Comanda comanda = this.buscar(codigoComanda);
+        ComandaDTO enviarComandaDTO;
         if (comanda.getStatus().equals(StatusComanda.EM_PREPARACAO)) {
             comanda.atualizaStatus(StatusComanda.FINALIZADO);
+            enviarComandaDTO = comandaRepositoryPort.salvar(comanda).toComandaDTO();
             PedidoDTO pedidoDTO = enviarStatusPedido(comanda.getCodigoPedido());
-            if (pedidoDTO == null) {
-                throw new InvalidStatusException(comanda.getStatus().toString());
-            }
-
+            System.out.println(pedidoDTO.toString());
+            // if (pedidoDTO == null) {
+        } else {
+            throw new InvalidStatusException(comanda.getStatus().toString());
         }
 
-        return comandaRepositoryPort.salvar(comanda).toComandaDTO();
+        return enviarComandaDTO;
+
     }
     // ---------------------------------------------------------------------------------
     // MÉTODOS AUXILAIRES
@@ -103,7 +106,7 @@ public class DomainComandaService implements ComandaServicePort {
     }
 
     private PedidoDTO enviarStatusPedido(UUID codigoPedido) {
-        return comandaPedidoIntegration.prontificar(codigoPedido);
+        return comandaPedidoIntegration.prontificar(codigoPedido.toString());
     }
 
 }
