@@ -103,7 +103,7 @@ public class DomainComandaService implements ComandaServicePort {
     }
 
     private PedidoDTO enviarStatusPedido(UUID codigoPedido) {
-        return comandaPedidoIntegration.prontificar(codigoPedido);
+        return comandaPedidoIntegration.prontificar(codigoPedido.toString());
     }
 
 }
