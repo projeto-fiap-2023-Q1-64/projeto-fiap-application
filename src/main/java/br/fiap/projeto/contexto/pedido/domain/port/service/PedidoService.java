@@ -18,9 +18,7 @@ public interface PedidoService {
     PedidoDTO buscaPedido(UUID codigo);
     List<PedidoDTO> buscaTodos();
     List<PedidoDTO> buscarTodosRecebido();
-
     List<PedidoDTO> buscarTodosPagos();
-
     List<PedidoDTO> buscarTodosEmPreparacao();
     List<PedidoDTO> buscarTodosPronto();
     List<PedidoDTO> buscarTodosFinalizado();

@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pedido.application.rest;
 
 import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.PedidoComandaIntegration;
@@ -38,7 +37,7 @@ public class PedidoComandaController {
         PedidoDTO pedidoDTO = null;
         try{
             pedidoDTO = this.pedidoService.preparar(codigo);
-            if(pedidoDTO == null || !pedidoDTO.getStatus().equals(StatusPedido.PAGO)){
+            if(pedidoDTO == null || !pedidoDTO.getStatus().equals(StatusPedido.EM_PREPARACAO)){
                 //TODO: tratar erro aqui
                 System.out.println("Erro na atualização do status!");
                 throw new Exception("Erro na atualização do status!");
