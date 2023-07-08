@@ -32,7 +32,7 @@ public class PedidoController {
 
     @PostMapping("/{codigo_cliente}")
     @ResponseBody
-    public PedidoDTO criaPedido(@ApiParam(value="Código do Cliente (Opcional)") @RequestParam(value = "codigo_cliente", required = false) String codigoCliente) {
+    public ResponseEntity<PedidoDTO> criaPedido(@ApiParam(value="Código do Cliente (Opcional)") @RequestParam(value = "codigo_cliente", required = false) String codigoCliente) {
         PedidoCriarDTO pedidoCriarDTO = null;
         if( codigoCliente != null && !codigoCliente.isEmpty()) {
             Cliente cliente = pedidoClienteIntegration.busca(codigoCliente);
@@ -43,7 +43,8 @@ public class PedidoController {
                 pedidoCriarDTO = new PedidoCriarDTO(cliente);
             }
         }
-        return this.pedidoService.criaPedido(pedidoCriarDTO);
+        // TODO: Implementar tratamento do created para trabalhar com URI.
+        return ResponseEntity.ok().body(this.pedidoService.criaPedido(pedidoCriarDTO));
     }
     //-------------------------------------------------------------------------//
     //                MÉTODOS DE MANUPULAÇÃO DE ITENS DO PEDIDO
@@ -64,27 +65,27 @@ public class PedidoController {
     }
     @PatchMapping("/{codigo_pedido}/aumentar-qtde-produto/{produto_codigo}")
     @ResponseBody
-    public PedidoDTO adicionarQuantidadeProduto(@ApiParam(value="Código do Pedido") @PathVariable("codigo_pedido") UUID codigoPedido,
+    public ResponseEntity<PedidoDTO> adicionarQuantidadeProduto(@ApiParam(value="Código do Pedido") @PathVariable("codigo_pedido") UUID codigoPedido,
                                                 @ApiParam(value="Código do Produto") @PathVariable("produto_codigo") UUID produtoCodigo) throws Exception {
-        return this.pedidoService.aumentarQuantidade(codigoPedido,produtoCodigo);
+        return ResponseEntity.ok().body(this.pedidoService.aumentarQuantidade(codigoPedido,produtoCodigo));
     }
     @PatchMapping("/{codigo_pedido}/reduzir-qtde-produto/{produto_codigo}")
     @ResponseBody
-    public PedidoDTO reduzirQuantidadeProduto(@ApiParam(value="Código do Pedido") @PathVariable("codigo_pedido") UUID codigoPedido,
+    public ResponseEntity<PedidoDTO> reduzirQuantidadeProduto(@ApiParam(value="Código do Pedido") @PathVariable("codigo_pedido") UUID codigoPedido,
                                               @ApiParam(value="Código do Produto") @PathVariable("produto_codigo") UUID produtoCodigo) throws Exception {
-        return this.pedidoService.reduzirQuantidade(codigoPedido,produtoCodigo);
+        return ResponseEntity.ok().body(this.pedidoService.reduzirQuantidade(codigoPedido,produtoCodigo));
     }
     //-------------------------------------------------------------------------//
     //                        ATUALIZA STATUS
     //-------------------------------------------------------------------------//
     @PatchMapping("/{codigo}/pagar")
     @ResponseBody
-    public PedidoDTO pagarPedido(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
-        return this.pedidoService.receber(codigo);
+    public ResponseEntity<PedidoDTO> pagarPedido(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
+        return ResponseEntity.ok().body(this.pedidoService.receber(codigo));
     }
     @PatchMapping("/{codigo}/entregar")
     @ResponseBody
-    public PedidoDTO entregarPedido(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
-        return this.pedidoService.finalizar(codigo);
+    public ResponseEntity<PedidoDTO> entregarPedido(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
+        return ResponseEntity.ok().body(this.pedidoService.finalizar(codigo));
     }
 }
