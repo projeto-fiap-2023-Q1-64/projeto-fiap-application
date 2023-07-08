@@ -118,7 +118,7 @@ public class DomainPagamentoService implements PagamentoServicePort {
         System.out.println("Enviando ao Mercado Pago a request de pagamento...");
         System.out.println("Chamando evento que cria código para Pagamento do pedido: " + pedidoAPagarDTO.getCodigoPedido());
 
-        verificaSeJaExistePagamentoParaOPedido(pedidoAPagarDTO);
+        analisaStatusDoPagamento(pedidoAPagarDTO.getStatusPagamento(), StatusPagamento.IN_PROCESS, new Pagamento(pedidoAPagarDTO));
 
         System.out.println("Aguardando retorno do Gateway com o Status do pagamento enviado.");
     }
