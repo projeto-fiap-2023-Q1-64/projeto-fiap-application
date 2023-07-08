@@ -1,6 +1,9 @@
 package br.fiap.projeto.integracao;
 
 import br.fiap.projeto.config.CustomPageImpl;
+import br.fiap.projeto.contexto.comanda.domain.dto.ComandaDTO;
+import br.fiap.projeto.contexto.comanda.domain.dto.CriarComandaDTO;
+import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoStatusDTO;
@@ -30,6 +33,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.platform.commons.function.Try.success;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource("classpath:application.properties")
@@ -55,6 +59,8 @@ public class TesteIntegracao {
         Page<PagamentoDTO> pagamentosAprovados;
         PagamentoDTO pagamentoPedido;
         PagamentoStatusDTO pagamentoStatusDTO;
+        ComandaDTO comanda;
+        List<ComandaDTO> comandasPendentes;
 
         // Cria pedido
         pedido = restTemplate.postForEntity(createUriWithPort("/pedidos"), null, PedidoDTO.class).getBody();
@@ -118,11 +124,46 @@ public class TesteIntegracao {
                 .findFirst()
                 .orElse(null);
         assertNotNull(pagamentoPedido);
-        assertTrue(StatusPagamento.APPROVED.equals(pagamentoPedido.getStatus()));
+        assertEquals(StatusPagamento.APPROVED, pagamentoPedido.getStatus());
 
-        //
+        // Pedido atualiza o status dele (pra pago) -> /{codigo}/verificar-pagamento"
+        pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/verificar-pagamento"), HttpMethod.PATCH, null, PedidoDTO.class).getBody();
+        assertNotNull(pedido);
+        assertEquals(StatusPedido.PAGO, pedido.getStatus());
 
-        log.info("Codigo pedido {}", codigoPedido);
+        // Pedido cria a comanda => @PatchMapping("/{codigo}/enviar-comanda")
+        pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/enviar-comanda"), HttpMethod.PATCH, null, PedidoDTO.class).getBody();
+        assertNotNull(pedido);
+        assertEquals(StatusPedido.EM_PREPARACAO, pedido.getStatus());
+
+        // Busca comandas pendentes => @GetMapping("/comandas/busca-pendentes")
+        comandasPendentes = restTemplate.exchange(createUriWithPort("/comandas/busca-pendentes"), HttpMethod.GET, null, new ParameterizedTypeReference<List<ComandaDTO>>(){}).getBody();
+        assertNotNull(comandasPendentes);
+        assertFalse(CollectionUtils.isEmpty(comandasPendentes));
+
+        comanda = comandasPendentes.stream()
+                .filter(c -> codigoPedido.equals(c.getCodigoPedido().toString()))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(comanda);
+
+        // Comanda atualiza o status da comanda para preparação
+        comanda = restTemplate.exchange(createUriWithPort("/comandas/" + comanda.getCodigoComanda() + "/preparar"), HttpMethod.PATCH, null, ComandaDTO.class).getBody();
+        assertNotNull(comanda);
+        assertEquals(StatusComanda.EM_PREPARACAO, comanda.getStatus());
+
+        // Comanda atualiza o status da comanda para finalizado =>  @PatchMapping("/{codigo-comanda}/finalizar")
+        // Ao mesmo tempo, comanda atualiza o status do pedido para pronto =>  @PutMapping("/{codigo}/prontificar")
+        comanda = restTemplate.exchange(createUriWithPort("/comandas/" + comanda.getCodigoComanda() + "/finalizar"), HttpMethod.PATCH, null, ComandaDTO.class).getBody();
+        assertNotNull(comanda);
+        assertEquals(StatusComanda.FINALIZADO, comanda.getStatus());
+
+        // Pedido chama rotina de entrega => @PatchMapping("/{codigo}/entregar")
+        pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/entregar"), HttpMethod.PATCH, null, PedidoDTO.class).getBody();
+        assertNotNull(pedido);
+        assertEquals(StatusPedido.FINALIZADO, pedido.getStatus());
+
+        success("Sucesso galera!");
     }
 
     private URI createUriWithPort(String s) {
