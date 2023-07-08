@@ -117,6 +117,11 @@ public class DomainPedidoService implements PedidoService {
         return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
     }
     @Override
+    public List<PedidoDTO> buscarTodosPagos(){
+        List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.PAGO);
+        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+    }
+    @Override
     public List<PedidoDTO> buscarTodosEmPreparacao(){
         List<Pedido> pedidosRecebidos = pedidoRepositoryPort.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
         return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
@@ -150,11 +155,20 @@ public class DomainPedidoService implements PedidoService {
         return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
     }
     @Override
-    public PedidoDTO aprovar(UUID codigo) throws Exception {
+    public PedidoDTO pagar(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.RECEBIDO)){
+            pedido.atualizarStatus(StatusPedido.PAGO);
+        }else{
+            throw new InvalidStatusException("Status inválido!");
+        }
+        return pedidoRepositoryPort.salvar(pedido).toPedidoDTO();
+    }
+    @Override
+    public PedidoDTO preparar(UUID codigo) throws Exception {
+        Pedido pedido = this.buscar(codigo);
+        if(pedido.getStatus().equals(StatusPedido.PAGO)){
             pedido.atualizarStatus(StatusPedido.EM_PREPARACAO);
-            // TODO - CHAMADA PARA COMANDA
         }else{
             throw new InvalidStatusException("Status inválido!");
         }

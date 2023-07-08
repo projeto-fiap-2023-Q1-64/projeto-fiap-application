@@ -1,50 +1,56 @@
 package br.fiap.projeto.contexto.comanda.domain;
 
-import java.util.Date;
-import java.util.List;
+import java.util.UUID;
 
+import br.fiap.projeto.contexto.comanda.domain.dto.ComandaDTO;
+import br.fiap.projeto.contexto.comanda.domain.dto.CriarComandaDTO;
 import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
 
 public class Comanda {
- 
-	private Long codigoPedido;
-	 
-	private List<ItemComanda> itens;
-	 
+
+	private UUID codigoComanda;
+
+	private UUID codigoPedido;
+
 	private StatusComanda status;
-	 
-	private Date dataComanda;
 
-	public Long getCodigoPedido() {
-		return codigoPedido;
-	}
-
-	public void setCodigoPedido(Long codigoPedido) {
+	public Comanda(UUID codigoComanda, UUID codigoPedido, StatusComanda status) {
+		this.codigoComanda = codigoComanda;
 		this.codigoPedido = codigoPedido;
+		this.status = status;
 	}
 
-	public List<ItemComanda> getItens() {
-		return itens;
+	public Comanda(ComandaDTO comandaDTO) {
+		this.codigoComanda = comandaDTO.getCodigoComanda();
+		this.codigoPedido = comandaDTO.getCodigoPedido();
+		this.status = comandaDTO.getStatus();
+
 	}
 
-	public void setItens(List<ItemComanda> itens) {
-		this.itens = itens;
+	public Comanda(CriarComandaDTO criarComandaDTO) {
+		this.codigoPedido = criarComandaDTO.getCodigoPedido();
+		this.status = StatusComanda.RECEBIDO;
+	}
+
+	public UUID getCodigoPedido() {
+		return codigoPedido;
 	}
 
 	public StatusComanda getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusComanda status) {
-		this.status = status;
+	public UUID getCodigoComanda() {
+		return codigoComanda;
 	}
 
-	public Date getDataComanda() {
-		return dataComanda;
+	public ComandaDTO toComandaDTO() {
+		return new ComandaDTO(codigoComanda, codigoPedido, status);
 	}
 
-	public void setDataComanda(Date dataComanda) {
-		this.dataComanda = dataComanda;
+	public void atualizaStatus(StatusComanda statusComanda) {
+		this.status = statusComanda;
+
 	}
+
 }
- 

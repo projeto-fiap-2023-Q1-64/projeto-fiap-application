@@ -74,6 +74,7 @@ public class PostgresPagamentoRepository implements PagamentoRepositoryPort {
 
     @Override
     public void salvaPedidosAPagar(Pagamento pedidosAPagar) {
+        System.out.println("REPOSITORY: Salvando um pagamento para o pedido: " + pedidosAPagar.getCodigoPedido());
         springPagamentoRepository.save(new PagamentoEntity(pedidosAPagar));
     }
 

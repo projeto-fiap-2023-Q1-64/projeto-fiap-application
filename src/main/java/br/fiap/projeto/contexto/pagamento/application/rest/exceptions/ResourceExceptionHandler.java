@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.application.rest.exceptions;
 
+import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.ResourceAlreadyInProcessException;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.UnprocessablePaymentException;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,21 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(standardError);
     }
 
+    @ExceptionHandler(ResourceAlreadyInProcessException.class)
+    public ResponseEntity<StandardError> entityNotFound(ResourceAlreadyInProcessException exception,
+                                                        HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(status.value());
+        standardError.setError("Pagamento solicitado sobre o recurso não pode ser processado. Um pagamento já está em andamento.");
+        standardError.setMessage(exception.getMessage());
+        standardError.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(standardError);
+    }
 
 
 }

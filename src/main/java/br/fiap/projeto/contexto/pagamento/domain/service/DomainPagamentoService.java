@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.domain.service;
 
 
-import br.fiap.projeto.contexto.pagamento.application.rest.PedidosAPagarController;
 import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
@@ -9,9 +8,9 @@ import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.domain.port.repository.PagamentoRepositoryPort;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
+import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.ResourceAlreadyInProcessException;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.domain.service.exceptions.UnprocessablePaymentException;
-import br.fiap.projeto.contexto.pedido.domain.Pedido;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -62,20 +61,66 @@ public class DomainPagamentoService implements PagamentoServicePort {
     }
 
     /**
-     * Recebe os pedidos da API de pedidos recebidos e que vão para o gateway de pagamento
+     * Recebe os pedidos da API de pedidos recebidos e que vão para o gateway de pagamento,
+     * Ao receber a lista de Pedidos com status RECEBIDO, um código de pagamento é gerado
+     * Simulando o consumo de dados do domínio de Pedido que será usado dentro do domínio de Pagamento
      * @param pedidosAPagarDTO
      */
     @Override
     public void recebePedidosAPagar(PedidoAPagarDTO pedidosAPagarDTO) {
         Pagamento novoPagamento = new Pagamento(pedidosAPagarDTO);
         pagamentoRepositoryPort.salvaPedidosAPagar(novoPagamento);
-        System.out.println("Novo pagamento criado para o pedido: " + novoPagamento.getCodigoPedido());
+        System.out.println("DOMAIN SERVICE: Novo pagamento criado para o pedido: " + novoPagamento.getCodigoPedido());
     }
 
+    /**
+     * Busca todos os Pagamentos que estão com Status PENDING - Simula os pagamentos que ainda não foram processados
+     * pelo Gateway de Pagamento
+     * @return
+     */
     @Override
     public List<PedidoAPagarDTO> buscaPedidosAPagar() {
        List<Pagamento> listaPedidosAPagar = pagamentoRepositoryPort.findByStatusPagamento(StatusPagamento.PENDING);
        return listaPedidosAPagar.stream().map(PedidoAPagarDTO::new).collect(Collectors.toList());
+    }
+
+    /**
+     * Persiste o código do Pedido recebido e ao persistir o pagamento é criado para aquele pedido
+     * TODO elaborar fluxo de exeções que não estão sendo tratadas
+     * @param pedidoAPagarDTO
+     * @return
+     */
+    @Override
+    public PedidoAPagarDTO criaPagamentoViaGateway(PedidoAPagarDTO pedidoAPagarDTO)  {
+        verificaSeJaExistePagamentoParaOPedido(pedidoAPagarDTO);
+        return new PedidoAPagarDTO(new PagamentoDTO(pedidoAPagarDTO));
+    }
+
+    private void verificaSeJaExistePagamentoParaOPedido(PedidoAPagarDTO pedidoAPagarDTO) {
+        Pagamento pagamento = pagamentoRepositoryPort.findByCodigoPedido(pedidoAPagarDTO.getCodigoPedido());
+        if((pagamento.getCodigoPedido().isEmpty()) || (pagamento.getCodigoPedido() == null)){
+            System.out.println("Um pagamento está sendo criado para o pedido: " + pedidoAPagarDTO.getCodigoPedido());
+            pagamentoRepositoryPort.salvaPagamento(new Pagamento(pedidoAPagarDTO));
+        }else{
+            throw new ResourceAlreadyInProcessException("Pedido:  " + pedidoAPagarDTO.getCodigoPedido() +" já possui pagamento PENDNETE.");
+        }
+    }
+
+    /**
+     * Simula a lógica da Domain Service usando o gateway
+     * Para sua implementação é necessária a instalação do SDK do MP
+     * o payload é definido de forma específica para o Gateway
+     */
+    @Override
+    public void enviaGatewayDePagamento(PedidoAPagarDTO pedidoAPagarDTO) {
+        System.out.println("verficando qual Gateway será usado...");
+        System.out.println("Criando payload de acordo com o Gateway do Mercado Pago");
+        System.out.println("Enviando ao Mercado Pago a request de pagamento...");
+        System.out.println("Chamando evento que cria código para Pagamento do pedido: " + pedidoAPagarDTO.getCodigoPedido());
+
+        verificaSeJaExistePagamentoParaOPedido(pedidoAPagarDTO);
+
+        System.out.println("Aguardando retorno do Gateway com o Status do pagamento enviado.");
     }
 
     /**
@@ -88,29 +133,17 @@ public class DomainPagamentoService implements PagamentoServicePort {
     public PagamentoDTO criaPagamento(PagamentoDTO pagamentoDTO)  {
         System.out.println(pagamentoDTO.getStatus() + " - Status passado na Request");
 
-            if(!podeIniciarPagamento(pagamentoDTO)){
-                throw new UnprocessablePaymentException("Pagamento não pode ser processado. STATUS: " + pagamentoDTO.getStatus() + " Pedido associado: " + pagamentoDTO.getCodigoPedido());
-            }
+        if(!podeIniciarPagamento(pagamentoDTO)){
+            throw new UnprocessablePaymentException("Pagamento não pode ser processado. STATUS: " + pagamentoDTO.getStatus() + " Pedido associado: " + pagamentoDTO.getCodigoPedido());
+        }
 
-            pagamentoRepositoryPort.findByCodigo(pagamentoDTO.getCodigo());
-            iniciaStatusPagamento(pagamentoDTO);
+        pagamentoRepositoryPort.findByCodigo(pagamentoDTO.getCodigo());
+        iniciaStatusPagamento(pagamentoDTO);
 
-            Pagamento novoPagamento = new Pagamento(pagamentoDTO);
-            pagamentoRepositoryPort.salvaPagamento(novoPagamento);
-            return new PagamentoDTO(novoPagamento);
+        Pagamento novoPagamento = new Pagamento(pagamentoDTO);
+        pagamentoRepositoryPort.salvaPagamento(novoPagamento);
+        return new PagamentoDTO(novoPagamento);
 
-    }
-
-    /**
-     * Persiste o código do Pedido recebido e ao persistir o pagamento é criado para aquele pedido
-     * TODO elaborar fluxo de exeções que não estão sendo tratadas
-     * @param pedidoAPagarDTO
-     * @return
-     */
-    @Override
-    public PedidoAPagarDTO criaPagamentoViaGateway(PedidoAPagarDTO pedidoAPagarDTO)  {
-        pagamentoRepositoryPort.salvaPagamento(new Pagamento(pedidoAPagarDTO));
-        return new PedidoAPagarDTO(new PagamentoDTO(pedidoAPagarDTO));
     }
 
 
@@ -164,37 +197,6 @@ public class DomainPagamentoService implements PagamentoServicePort {
     }
 
     /**
-     * Simula a lógica da Domain Service usando o gateway
-     * Para sua implementação é necessária a instalação do SDK do MP
-     * o payload é definido de forma específica para o Gateway
-     */
-    @Override
-    public void enviaGatewayDePagamento(PedidoAPagarDTO pedidoAPagarDTO) {
-        System.out.println("verficando qual Gateway será usado...");
-        System.out.println("Criando payload de acordo com o Gateway do Mercado Pago");
-        System.out.println("Enviando ao Mercado Pago a request de pagamento...");
-        System.out.println("Criando código para Pagamento do pedido: " + pedidoAPagarDTO.getCodigoPedido());
-        //só vai funcionar quando a integração estiver ok, os pedidos precisam ser recuperados do domínio de Pedidos
-
-        verificaPedidoAPagarParaCriarPagamento(pedidoAPagarDTO);
-
-        System.out.println("Aguardando retorno com o status do pagamento");
-    }
-
-    private void verificaPedidoAPagarParaCriarPagamento(PedidoAPagarDTO pedidoAPagarDTO) {
-        Optional<PedidoAPagarDTO> possivelPagamentoParaEstePedido = pagamentoRepositoryPort.findByCodigoPedidoAPagar(pedidoAPagarDTO.getCodigoPedido());
-        if(possivelPagamentoParaEstePedido.isPresent()) {
-            geraPagamentoDoPedido(pedidoAPagarDTO);
-        }else throw new UnprocessablePaymentException("Pagamento para o pedido " + pedidoAPagarDTO.getCodigoPedido() + "não pode ser processado.");
-    }
-
-
-    private void geraPagamentoDoPedido(PedidoAPagarDTO pedidoAPagarDTO) {
-        Pagamento novoPagamento = new Pagamento(pedidoAPagarDTO);
-        pagamentoRepositoryPort.salvaPagamento(novoPagamento);
-    }
-
-    /**
      * Verifica se o número do pedido passado existe e se o pedido possui status PENDENTE
      * RN - Um pedido no estado PENDENTE não pode ter seu pagamento iniciado novamente
      *
@@ -216,11 +218,6 @@ public class DomainPagamentoService implements PagamentoServicePort {
         if(!status.equals(StatusPagamento.PENDING)) {
             throw new ResourceNotFoundException("Pedido encontra-se : " + status.name());
         }
-    }
-
-    //TODO enviar verificação para classe PagamentoDTO
-    private boolean verificaTransacaoPagamentoEmAndamento(PagamentoDTO pagamentoDTO) {
-        return (findByCodigoPedido(pagamentoDTO.getCodigoPedido()) != null && pagamentoDTO.getStatus().equals(StatusPagamento.PENDING));
     }
 
     //TODO enviar verificação para classe PagamentoDTO

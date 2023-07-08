@@ -23,14 +23,20 @@ public class PedidoStatusController {
     //-------------------------------------------------------------------------//
     @GetMapping("busca-recebidos")
     @ResponseBody
-    public ResponseEntity<List<PedidoDTO>> getProdutosRecebidos() {
+    public ResponseEntity<List<PedidoDTO>> getPedidosRecebidos() {
         List<PedidoDTO> lista = this.pedidoService.buscarTodosRecebido();
         return ResponseEntity.ok().body(lista);
     }
     @GetMapping("busca-em-preparacao")
     @ResponseBody
-    public ResponseEntity<List<PedidoDTO>> getProdutosEmPreparacao() {
+    public ResponseEntity<List<PedidoDTO>> getPedidosEmPreparacao() {
         List<PedidoDTO> lista = this.pedidoService.buscarTodosEmPreparacao();
+        return ResponseEntity.ok().body(lista);
+    }
+    @GetMapping("busca-pagos")
+    @ResponseBody
+    public ResponseEntity<List<PedidoDTO>> getPedidosPagos() {
+        List<PedidoDTO> lista = this.pedidoService.buscarTodosPagos();
         return ResponseEntity.ok().body(lista);
     }
     @GetMapping("busca-prontos")
