@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pedido.application.rest;
 
 import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.PedidoComandaIntegration;
