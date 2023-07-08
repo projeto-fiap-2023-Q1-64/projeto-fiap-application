@@ -38,7 +38,7 @@ public class PedidoComandaController {
         PedidoDTO pedidoDTO = null;
         try{
             pedidoDTO = this.pedidoService.preparar(codigo);
-            if(pedidoDTO == null || !pedidoDTO.getStatus().equals(StatusPedido.PAGO)){
+            if(pedidoDTO == null || !pedidoDTO.getStatus().equals(StatusPedido.EM_PREPARACAO)){
                 //TODO: tratar erro aqui
                 System.out.println("Erro na atualização do status!");
                 throw new Exception("Erro na atualização do status!");
