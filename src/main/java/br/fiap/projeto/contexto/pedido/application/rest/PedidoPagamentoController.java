@@ -10,6 +10,7 @@ import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.CriaComan
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.Pagamento;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class PedidoPagamentoController {
     //-------------------------------------------------------------------------//
     @PatchMapping("/{codigo}/verificar-pagamento")
     @ResponseBody
-    public PedidoDTO verificarPagamento(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
+    public ResponseEntity<PedidoDTO> verificarPagamento(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
         PedidoDTO pedidoDTO = null;
         try {
             Pagamento pagamento = pedidoPagamentoIntegration.buscaStatusPagamentoPorCodigoPedido(codigo.toString());
@@ -48,6 +49,6 @@ public class PedidoPagamentoController {
             System.out.println("Erro ao realizar integração!");
             throw new Exception("Erro ao realizar integração!",e);
         }
-        return pedidoDTO;
+        return ResponseEntity.ok().body(pedidoDTO);
     }
 }

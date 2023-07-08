@@ -9,6 +9,7 @@ import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.Comanda;
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.CriaComanda;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -28,12 +29,12 @@ public class PedidoComandaController {
     //-------------------------------------------------------------------------//
     @PatchMapping("/{codigo}/prontificar")
     @ResponseBody
-    public PedidoDTO prontificarPedido(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
-        return this.pedidoService.prontificar(codigo);
+    public ResponseEntity<PedidoDTO> prontificarPedido(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
+        return ResponseEntity.ok().body(this.pedidoService.prontificar(codigo));
     }
     @PatchMapping("/{codigo}/enviar-comanda")
     @ResponseBody
-    public PedidoDTO enviarComanda(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
+    public ResponseEntity<PedidoDTO> enviarComanda(@ApiParam(value="Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
         PedidoDTO pedidoDTO = null;
         try{
             pedidoDTO = this.pedidoService.preparar(codigo);
@@ -54,6 +55,6 @@ public class PedidoComandaController {
             System.out.println("Erro na integração com a Comanda!");
             throw new Exception("Erro na integração com a Comanda!");
         }
-        return pedidoDTO;
+        return ResponseEntity.ok().body(pedidoDTO);
     }
 }
