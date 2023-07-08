@@ -28,7 +28,7 @@ public class PedidoComandaController {
     // -------------------------------------------------------------------------//
     // INTEGRAÇÃO COMANDA
     // -------------------------------------------------------------------------//
-    @PatchMapping("/{codigo}/prontificar")
+    @PutMapping("/{codigo}/prontificar")
     @ResponseBody
     public ResponseEntity<PedidoDTO> prontificarPedido(
             @ApiParam(value = "Código do Pedido") @PathVariable("codigo") String codigo) throws Exception {
