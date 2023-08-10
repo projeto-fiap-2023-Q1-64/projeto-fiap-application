@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: projeto-fiap-db
+  labels: 
+    app: projeto-fiap-db
+spec:
+  containers:
+    - name: db
+      image: postgres
+      ports:
+        - containerPort: 5432
+      env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: opaque-postgres-secret
+              key: POSTGRES_DB
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: opaque-postgres-secret
+              key: POSTGRES_PASSWORD
