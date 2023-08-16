@@ -8,6 +8,9 @@ spec:
   containers:
     - name: db
       image: postgres
+      args:
+        - -c
+        - max_connections=1000
       ports:
         - containerPort: 5432
       env:
@@ -21,3 +24,10 @@ spec:
             secretKeyRef:
               name: opaque-postgres-secret
               key: POSTGRES_PASSWORD
+      livenessProbe:
+        exec:
+          command:
+            - ls
+            - /var/lib/postgresql/data
+        initialDelaySeconds: 10
+        periodSeconds: 30

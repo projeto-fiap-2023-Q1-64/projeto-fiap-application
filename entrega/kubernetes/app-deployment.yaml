@@ -5,7 +5,7 @@ metadata:
   labels:
     app: projetofiap-deployment
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: projetofiap-deployment
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: c-projetofiap-deployment
-          image: rm350010/projeto-fiap-1
+          image: rm350010/projeto-fiap-1:kubernetes-v1
           ports:
             - containerPort: 8080
           env:
@@ -25,3 +25,12 @@ spec:
                 secretKeyRef:
                   name: opaque-app-secret
                   key: SPRING_DATASOURCE_URL
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 350m

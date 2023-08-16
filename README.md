@@ -8,7 +8,17 @@
 - Richard Cardoso (RM350010)
 
 ---
-## Entrega
+## Fase 2
+
+### Execução kubernetes (local)
+
+* Abrir o terminal no diretório raiz do projeto (onde fica o arquivo Readme.md)
+* Executar ```sh .\entrega\kubernetes\infra\stop.sh``` para parar a execução
+* Executar ```sh .\entrega\kubernetes\infra\start.sh``` para iniciar a execução
+* Executar ```sh .\entrega\kubernetes\infra\restart.sh``` para reiniciar a execução (executa primeiro a parada e depois a subida)
+
+---
+## Entrega Fase 1
 
 Roteiro do fluxo principal -> https://liniis.notion.site/Walkthrough-Fluxo-de-Eventos-da-Lanchonete-Totem-f18dfb5a87674d93899a6bbde1ae1695
 
@@ -19,7 +29,7 @@ Swagger (cloud) -> [live swagger](https://projeto-fiap-64.cloud/swagger-ui/index
 Miro -> [Documentação DDD](https://miro.com/app/board/uXjVMJnebyw=/)
 
 ---
-## Comandos do docker
+## Comandos do docker - Fase 1
 ### Iniciar containers (aplicação e banco)
 ```
 docker-compose up --force-recreate --build

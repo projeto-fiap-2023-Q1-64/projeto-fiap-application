@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-app-projetofiap
+spec:
+  selector:
+    app: projetofiap-deployment
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
+  loadBalancerIP: "34.67.239.82"
