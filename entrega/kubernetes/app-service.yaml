@@ -2,8 +2,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: svc-app-projetofiap
-  annotations:
-    cloud.google.com/neg: '{"exposed_ports": {"80":{"name": "svc-app-neg"}}}'
 spec:
   type: NodePort
   selector:
