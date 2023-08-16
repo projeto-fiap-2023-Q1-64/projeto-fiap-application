@@ -13,9 +13,8 @@
 ### Execução kubernetes (local)
 
 * Abrir o terminal no diretório raiz do projeto (onde fica o arquivo Readme.md)
-* Executar ```sh .\entrega\kubernetes\infra\stop.sh``` para parar a execução
-* Executar ```sh .\entrega\kubernetes\infra\start.sh``` para iniciar a execução
-* Executar ```sh .\entrega\kubernetes\infra\restart.sh``` para reiniciar a execução (executa primeiro a parada e depois a subida)
+* Executar ```kubectl delete -f entrega\kubernetes``` para parar a execução
+* Executar ```kubectl apply -f entrega\kubernetes``` para iniciar a execução
 
 ---
 ## Entrega Fase 1
