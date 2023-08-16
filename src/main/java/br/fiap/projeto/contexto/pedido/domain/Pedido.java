@@ -9,9 +9,11 @@ import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Pedido {
  
 	private UUID codigo;

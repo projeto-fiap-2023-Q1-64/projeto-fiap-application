@@ -45,21 +45,21 @@ public class ComandaController {
 
     // RECEBIDO, EM_PREPARACAO, FINALIZADO
 
-    @GetMapping("busca-pendentes")
+    @GetMapping("/busca-pendentes")
     @ResponseBody
     ResponseEntity<List<ComandaDTO>> getComandasPendentes() {
         List<ComandaDTO> lista = this.comandaServicePort.buscaComandaRecebido();
         return ResponseEntity.ok().body(lista);
     }
 
-    @GetMapping("busca-em-preparacao")
+    @GetMapping("/busca-em-preparacao")
     @ResponseBody
     ResponseEntity<List<ComandaDTO>> getComandasPreapracao() {
         List<ComandaDTO> lista = this.comandaServicePort.buscaComandaPreparacao();
         return ResponseEntity.ok().body(lista);
     }
 
-    @GetMapping("busca-finalizadas")
+    @GetMapping("/busca-finalizadas")
     @ResponseBody
     ResponseEntity<List<ComandaDTO>> getComandasFinalizadas() {
         List<ComandaDTO> lista = this.comandaServicePort.buscaComandaFinalizado();

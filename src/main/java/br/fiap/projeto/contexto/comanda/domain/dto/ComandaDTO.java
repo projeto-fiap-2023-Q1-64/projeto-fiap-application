@@ -12,6 +12,9 @@ public class ComandaDTO {
 
 	private StatusComanda status;
 
+	public ComandaDTO() {
+	}
+
 	public ComandaDTO(UUID codigoComanda, UUID codigoPedido, StatusComanda status) {
 		this.codigoComanda = codigoComanda;
 		this.codigoPedido = codigoPedido;

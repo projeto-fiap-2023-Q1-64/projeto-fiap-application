@@ -30,7 +30,7 @@ public class PedidoController {
     //                         BASE CRUD
     //-------------------------------------------------------------------------//
 
-    @PostMapping("/{codigo_cliente}")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<PedidoDTO> criaPedido(@ApiParam(value="Código do Cliente (Opcional)") @RequestParam(value = "codigo_cliente", required = false) String codigoCliente) {
         PedidoCriarDTO pedidoCriarDTO = null;

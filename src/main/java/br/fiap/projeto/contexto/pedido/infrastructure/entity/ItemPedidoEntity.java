@@ -28,6 +28,7 @@ public class ItemPedidoEntity {
     private String produtoDescricao;
     @Column(nullable = false, precision = 2)
     private double valorUnitario;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CategoriaProduto categoriaProduto;
     @Column(nullable = false)

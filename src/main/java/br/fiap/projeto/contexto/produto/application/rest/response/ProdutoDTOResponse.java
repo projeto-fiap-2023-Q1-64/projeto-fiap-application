@@ -3,9 +3,11 @@ package br.fiap.projeto.contexto.produto.application.rest.response;
 import br.fiap.projeto.contexto.produto.domain.Produto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProdutoDTOResponse {
 
     private String codigo;

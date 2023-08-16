@@ -1,16 +1,22 @@
 # Projeto de pós-graduação (Fiap/Alura) do grupo 2023-Q1-64
 ## Integrantes
-- Ademar Terra
-- Aline Santos
-- Danilo LR
-- Mario Sclavo
-- Richard Cardoso
+
+- Ademar Terra (RM350011)
+- Aline Santos (RM350002)
+- Danilo LR (RM350012)
+- Mario Sclavo (RM350014)
+- Richard Cardoso (RM350010)
 
 ---
 ## Entrega
-[docker-compose.yml](entrega/docker-compose.yml)
 
-[live swagger](https://projeto-fiap-64.cloud/swagger-ui/index.html#/)
+Roteiro do fluxo principal -> https://liniis.notion.site/Walkthrough-Fluxo-de-Eventos-da-Lanchonete-Totem-f18dfb5a87674d93899a6bbde1ae1695
+
+Docker compose com imagem do dockerhub -> [docker-compose.yml](entrega/docker-compose.yml)
+
+Swagger (cloud) -> [live swagger](https://projeto-fiap-64.cloud/swagger-ui/index.html#/)
+
+Miro -> [Documentação DDD](https://miro.com/app/board/uXjVMJnebyw=/)
 
 ---
 ## Comandos do docker
