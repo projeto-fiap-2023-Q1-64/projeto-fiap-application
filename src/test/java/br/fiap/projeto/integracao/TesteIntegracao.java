@@ -2,17 +2,14 @@ package br.fiap.projeto.integracao;
 
 import br.fiap.projeto.config.CustomPageImpl;
 import br.fiap.projeto.contexto.comanda.domain.dto.ComandaDTO;
-import br.fiap.projeto.contexto.comanda.domain.dto.CriarComandaDTO;
 import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
-import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoStatusDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
-import br.fiap.projeto.contexto.produto.application.rest.response.ProdutoDTOResponse;
-import com.fasterxml.jackson.core.type.TypeReference;
+import br.fiap.projeto.contexto.produto.adapter.controller.rest.response.ProdutoDTOResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +26,6 @@ import org.springframework.util.StringUtils;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.platform.commons.function.Try.success;
