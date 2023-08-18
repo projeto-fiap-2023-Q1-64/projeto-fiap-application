@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.produto.usecase.port.service;
+package br.fiap.projeto.contexto.produto.usecase.port;
 
 import br.fiap.projeto.contexto.produto.entity.Produto;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
@@ -7,7 +7,7 @@ import br.fiap.projeto.contexto.produto.usecase.exception.ProdutoNaoEncontradoEx
 
 import java.util.List;
 
-public interface IProdutoUseCase {
+public interface IGestaoProdutoUseCase {
 
     List<Produto> buscaTodos();
 

@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.produto.external.api;
 
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.request.ProdutoDTORequest;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.response.ProdutoDTOResponse;
-import br.fiap.projeto.contexto.produto.adapter.interfaces.IProdutoAdapterController;
+import br.fiap.projeto.contexto.produto.adapter.controller.port.IProdutoRestAdapterController;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +18,30 @@ import java.util.List;
 @RequestMapping("/produtos")
 public class ProdutoApiController {
 
-    private final IProdutoAdapterController produtoAdapterController;
+    private final IProdutoRestAdapterController produtoAdapterController;
 
     @Autowired
-    public ProdutoApiController(IProdutoAdapterController produtoAdapterController) {
+    public ProdutoApiController(IProdutoRestAdapterController produtoAdapterController) {
         this.produtoAdapterController = produtoAdapterController;
     }
 
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<ProdutoDTOResponse>> getProdutos() {
-        return ResponseEntity.ok().body(this.produtoAdapterController.getProdutos());
+        return ResponseEntity.ok().body(this.produtoAdapterController.buscaTodos());
     }
 
     @SneakyThrows
     @GetMapping("/{codigo}")
     @ResponseBody
     public ResponseEntity<ProdutoDTOResponse> getProduto(@PathVariable("codigo") String codigo) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.produtoAdapterController.getProduto(codigo));
+        return ResponseEntity.status(HttpStatus.OK).body(this.produtoAdapterController.buscaProduto(codigo));
     }
 
     @GetMapping("/por-categoria")
     @ResponseBody
     public ResponseEntity<List<ProdutoDTOResponse>> getProdutosPorCategoria(@PathParam("categoria") CategoriaProduto categoria) {
-        return ResponseEntity.ok(this.produtoAdapterController.getProdutosPorCategoria(categoria));
+        return ResponseEntity.ok(this.produtoAdapterController.buscaProdutosPorCategoria(categoria));
     }
 
     @GetMapping("/categorias")

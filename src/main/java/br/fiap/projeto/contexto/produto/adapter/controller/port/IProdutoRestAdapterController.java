@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.produto.adapter.interfaces;
+package br.fiap.projeto.contexto.produto.adapter.controller.port;
 
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.request.ProdutoDTORequest;
@@ -8,12 +8,12 @@ import br.fiap.projeto.contexto.produto.usecase.exception.ProdutoNaoEncontradoEx
 
 import java.util.List;
 
-public interface IProdutoAdapterController {
-    public List<ProdutoDTOResponse> getProdutos();
-    public ProdutoDTOResponse getProduto(String codigo) throws ProdutoNaoEncontradoException;
-    public List<ProdutoDTOResponse> getProdutosPorCategoria(CategoriaProduto categoria);
-    public List<String> getCategoriasDeProdutos();
+public interface IProdutoRestAdapterController {
+    public List<ProdutoDTOResponse> buscaTodos();
+    public ProdutoDTOResponse buscaProduto(String codigo) throws ProdutoNaoEncontradoException;
+    public List<ProdutoDTOResponse> buscaProdutosPorCategoria(CategoriaProduto categoria);
     public ProdutoDTOResponse criaProduto(ProdutoDTORequest produtoDTORequest) throws EntradaInvalidaException;
     public void removeProduto(String codigo) throws ProdutoNaoEncontradoException;
     public void atualizaProduto(String codigo, ProdutoDTORequest produtoDTO) throws ProdutoNaoEncontradoException;
+    public List<String> getCategoriasDeProdutos();
 }

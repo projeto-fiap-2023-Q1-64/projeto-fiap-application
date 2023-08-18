@@ -2,8 +2,7 @@ package br.fiap.projeto.contexto.produto.external.configuration;
 
 import br.fiap.projeto.contexto.produto.entity.Produto;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
-import br.fiap.projeto.contexto.produto.adapter.gateway.ProdutoAdapterGateway;
-import br.fiap.projeto.contexto.produto.usecase.port.IProdutoAdapterGateway;
+import br.fiap.projeto.contexto.produto.usecase.port.IProdutoRepositoryAdapterGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class PostgresProdutoDataLoader {
 
     @Autowired
-    private IProdutoAdapterGateway produtoAdapterGateway;
+    private IProdutoRepositoryAdapterGateway produtoAdapterGateway;
 
     @PostConstruct
     public void init() {

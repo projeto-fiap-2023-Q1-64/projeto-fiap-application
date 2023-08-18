@@ -6,7 +6,7 @@ import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import java.util.List;
 import java.util.Optional;
 
-public interface IProdutoAdapterGateway {
+public interface IProdutoRepositoryAdapterGateway {
     public List<Produto> buscaTodos();
     public Optional<Produto> buscaProduto(String codigo);
     public List<Produto> buscaProdutosPorCategoria(CategoriaProduto categoria);

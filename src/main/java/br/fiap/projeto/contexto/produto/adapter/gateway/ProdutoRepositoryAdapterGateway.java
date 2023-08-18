@@ -4,17 +4,17 @@ import br.fiap.projeto.contexto.produto.entity.Produto;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.external.repository.entity.ProdutoEntity;
 import br.fiap.projeto.contexto.produto.external.repository.postgres.SpringProdutoRepository;
-import br.fiap.projeto.contexto.produto.usecase.port.IProdutoAdapterGateway;
+import br.fiap.projeto.contexto.produto.usecase.port.IProdutoRepositoryAdapterGateway;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ProdutoAdapterGateway implements IProdutoAdapterGateway {
+public class ProdutoRepositoryAdapterGateway implements IProdutoRepositoryAdapterGateway {
 
     private final SpringProdutoRepository springProdutoRepository;
 
-    public ProdutoAdapterGateway(SpringProdutoRepository springProdutoRepository) {
+    public ProdutoRepositoryAdapterGateway(SpringProdutoRepository springProdutoRepository) {
         this.springProdutoRepository = springProdutoRepository;
     }
 

@@ -4,8 +4,8 @@ import br.fiap.projeto.contexto.produto.entity.Produto;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.produto.usecase.exception.ProdutoNaoEncontradoException;
-import br.fiap.projeto.contexto.produto.usecase.port.IProdutoAdapterGateway;
-import br.fiap.projeto.contexto.produto.usecase.port.service.IProdutoUseCase;
+import br.fiap.projeto.contexto.produto.usecase.port.IProdutoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.produto.usecase.port.IGestaoProdutoUseCase;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class ProdutoUseCase implements IProdutoUseCase {
+public class GestaoProdutoUseCase implements IGestaoProdutoUseCase {
 
-    private final IProdutoAdapterGateway produtoAdapterGateway;
+    private final IProdutoRepositoryAdapterGateway produtoAdapterGateway;
 
-    public ProdutoUseCase(IProdutoAdapterGateway produtoAdapterGateway) {
+    public GestaoProdutoUseCase(IProdutoRepositoryAdapterGateway produtoAdapterGateway) {
         this.produtoAdapterGateway = produtoAdapterGateway;
     }
 
