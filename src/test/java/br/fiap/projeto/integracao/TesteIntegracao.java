@@ -7,8 +7,8 @@ import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoStatusDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
+import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.response.ProdutoDTOResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
