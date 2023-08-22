@@ -1,10 +1,10 @@
 package br.fiap.projeto.contexto.identificacao;
 
-import br.fiap.projeto.contexto.identificacao.application.rest.request.ClienteRequestDTO;
-import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
-import br.fiap.projeto.contexto.identificacao.domain.exception.EntradaInvalidaException;
-import br.fiap.projeto.contexto.identificacao.domain.port.service.ClienteService;
-import br.fiap.projeto.contexto.identificacao.domain.exception.EntidadeNaoEncontradaException;
+import br.fiap.projeto.contexto.identificacao.adapter.controller.rest.request.ClienteRequestDTO;
+import br.fiap.projeto.contexto.identificacao.entity.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.identificacao.usecase.port.service.ClienteService;
+import br.fiap.projeto.contexto.identificacao.usecase.exception.EntidadeNaoEncontradaException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

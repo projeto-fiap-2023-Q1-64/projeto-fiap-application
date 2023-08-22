@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.identificacao;
 
-import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
-import br.fiap.projeto.contexto.identificacao.infrastructure.entity.ClienteEntity;
-import br.fiap.projeto.contexto.identificacao.infrastructure.repository.SpringDataClienteRepository;
+import br.fiap.projeto.contexto.identificacao.adapter.controller.rest.response.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.external.repository.entity.ClienteEntity;
+import br.fiap.projeto.contexto.identificacao.external.repository.postgres.SpringDataClienteRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
