@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao.external.repository.entity;
 
-import br.fiap.projeto.contexto.identificacao.entity.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.entity.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.entity.vo.Email;
 import lombok.SneakyThrows;
@@ -43,6 +43,16 @@ public class ClienteEntity {
         this(codigo, nome, cpf.getNumero(), email.getEndereco());
     }
 
+    public static ClienteEntity fromCliente(Cliente cliente) {
+
+        return new ClienteEntity(
+                cliente.getCodigo(),
+                cliente.getNome(),
+                cliente.getCpf(),
+                cliente.getEmail()
+        );
+    }
+
     @SneakyThrows
     public Cliente toCliente() {
 
@@ -51,16 +61,6 @@ public class ClienteEntity {
                 nome,
                 cpf,
                 email
-        );
-    }
-
-    public static ClienteEntity fromCliente(Cliente cliente) {
-
-        return new ClienteEntity(
-                cliente.getCodigo(),
-                cliente.getNome(),
-                cliente.getCpf(),
-                cliente.getEmail()
         );
     }
 

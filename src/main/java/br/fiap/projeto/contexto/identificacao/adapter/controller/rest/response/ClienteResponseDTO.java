@@ -1,13 +1,13 @@
 package br.fiap.projeto.contexto.identificacao.adapter.controller.rest.response;
 
-import br.fiap.projeto.contexto.identificacao.entity.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.entity.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.entity.vo.Email;
 import lombok.SneakyThrows;
 
 import java.util.Optional;
 
-public class ClienteDTO {
+public class ClienteResponseDTO {
 
     private String codigo;
 
@@ -17,17 +17,17 @@ public class ClienteDTO {
 
     private String email;
 
-    public ClienteDTO() {
+    public ClienteResponseDTO() {
     }
 
-    public ClienteDTO(String codigo, String nome, String cpf, String email) {
+    public ClienteResponseDTO(String codigo, String nome, String cpf, String email) {
         this.codigo = codigo;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
     }
 
-    public ClienteDTO(String nome, String cpf, String email) {
+    public ClienteResponseDTO(String nome, String cpf, String email) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -55,12 +55,12 @@ public class ClienteDTO {
         return new Cliente(codigo, nome, cpf, email);
     }
 
-    public static ClienteDTO fromCliente(Cliente cliente) {
+    public static ClienteResponseDTO fromCliente(Cliente cliente) {
 
         if (cliente == null) {
             return null;
         }
-        return new ClienteDTO(
+        return new ClienteResponseDTO(
                 cliente.getCodigo(),
                 cliente.getNome(),
                 Optional.ofNullable(cliente.getCpf()).map(Cpf::getNumero).orElse(null),

@@ -1,11 +1,9 @@
 package br.fiap.projeto.contexto.identificacao.adapter.gateway;
 
-import br.fiap.projeto.contexto.identificacao.entity.entity.Cliente;
-import br.fiap.projeto.contexto.identificacao.adapter.controller.rest.response.ClienteDTO;
-import br.fiap.projeto.contexto.identificacao.external.repository.postgres.SpringDataClienteRepository;
-import br.fiap.projeto.contexto.identificacao.usecase.port.repository.ClienteRepository;
+import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.external.repository.entity.ClienteEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.fiap.projeto.contexto.identificacao.external.repository.postgres.SpringClienteRepository;
+import br.fiap.projeto.contexto.identificacao.usecase.port.repository.IClienteRepositoryAdapterGateway;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,85 +12,76 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
-public class ClienteRepositoryAdapterGateway implements ClienteRepository {
+public class ClienteRepositoryAdapterGateway implements IClienteRepositoryAdapterGateway {
 
-    @Autowired
-    private SpringDataClienteRepository repository;
+    private SpringClienteRepository springClienteRepository;
+
+    public ClienteRepositoryAdapterGateway(SpringClienteRepository springClienteRepository) {
+        this.springClienteRepository = springClienteRepository;
+    }
 
     @Override
     public Cliente busca(String codigo) {
-
-        Cliente ret;
-        Optional<ClienteEntity> optClienteEntity;
-
-        optClienteEntity = repository.findByCodigoAndDataExclusaoIsNull(codigo);
-        if (!optClienteEntity.isPresent()) {
+        Optional<ClienteEntity> clienteRecuperado;
+        clienteRecuperado = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
+        if (!clienteRecuperado.isPresent()) {
             return null;
         }
-        ret = optClienteEntity.get().toCliente();
-        return ret;
+
+        return clienteRecuperado.get().toCliente();
     }
 
     @Override
     public List<Cliente> buscaTodos() {
-
         List<ClienteEntity> entidades;
+        entidades = springClienteRepository.findAllByDataExclusaoIsNull();
+
         List<Cliente> clientes;
-        entidades = repository.findAllByDataExclusaoIsNull();
-        clientes = entidades.stream()
-                .map(ClienteEntity::toCliente)
-                .collect(Collectors.toList());
+        clientes = entidades.stream().map(ClienteEntity::toCliente).collect(Collectors.toList());
 
         return clientes;
     }
 
     @Override
     public Cliente insere(Cliente cliente) {
-
         ClienteEntity clienteEntity;
-
         clienteEntity = ClienteEntity.fromCliente(cliente);
-        clienteEntity = repository.save(clienteEntity);
+        clienteEntity = springClienteRepository.save(clienteEntity);
 
         return clienteEntity.toCliente();
     }
 
     @Override
     public Cliente edita(Cliente cliente) {
-
         ClienteEntity clienteEntity = ClienteEntity.fromCliente(cliente);
-        clienteEntity = repository.save(clienteEntity);
+        clienteEntity = springClienteRepository.save(clienteEntity);
         return clienteEntity.toCliente();
     }
 
     @Override
     public void remove(String codigo) {
-
         Optional<ClienteEntity> existing;
-        existing = repository.findByCodigoAndDataExclusaoIsNull(codigo);
+        existing = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
         if (existing.isPresent()) {
             existing.get().setDataExclusao(LocalDateTime.now());
-            repository.save(existing.get());
+            springClienteRepository.save(existing.get());
         }
     }
 
     @Override
-    public ClienteDTO buscaPorCpf(String cpf) {
-
-        ClienteEntity entity = repository.findByCpfAndDataExclusaoIsNull(cpf);
+    public Cliente buscaPorCpf(String cpf) {
+        ClienteEntity entity = springClienteRepository.findByCpfAndDataExclusaoIsNull(cpf);
         if (Objects.nonNull(entity)) {
-            return ClienteDTO.fromCliente(entity.toCliente());
+            return entity.toCliente();
         }
         return null;
     }
 
     @Override
-    public ClienteDTO buscaPorEmail(String email) {
-
-        ClienteEntity entity = repository.findByEmailAndDataExclusaoIsNull(email);
+    public Cliente buscaPorEmail(String email) {
+        ClienteEntity entity = springClienteRepository.findByEmailAndDataExclusaoIsNull(email);
         if (Objects.nonNull(entity)) {
-            return ClienteDTO.fromCliente(entity.toCliente());
+            return entity.toCliente();
         }
         return null;
     }

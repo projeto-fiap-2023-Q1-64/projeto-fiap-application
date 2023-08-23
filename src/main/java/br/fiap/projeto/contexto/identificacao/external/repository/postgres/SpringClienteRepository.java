@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SpringDataClienteRepository extends JpaRepository<ClienteEntity, String> {
-
+public interface SpringClienteRepository extends JpaRepository<ClienteEntity, String> {
     List<ClienteEntity> findAllByDataExclusaoIsNull();
     ClienteEntity findByCpfAndDataExclusaoIsNull(String cpf);
-
     ClienteEntity findByEmailAndDataExclusaoIsNull(String email);
     Optional<ClienteEntity> findByCodigoAndDataExclusaoIsNull(String codigo);
 }

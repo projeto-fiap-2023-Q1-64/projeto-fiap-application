@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.external.config;
 
-import br.fiap.projeto.contexto.identificacao.entity.entity.Cliente;
-import br.fiap.projeto.contexto.identificacao.usecase.port.repository.ClienteRepository;
+import br.fiap.projeto.contexto.identificacao.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.usecase.port.repository.IClienteRepositoryAdapterGateway;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import java.util.UUID;
 public class PostgresClienteDataLoader {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private IClienteRepositoryAdapterGateway clienteRepository;
 
     @PostConstruct
     @SneakyThrows

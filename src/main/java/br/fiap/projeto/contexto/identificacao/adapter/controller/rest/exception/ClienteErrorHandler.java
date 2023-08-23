@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao.adapter.controller.rest.exception;
 
-import br.fiap.projeto.contexto.identificacao.external.api.ClienteController;
+import br.fiap.projeto.contexto.identificacao.external.api.ClienteApiController;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.BaseException;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntidadeNaoEncontradaException;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntradaInvalidaException;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice(basePackageClasses = ClienteController.class)
+@ControllerAdvice(basePackageClasses = ClienteApiController.class)
 @Log4j2
 public class ClienteErrorHandler {
 

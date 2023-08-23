@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.identificacao;
 
-import br.fiap.projeto.contexto.identificacao.entity.entity.Cliente;
+import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.entity.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.entity.vo.Email;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntradaInvalidaException;

@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.identificacao.entity.entity;
+package br.fiap.projeto.contexto.identificacao.entity;
 
 import br.fiap.projeto.contexto.identificacao.entity.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.entity.vo.Email;
@@ -15,7 +15,7 @@ public class Cliente {
 	public final static String EMAIL_DUPLICADO = "Esse e-mail já está cadastrado!";
 	public final static String CODIGO_AUSENTE = "Informe o código do cliente!";
  
-	private final String codigo;
+	private String codigo;
 	 
 	private final String nome;
 	 
@@ -28,6 +28,16 @@ public class Cliente {
 		this.codigo = codigo;
 		this.nome = nome;
 		validaCodigo();
+		validaCpf(cpf);
+		validaEmail(email);
+		validaNome();
+		this.cpf = Cpf.fromString(cpf);
+		this.email = Email.fromString(email);
+	}
+
+	public Cliente(String nome, String cpf, String email) throws EntradaInvalidaException {
+
+		this.nome = nome;
 		validaCpf(cpf);
 		validaEmail(email);
 		validaNome();
