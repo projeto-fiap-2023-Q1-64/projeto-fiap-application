@@ -1,53 +1,58 @@
 package br.fiap.projeto.contexto.pedido.external.api;
 
+import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoQueryRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.usecase.port.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
-public class PedidoStatusApiController {
-    private final PedidoService pedidoService;
+public class PedidoQueryApiController {
+    private final IPedidoQueryRestAdapterController pedidoQueryRestAdapterController;
+
     @Autowired
-    public PedidoStatusApiController(PedidoService pedidoService) {
-        this.pedidoService = pedidoService;
+    public PedidoQueryApiController(IPedidoQueryRestAdapterController pedidoQueryRestAdapterController) {
+        this.pedidoQueryRestAdapterController = pedidoQueryRestAdapterController;
     }
 
-    //-------------------------------------------------------------------------//
-    //                        BUSCA POR STATUS
-    //-------------------------------------------------------------------------//
     @GetMapping("busca-recebidos")
     @ResponseBody
     public ResponseEntity<List<PedidoDTO>> getPedidosRecebidos() {
-        List<PedidoDTO> lista = this.pedidoService.buscarTodosRecebido();
+        List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosRecebido();
         return ResponseEntity.ok().body(lista);
     }
+
     @GetMapping("busca-em-preparacao")
     @ResponseBody
     public ResponseEntity<List<PedidoDTO>> getPedidosEmPreparacao() {
-        List<PedidoDTO> lista = this.pedidoService.buscarTodosEmPreparacao();
+        List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosEmPreparacao();
         return ResponseEntity.ok().body(lista);
     }
+
     @GetMapping("busca-pagos")
     @ResponseBody
     public ResponseEntity<List<PedidoDTO>> getPedidosPagos() {
-        List<PedidoDTO> lista = this.pedidoService.buscarTodosPagos();
+        List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosPagos();
         return ResponseEntity.ok().body(lista);
     }
+
     @GetMapping("busca-prontos")
     @ResponseBody
     public ResponseEntity<List<PedidoDTO>> getProdutosProntos() {
-        List<PedidoDTO> lista = this.pedidoService.buscarTodosPronto();
+        List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosPronto();
         return ResponseEntity.ok().body(lista);
     }
+
     @GetMapping("busca-entregues")
     @ResponseBody
     public ResponseEntity<List<PedidoDTO>> getProdutosEntregues() {
-        List<PedidoDTO> lista = this.pedidoService.buscarTodosFinalizado();
+        List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosFinalizado();
         return ResponseEntity.ok().body(lista);
     }
 }

@@ -46,29 +46,4 @@ public class PedidoRepositoryAdapterGateway implements IPedidoRepositoryAdapterG
         List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findByStatusEquals(statusPedido);
         return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
     }
-    @Override
-    public void removePedido(UUID codigo) {
-        this.buscaPedido(codigo);
-        springPedidoRepository.deleteByCodigo(codigo);
-    }
-    @Override
-    public Double calcularValorTotal() {
-        return null;
-    }
-    @Override
-    public void aumentarQuantidade(UUID produto) {}
-    @Override
-    public void reduzirQuantidade(UUID produto) {}
-    @Override
-    public Integer calcularTempoTotalPreparo() {
-        return null;
-    }
-    @Override
-    public void adicionarProduto(UUID produto) {}
-    @Override
-    public void removerProduto(UUID produto) {}
-    @Override
-    public List<ItemPedido> listarItens() {
-        return null;
-    }
 }

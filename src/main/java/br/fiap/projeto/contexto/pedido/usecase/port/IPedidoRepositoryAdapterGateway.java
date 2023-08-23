@@ -13,14 +13,5 @@ public interface IPedidoRepositoryAdapterGateway {
     Pedido salvar(Pedido pedido);
     Optional<Pedido> buscaPedido(UUID codigo);
     List<Pedido> buscaTodos();
-    void removePedido(UUID codigo);
-    Double calcularValorTotal();
-    void aumentarQuantidade(UUID produto);
-    void reduzirQuantidade(UUID produto);
-    Integer calcularTempoTotalPreparo();
-    void adicionarProduto(UUID produto);
-    void removerProduto(UUID produto);
-    List<ItemPedido> listarItens();
-
     List<Pedido> buscaPedidosPorStatus(StatusPedido statusPedido);
 }

@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.pedido.external.api;
 
+import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoWorkFlowRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
-import br.fiap.projeto.contexto.pedido.usecase.port.PedidoService;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoComandaIntegration;
 import br.fiap.projeto.contexto.pedido.external.integration.port.Comanda;
 import br.fiap.projeto.contexto.pedido.external.integration.port.CriaComanda;
@@ -16,23 +16,21 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoComandaApiController {
-    private final PedidoService pedidoService;
+    private final IPedidoWorkFlowRestAdapterController pedidoWorkFlowRestAdapterController;
     private final PedidoComandaIntegration pedidoComandaIntegration;
 
     @Autowired
-    public PedidoComandaApiController(PedidoService pedidoService, PedidoComandaIntegration pedidoComandaIntegration) {
-        this.pedidoService = pedidoService;
+    public PedidoComandaApiController(IPedidoWorkFlowRestAdapterController pedidoWorkFlowRestAdapterController,
+                                      PedidoComandaIntegration pedidoComandaIntegration) {
+        this.pedidoWorkFlowRestAdapterController = pedidoWorkFlowRestAdapterController;
         this.pedidoComandaIntegration = pedidoComandaIntegration;
     }
 
-    // -------------------------------------------------------------------------//
-    // INTEGRAÇÃO COMANDA
-    // -------------------------------------------------------------------------//
     @PutMapping("/{codigo}/prontificar")
     @ResponseBody
     public ResponseEntity<PedidoDTO> prontificarPedido(
             @ApiParam(value = "Código do Pedido") @PathVariable("codigo") String codigo) throws Exception {
-        return ResponseEntity.ok().body(this.pedidoService.prontificar(UUID.fromString(codigo)));
+        return ResponseEntity.ok().body(this.pedidoWorkFlowRestAdapterController.prontificarPedido(UUID.fromString(codigo)));
     }
 
     @PatchMapping("/{codigo}/enviar-comanda")
@@ -41,21 +39,18 @@ public class PedidoComandaApiController {
             @ApiParam(value = "Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
         PedidoDTO pedidoDTO = null;
         try {
-            pedidoDTO = this.pedidoService.preparar(codigo);
-            if(pedidoDTO == null || !pedidoDTO.getStatus().equals(StatusPedido.EM_PREPARACAO)){
-                //TODO: tratar erro aqui
+            pedidoDTO = this.pedidoWorkFlowRestAdapterController.prepararPedido(codigo);
+            if (pedidoDTO == null || !pedidoDTO.getStatus().equals(StatusPedido.EM_PREPARACAO)) {
                 System.out.println("Erro na atualização do status!");
                 throw new Exception("Erro na atualização do status!");
             }
             Comanda comanda = pedidoComandaIntegration.criaComanda(new CriaComanda(codigo));
             // Verifica se criou comanda
             if (comanda == null || comanda.getCodigoComanda().toString().isEmpty()) {
-                // TODO: tratar erro aqui
                 System.out.println("Erro na criação da comanda!");
                 throw new Exception("Erro na criação da comanda!");
             }
         } catch (Exception e) {
-            // TODO: tratar erro aqui
             System.out.println("Erro na integração com a Comanda!");
             throw new Exception("Erro na integração com a Comanda!");
         }
