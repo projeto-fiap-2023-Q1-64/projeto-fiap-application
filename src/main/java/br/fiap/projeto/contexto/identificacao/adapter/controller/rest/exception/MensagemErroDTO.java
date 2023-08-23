@@ -2,11 +2,10 @@ package br.fiap.projeto.contexto.identificacao.adapter.controller.rest.exception
 
 public class MensagemErroDTO {
 
-    private int code;
-    private String erro;
+    private final int code;
+    private final String erro;
 
     public MensagemErroDTO(int code, String erro) {
-
         this.code = code;
         this.erro = erro;
     }

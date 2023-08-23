@@ -4,9 +4,9 @@ import br.fiap.projeto.contexto.identificacao.adapter.controller.ClienteRestAdap
 import br.fiap.projeto.contexto.identificacao.adapter.controller.port.IClienteRestAdapterController;
 import br.fiap.projeto.contexto.identificacao.adapter.gateway.ClienteRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.identificacao.external.repository.postgres.SpringClienteRepository;
-import br.fiap.projeto.contexto.identificacao.usecase.port.repository.IClienteRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.identificacao.usecase.port.service.IGestaoClienteUsecase;
 import br.fiap.projeto.contexto.identificacao.usecase.GestaoClienteUseCase;
+import br.fiap.projeto.contexto.identificacao.usecase.port.IClienteRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.identificacao.usecase.port.IGestaoClienteUsecase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

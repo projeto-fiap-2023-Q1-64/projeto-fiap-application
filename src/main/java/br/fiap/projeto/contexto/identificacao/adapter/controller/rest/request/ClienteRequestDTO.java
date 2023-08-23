@@ -3,9 +3,7 @@ package br.fiap.projeto.contexto.identificacao.adapter.controller.rest.request;
 public class ClienteRequestDTO {
 
     private String nome;
-
     private String cpf;
-
     private String email;
 
     public ClienteRequestDTO() {

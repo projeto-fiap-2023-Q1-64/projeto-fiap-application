@@ -15,7 +15,7 @@ public interface IClienteRestAdapterController {
 
     ClienteResponseDTO insere(ClienteRequestDTO cliente) throws EntradaInvalidaException;
 
-    ClienteResponseDTO edita(String codigo, ClienteRequestDTO cliente) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
+    ClienteResponseDTO atualiza(String codigo, ClienteRequestDTO cliente) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
 
     void remove(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
 

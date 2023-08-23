@@ -10,11 +10,8 @@ import java.util.Optional;
 public class ClienteResponseDTO {
 
     private String codigo;
-
     private String nome;
-
     private String cpf;
-
     private String email;
 
     public ClienteResponseDTO() {
@@ -31,6 +28,19 @@ public class ClienteResponseDTO {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
+    }
+
+    public static ClienteResponseDTO fromCliente(Cliente cliente) {
+
+        if (cliente == null) {
+            return null;
+        }
+        return new ClienteResponseDTO(
+                cliente.getCodigo(),
+                cliente.getNome(),
+                Optional.ofNullable(cliente.getCpf()).map(Cpf::getNumero).orElse(null),
+                Optional.ofNullable(cliente.getEmail()).map(Email::getEndereco).orElse(null)
+        );
     }
 
     public String getCodigo() {
@@ -51,20 +61,6 @@ public class ClienteResponseDTO {
 
     @SneakyThrows
     public Cliente toCliente() {
-
         return new Cliente(codigo, nome, cpf, email);
-    }
-
-    public static ClienteResponseDTO fromCliente(Cliente cliente) {
-
-        if (cliente == null) {
-            return null;
-        }
-        return new ClienteResponseDTO(
-                cliente.getCodigo(),
-                cliente.getNome(),
-                Optional.ofNullable(cliente.getCpf()).map(Cpf::getNumero).orElse(null),
-                Optional.ofNullable(cliente.getEmail()).map(Email::getEndereco).orElse(null)
-        );
     }
 }

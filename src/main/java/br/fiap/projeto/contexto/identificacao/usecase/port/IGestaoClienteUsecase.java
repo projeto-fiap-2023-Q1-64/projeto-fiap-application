@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.identificacao.usecase.port.service;
+package br.fiap.projeto.contexto.identificacao.usecase.port;
 
 import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntidadeNaoEncontradaException;

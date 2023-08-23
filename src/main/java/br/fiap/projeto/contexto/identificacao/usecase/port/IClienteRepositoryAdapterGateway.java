@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.identificacao.usecase.port.repository;
+package br.fiap.projeto.contexto.identificacao.usecase.port;
 
 import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 
@@ -12,7 +12,7 @@ public interface IClienteRepositoryAdapterGateway {
 
     Cliente insere(Cliente cliente);
 
-    Cliente edita(Cliente cliente);
+    Cliente atualiza(Cliente cliente);
 
     void remove(String codigo);
 

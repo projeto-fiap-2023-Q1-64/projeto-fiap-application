@@ -18,20 +18,15 @@ public class ClienteEntity {
 
     @Id
     private String codigo;
-
     private String nome;
-
     private String cpf;
-
     private String email;
-
     private LocalDateTime dataExclusao;
 
     public ClienteEntity() {
     }
 
     public ClienteEntity(String codigo, String nome, String cpf, String email) {
-
         this.codigo = codigo;
         this.nome = nome;
         this.cpf = cpf;
@@ -39,29 +34,16 @@ public class ClienteEntity {
     }
 
     public ClienteEntity(String codigo, String nome, Cpf cpf, Email email) {
-
         this(codigo, nome, cpf.getNumero(), email.getEndereco());
     }
 
     public static ClienteEntity fromCliente(Cliente cliente) {
-
-        return new ClienteEntity(
-                cliente.getCodigo(),
-                cliente.getNome(),
-                cliente.getCpf(),
-                cliente.getEmail()
-        );
+        return new ClienteEntity(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
     }
 
     @SneakyThrows
     public Cliente toCliente() {
-
-        return new Cliente(
-                codigo,
-                nome,
-                cpf,
-                email
-        );
+        return new Cliente(codigo, nome, cpf, email);
     }
 
     public String getCodigo() {

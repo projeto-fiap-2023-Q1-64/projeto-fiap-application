@@ -7,28 +7,28 @@ import java.util.regex.Pattern;
 
 public class Cpf {
 
-	public final static String CPF_INVALIDO = "Cpf inválido!";
-	private String numero;
+    public final static String CPF_INVALIDO = "Cpf inválido!";
+    private final String numero;
 
-	public Cpf(String numero) {
-		this.numero = numero;
-	}
+    public Cpf(String numero) {
+        this.numero = numero;
+    }
 
-	public void validar() throws EntradaInvalidaException {
+    public static Cpf fromString(String numero) {
 
-		if (Pattern.matches("\\d{11}", numero)) {
-			return;
-		}
-		throw new EntradaInvalidaException(CPF_INVALIDO);
-	}
+        return new Cpf(numero);
+    }
 
-	public String getNumero() {
-		return numero;
-	}
+    public void validar() throws EntradaInvalidaException {
 
-	public static Cpf fromString(String numero) {
+        if (Pattern.matches("\\d{11}", numero)) {
+            return;
+        }
+        throw new EntradaInvalidaException(CPF_INVALIDO);
+    }
 
-		return new Cpf(numero);
-	}
+    public String getNumero() {
+        return numero;
+    }
 }
  

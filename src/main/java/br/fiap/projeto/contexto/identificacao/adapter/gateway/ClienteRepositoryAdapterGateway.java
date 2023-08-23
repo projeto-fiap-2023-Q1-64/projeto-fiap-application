@@ -3,8 +3,7 @@ package br.fiap.projeto.contexto.identificacao.adapter.gateway;
 import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.external.repository.entity.ClienteEntity;
 import br.fiap.projeto.contexto.identificacao.external.repository.postgres.SpringClienteRepository;
-import br.fiap.projeto.contexto.identificacao.usecase.port.repository.IClienteRepositoryAdapterGateway;
-import org.springframework.stereotype.Service;
+import br.fiap.projeto.contexto.identificacao.usecase.port.IClienteRepositoryAdapterGateway;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,10 +13,36 @@ import java.util.stream.Collectors;
 
 public class ClienteRepositoryAdapterGateway implements IClienteRepositoryAdapterGateway {
 
-    private SpringClienteRepository springClienteRepository;
+    private final SpringClienteRepository springClienteRepository;
 
     public ClienteRepositoryAdapterGateway(SpringClienteRepository springClienteRepository) {
         this.springClienteRepository = springClienteRepository;
+    }
+
+    @Override
+    public Cliente insere(Cliente cliente) {
+        ClienteEntity clienteEntity;
+        clienteEntity = ClienteEntity.fromCliente(cliente);
+        clienteEntity = springClienteRepository.save(clienteEntity);
+
+        return clienteEntity.toCliente();
+    }
+
+    @Override
+    public Cliente atualiza(Cliente cliente) {
+        ClienteEntity clienteEntity = ClienteEntity.fromCliente(cliente);
+        clienteEntity = springClienteRepository.save(clienteEntity);
+        return clienteEntity.toCliente();
+    }
+
+    @Override
+    public void remove(String codigo) {
+        Optional<ClienteEntity> existing;
+        existing = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
+        if (existing.isPresent()) {
+            existing.get().setDataExclusao(LocalDateTime.now());
+            springClienteRepository.save(existing.get());
+        }
     }
 
     @Override
@@ -40,32 +65,6 @@ public class ClienteRepositoryAdapterGateway implements IClienteRepositoryAdapte
         clientes = entidades.stream().map(ClienteEntity::toCliente).collect(Collectors.toList());
 
         return clientes;
-    }
-
-    @Override
-    public Cliente insere(Cliente cliente) {
-        ClienteEntity clienteEntity;
-        clienteEntity = ClienteEntity.fromCliente(cliente);
-        clienteEntity = springClienteRepository.save(clienteEntity);
-
-        return clienteEntity.toCliente();
-    }
-
-    @Override
-    public Cliente edita(Cliente cliente) {
-        ClienteEntity clienteEntity = ClienteEntity.fromCliente(cliente);
-        clienteEntity = springClienteRepository.save(clienteEntity);
-        return clienteEntity.toCliente();
-    }
-
-    @Override
-    public void remove(String codigo) {
-        Optional<ClienteEntity> existing;
-        existing = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
-        if (existing.isPresent()) {
-            existing.get().setDataExclusao(LocalDateTime.now());
-            springClienteRepository.save(existing.get());
-        }
     }
 
     @Override

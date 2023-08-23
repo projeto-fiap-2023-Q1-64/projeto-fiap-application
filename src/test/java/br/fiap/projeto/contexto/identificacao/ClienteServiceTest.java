@@ -25,14 +25,12 @@ public class ClienteServiceTest {
 
     @Test
     public void testeBusca() {
-
         List<ClienteResponseDTO> clienteDTOS = clienteRestAdapterController.buscaTodos();
         assertFalse(CollectionUtils.isEmpty(clienteDTOS));
     }
 
     @Test
     public void testeBuscaPorCpf() throws EntidadeNaoEncontradaException, EntradaInvalidaException {
-
         String cpf = "09876543210";
         ClienteRequestDTO request = new ClienteRequestDTO("TesteBusca", cpf, "teste@busca.com");
         ClienteResponseDTO cliente;

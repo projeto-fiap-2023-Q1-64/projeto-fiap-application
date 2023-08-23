@@ -6,7 +6,7 @@ import br.fiap.projeto.contexto.identificacao.adapter.controller.rest.response.C
 import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntidadeNaoEncontradaException;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntradaInvalidaException;
-import br.fiap.projeto.contexto.identificacao.usecase.port.service.IGestaoClienteUsecase;
+import br.fiap.projeto.contexto.identificacao.usecase.port.IGestaoClienteUsecase;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +20,23 @@ public class ClienteRestAdapterController implements IClienteRestAdapterControll
     }
 
     @Override
+    public ClienteResponseDTO insere(ClienteRequestDTO cliente) throws EntradaInvalidaException {
+        Cliente clienteSalvo = gestaoClienteUsecase.insere(new Cliente(cliente.getNome(), cliente.getCpf(), cliente.getEmail()));
+        return ClienteResponseDTO.fromCliente(clienteSalvo);
+    }
+
+    @Override
+    public ClienteResponseDTO atualiza(String codigo, ClienteRequestDTO cliente) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
+        Cliente clienteAtualizado = gestaoClienteUsecase.edita(new Cliente(codigo, cliente.getNome(), cliente.getCpf(), cliente.getEmail()));
+        return ClienteResponseDTO.fromCliente(clienteAtualizado);
+    }
+
+    @Override
+    public void remove(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
+        gestaoClienteUsecase.remove(codigo);
+    }
+
+    @Override
     public ClienteResponseDTO busca(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
         Cliente clienteRecuperado = gestaoClienteUsecase.busca(codigo);
         return ClienteResponseDTO.fromCliente(clienteRecuperado);
@@ -29,23 +46,6 @@ public class ClienteRestAdapterController implements IClienteRestAdapterControll
     public List<ClienteResponseDTO> buscaTodos() {
         List<Cliente> clientes = gestaoClienteUsecase.buscaTodos();
         return clientes.stream().map(ClienteResponseDTO::fromCliente).collect(Collectors.toList());
-    }
-
-    @Override
-    public ClienteResponseDTO insere(ClienteRequestDTO cliente) throws EntradaInvalidaException {
-        Cliente clienteSalvo = gestaoClienteUsecase.insere(new Cliente(cliente.getNome(), cliente.getCpf(), cliente.getEmail()));
-        return ClienteResponseDTO.fromCliente(clienteSalvo);
-    }
-
-    @Override
-    public ClienteResponseDTO edita(String codigo, ClienteRequestDTO cliente) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
-        Cliente clienteAtualizado = gestaoClienteUsecase.edita(new Cliente(codigo, cliente.getNome(), cliente.getCpf(), cliente.getEmail()));
-        return ClienteResponseDTO.fromCliente(clienteAtualizado);
-    }
-
-    @Override
-    public void remove(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
-        gestaoClienteUsecase.remove(codigo);
     }
 
     @Override

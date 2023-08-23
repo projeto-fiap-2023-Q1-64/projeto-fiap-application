@@ -20,23 +20,6 @@ public class ClienteApiController {
     @Autowired
     private IClienteRestAdapterController clienteAdapterController;
 
-    @GetMapping
-    @SneakyThrows
-    public ClienteResponseDTO busca(String codigo) {
-        return clienteAdapterController.busca(codigo);
-    }
-
-    @GetMapping("/cpf")
-    @SneakyThrows
-    public ClienteResponseDTO buscaPorCpf(@RequestParam String cpf) {
-        return clienteAdapterController.buscaPorCpf(cpf);
-    }
-
-    @GetMapping("/todos")
-    public List<ClienteResponseDTO> buscaTodos() {
-        return clienteAdapterController.buscaTodos();
-    }
-
     @PostMapping
     @SneakyThrows
     public ResponseEntity<ClienteResponseDTO> insere(@RequestBody ClienteRequestDTO cliente) {
@@ -45,13 +28,30 @@ public class ClienteApiController {
 
     @PutMapping("/{codigo}")
     @SneakyThrows
-    public ClienteResponseDTO edita(@PathVariable String codigo, @RequestBody ClienteRequestDTO cliente) {
-        return clienteAdapterController.edita(codigo, cliente);
+    public ClienteResponseDTO atualiza(@PathVariable String codigo, @RequestBody ClienteRequestDTO cliente) {
+        return clienteAdapterController.atualiza(codigo, cliente);
     }
 
     @DeleteMapping("/{codigo}")
     @SneakyThrows
     public void remove(@PathVariable String codigo) {
         clienteAdapterController.remove(codigo);
+    }
+
+    @GetMapping("/{codigo}")
+    @SneakyThrows
+    public ClienteResponseDTO busca(@PathVariable String codigo) {
+        return clienteAdapterController.busca(codigo);
+    }
+
+    @GetMapping("/todos")
+    public List<ClienteResponseDTO> buscaTodos() {
+        return clienteAdapterController.buscaTodos();
+    }
+
+    @GetMapping("/cpf")
+    @SneakyThrows
+    public ClienteResponseDTO buscaPorCpf(@RequestParam String cpf) {
+        return clienteAdapterController.buscaPorCpf(cpf);
     }
 }

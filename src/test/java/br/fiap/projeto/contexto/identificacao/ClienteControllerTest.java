@@ -206,7 +206,7 @@ public class ClienteControllerTest {
         codigo = resultado.getCodigo();
 
         // Busca o cliente usando o código
-        resultActions = mockMvc.perform(MockMvcRequestBuilders.get(CAMINHO_RAIZ)
+        resultActions = mockMvc.perform(MockMvcRequestBuilders.get(CAMINHO_RAIZ_CODIGO, codigo)
                         .param("codigo", codigo))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -223,7 +223,7 @@ public class ClienteControllerTest {
 
 
         // Busca o cliente usando o código para verificar se foi removido
-        mockMvc.perform(MockMvcRequestBuilders.get(CAMINHO_RAIZ)
+        mockMvc.perform(MockMvcRequestBuilders.get(CAMINHO_RAIZ_CODIGO, codigo)
                         .param("codigo", codigo))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 

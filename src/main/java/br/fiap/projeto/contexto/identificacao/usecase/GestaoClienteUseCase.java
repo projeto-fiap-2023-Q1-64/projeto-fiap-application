@@ -3,8 +3,8 @@ package br.fiap.projeto.contexto.identificacao.usecase;
 import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntidadeNaoEncontradaException;
 import br.fiap.projeto.contexto.identificacao.usecase.exception.EntradaInvalidaException;
-import br.fiap.projeto.contexto.identificacao.usecase.port.repository.IClienteRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.identificacao.usecase.port.service.IGestaoClienteUsecase;
+import br.fiap.projeto.contexto.identificacao.usecase.port.IClienteRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.identificacao.usecase.port.IGestaoClienteUsecase;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,24 +18,6 @@ public class GestaoClienteUseCase implements IGestaoClienteUsecase {
 
     public GestaoClienteUseCase(IClienteRepositoryAdapterGateway clienteRepository) {
         this.clienteRepositoryAdapterGateway = clienteRepository;
-    }
-
-    @Override
-    public Cliente busca(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
-        if (codigo == null) {
-            throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
-        }
-
-        Cliente cliente = clienteRepositoryAdapterGateway.busca(codigo);
-        if (Objects.isNull(cliente)) {
-            throw new EntidadeNaoEncontradaException("Cliente não encontrado!");
-        }
-        return cliente;
-    }
-
-    @Override
-    public List<Cliente> buscaTodos() {
-        return clienteRepositoryAdapterGateway.buscaTodos();
     }
 
     @Override
@@ -68,13 +50,31 @@ public class GestaoClienteUseCase implements IGestaoClienteUsecase {
 
         Cliente clienteAAtualizar;
         clienteAAtualizar = new Cliente(clienteExistente.getCodigo(), clienteRef.getNome(), clienteRef.getCpf().getNumero(), clienteRef.getEmail().getEndereco());
-        return clienteRepositoryAdapterGateway.edita(clienteAAtualizar);
+        return clienteRepositoryAdapterGateway.atualiza(clienteAAtualizar);
     }
 
     @Override
     public void remove(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
         Cliente cliente = busca(codigo);
         clienteRepositoryAdapterGateway.remove(cliente.getCodigo());
+    }
+
+    @Override
+    public Cliente busca(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
+        if (codigo == null) {
+            throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
+        }
+
+        Cliente cliente = clienteRepositoryAdapterGateway.busca(codigo);
+        if (Objects.isNull(cliente)) {
+            throw new EntidadeNaoEncontradaException("Cliente não encontrado!");
+        }
+        return cliente;
+    }
+
+    @Override
+    public List<Cliente> buscaTodos() {
+        return clienteRepositoryAdapterGateway.buscaTodos();
     }
 
     @Override
