@@ -1,13 +1,15 @@
 package br.fiap.projeto.contexto.pagamento.entity;
 
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoAEnviarAoGatewayDTORequest;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
+import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
+import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEntity;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
+
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
-
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTO;
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PedidoAPagarDTO;
-import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEntity;
 
 public class Pagamento {
 
@@ -18,19 +20,14 @@ public class Pagamento {
 	 
 	private Date dataPagamento;
 
-	public Pagamento(UUID codigo, String codigoPedido, StatusPagamento status, Date dataPagamento) {
+	private Double valorTotal;
+
+	public Pagamento(UUID codigo, String codigoPedido, StatusPagamento status, Date dataPagamento, Double valorTotal) {
 		this.codigo = codigo;
 		this.codigoPedido = codigoPedido;
 		this.status = status;
 		this.dataPagamento = dataPagamento;
-	}
-
-	public Pagamento(PagamentoDTO pagamentoDTO){
-		this.setCodigo(pagamentoDTO.getCodigo());
-		this.setCodigoPedido(pagamentoDTO.getCodigoPedido());
-		this.setDataPagamento(pagamentoDTO.getDataPagamento());
-		this.setStatus(pagamentoDTO.getStatus());
-
+		this.valorTotal = valorTotal;
 	}
 
 	public Pagamento(PagamentoEntity pagamentoEntity){
@@ -38,12 +35,30 @@ public class Pagamento {
 		this.setCodigoPedido(pagamentoEntity.getCodigoPedido());
 		this.setDataPagamento(pagamentoEntity.getDataPagamento());
 		this.setStatus(pagamentoEntity.getStatusPagamento());
+		this.setValorTotal(pagamentoEntity.getValorTotal());
 	}
 
-	public Pagamento(PedidoAPagarDTO pedidosAPagarDTO) {
-		this.setCodigoPedido(pedidosAPagarDTO.getCodigoPedido());
+	public Pagamento(PagamentoDTORequest pagamentoDTORequest) {
+		if(!(pagamentoDTORequest.getCodigoPedido() == null)){
+			this.setCodigoPedido(pagamentoDTORequest.getCodigoPedido());
+		}else{
+			throw new ResourceNotFoundException("Código de pedido inexistente");
+		}
 		this.setStatus(StatusPagamento.PENDING);
 		this.setDataPagamento(new Date());
+	}
+
+    public Pagamento(PedidoAPagarDTORequest pedidoAPagarDTORequest) {
+		this.setCodigoPedido(pedidoAPagarDTORequest.getCodigoPedido());
+		this.setStatus(StatusPagamento.PENDING);
+		this.setDataPagamento(new Date());
+		this.setValorTotal(pedidoAPagarDTORequest.getValorTotal());
+    }
+
+	public Pagamento(PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest){
+		this.setValorTotal(pagamentoAEnviarAoGatewayDTORequest.getValorTotal());
+		this.setCodigoPedido(pagamentoAEnviarAoGatewayDTORequest.getCodigoPedido());
+		this.setStatus(pagamentoAEnviarAoGatewayDTORequest.getStatusPagamento());
 	}
 
 
@@ -78,6 +93,15 @@ public class Pagamento {
 	public void setDataPagamento(Date dataPagamento) {
 		this.dataPagamento = dataPagamento;
 	}
+
+	public Double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

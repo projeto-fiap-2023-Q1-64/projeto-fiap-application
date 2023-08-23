@@ -1,31 +1,35 @@
 package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response;
 
 
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class PagamentoAprovadoDTO {
+public class PedidoAPagarDTOResponse {
 
     private String codigoPedido;
     private Date dataPagamento;
     private StatusPagamento statusPagamento;
 
-    public PagamentoAprovadoDTO(String codigoPedido, Date dataPagamento, StatusPagamento statusPagamento) {
+    public PedidoAPagarDTOResponse() {
+    }
+
+    public PedidoAPagarDTOResponse(String codigoPedido, Date dataPagamento, StatusPagamento statusPagamento) {
         this.codigoPedido = codigoPedido;
         this.dataPagamento = dataPagamento;
         this.statusPagamento = statusPagamento;
     }
 
-    public PagamentoAprovadoDTO(Pagamento pagamento){
+    public PedidoAPagarDTOResponse(Pagamento pagamento){
         this.setCodigoPedido(pagamento.getCodigoPedido());
         this.setDataPagamento(pagamento.getDataPagamento());
         this.setStatusPagamento(pagamento.getStatus());
     }
 
-    public PagamentoAprovadoDTO(PagamentoDTO pagamentoDTO) {
+    public PedidoAPagarDTOResponse(PagamentoDTORequest pagamentoDTO) {
         this.setCodigoPedido(pagamentoDTO.getCodigoPedido());
         this.setDataPagamento(pagamentoDTO.getDataPagamento());
         this.setStatusPagamento(pagamentoDTO.getStatus());
@@ -59,7 +63,7 @@ public class PagamentoAprovadoDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PagamentoAprovadoDTO that = (PagamentoAprovadoDTO) o;
+        PedidoAPagarDTOResponse that = (PedidoAPagarDTOResponse) o;
         return Objects.equals(getCodigoPedido(), that.getCodigoPedido());
     }
 
@@ -70,7 +74,7 @@ public class PagamentoAprovadoDTO {
 
     @Override
     public String toString() {
-        return "PagamentoAprovadoDTO{" +
+        return "PedidoAPagarDTOResponse{" +
                 "codigoPedido=" + codigoPedido +
                 ", dataPagamento=" + dataPagamento +
                 '}';

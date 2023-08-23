@@ -1,6 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.external.repository.entity;
 
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PedidoAPagarDTO;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
@@ -22,29 +22,33 @@ public class PagamentoEntity {
     private StatusPagamento statusPagamento;
     private Date dataPagamento;
 
-    public PagamentoEntity(UUID codigo, String codigoPedido, StatusPagamento statusPagamento, Date dataPagamento) {
+    private Double valorTotal;
+
+    public PagamentoEntity(UUID codigo, String codigoPedido, StatusPagamento statusPagamento, Date dataPagamento, Double valorTotal) {
         this.codigo = codigo;
         this.codigoPedido = codigoPedido;
         this.statusPagamento = statusPagamento;
         this.dataPagamento = dataPagamento;
+        this.valorTotal = valorTotal;
     }
 
     public PagamentoEntity() {}
 
     public PagamentoEntity(Pagamento pagamento) {
-        this.codigo = pagamento.getCodigo();
-        this.codigoPedido = pagamento.getCodigoPedido();
-        this.statusPagamento = pagamento.getStatus();
-        this.dataPagamento = pagamento.getDataPagamento();
+        this.setCodigo(pagamento.getCodigo());
+        this.setCodigoPedido(pagamento.getCodigoPedido());
+        this.setStatusPagamento(pagamento.getStatus());
+        this.setDataPagamento(pagamento.getDataPagamento());
+        this.setValorTotal(pagamento.getValorTotal());
 
     }
 
     /**
      * Teste de criação de pagamentos consumindo os pedidos que chegam da API
-     * @param pedidosAPagarDTO
+     * @param PedidoAPagarDTORequest
      */
-    public PagamentoEntity(PedidoAPagarDTO pedidosAPagarDTO) {
-        this.codigoPedido = pedidosAPagarDTO.getCodigoPedido();
+    public PagamentoEntity(PedidoAPagarDTORequest pedidosAPagarDTORequest) {
+        this.codigoPedido = pedidosAPagarDTORequest.getCodigoPedido();
         this.statusPagamento = StatusPagamento.PENDING;
     }
 
@@ -78,6 +82,14 @@ public class PagamentoEntity {
 
     public void setDataPagamento(Date dataPagamento) {
         this.dataPagamento = dataPagamento;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     @Override

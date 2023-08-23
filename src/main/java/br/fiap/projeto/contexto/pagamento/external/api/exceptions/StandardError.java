@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.exceptions;
+package br.fiap.projeto.contexto.pagamento.external.api.exceptions;
 
 import java.time.Instant;
 

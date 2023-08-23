@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.exceptions;
+package br.fiap.projeto.contexto.pagamento.external.api.exceptions;
 
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceAlreadyInProcessException;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;

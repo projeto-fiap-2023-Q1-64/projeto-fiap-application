@@ -4,13 +4,16 @@ import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
 import java.util.UUID;
 
-public class PagamentoStatusDTO {
+public class PagamentoStatusDTOResponse {
 
     private UUID codigo;
 
     private StatusPagamento status;
 
-    public PagamentoStatusDTO(UUID codigo, StatusPagamento status) {
+    public PagamentoStatusDTOResponse() {
+    }
+
+    public PagamentoStatusDTOResponse(UUID codigo, StatusPagamento status) {
         this.codigo = codigo;
         this.status = status;
     }
