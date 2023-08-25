@@ -1,17 +1,22 @@
 package br.fiap.projeto.contexto.pedido.external.configuration;
 
+import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoComandaIntegrationRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoManagementRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoQueryRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoWorkFlowRestAdapterController;
+import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoComandaIntegrationRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoManagementRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoQueryRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoWorkFlowRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoClienteIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoComandaIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoProdutoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoClienteIntegration;
+import br.fiap.projeto.contexto.pedido.external.integration.PedidoComandaIntegration;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoProdutoIntegration;
 import br.fiap.projeto.contexto.pedido.external.repository.postgres.SpringPedidoRepository;
+import br.fiap.projeto.contexto.pedido.usecase.PedidoComandaIntegrationUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoManagementUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoQueryUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoWorkFlowUseCase;
@@ -38,6 +43,12 @@ public class BeanPedidoConfiguration {
         return new PedidoWorkFlowUseCase(pedidoRepositoryAdapterGateway);
     }
     @Bean
+    IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase(IPedidoComandaIntegrationAdapterGateway pedidoComandaIntegrationAdapterGateway,
+                                                                     IPedidoWorkFlowUseCase pedidoWorkFlowUseCase){
+        return new PedidoComandaIntegrationUseCase(pedidoComandaIntegrationAdapterGateway,
+                pedidoWorkFlowUseCase);
+    }
+    @Bean
     IPedidoManagementRestAdapterController pedidoManagementRestAdapterController(IPedidoManagementUseCase pedidoUseCase){
         return new PedidoManagementRestAdapterController(pedidoUseCase);
     }
@@ -46,8 +57,12 @@ public class BeanPedidoConfiguration {
         return new PedidoQueryRestAdapterController(pedidoQueryUseCase);
     }
     @Bean
-    IPedidoWorkFlowRestAdapterController pedidoWorkFlowRestAdapterController(IPedidoWorkFlowUseCase iPedidoWorkFlowUseCase){
-        return new PedidoWorkFlowRestAdapterController(iPedidoWorkFlowUseCase);
+    IPedidoWorkFlowRestAdapterController pedidoWorkFlowRestAdapterController(IPedidoWorkFlowUseCase PedidoWorkFlowUseCase){
+        return new PedidoWorkFlowRestAdapterController(PedidoWorkFlowUseCase);
+    }
+    @Bean
+    IPedidoComandaIntegrationRestAdapterController pedidoComandaIntegrationRestAdapterController(IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase){
+        return new PedidoComandaIntegrationRestAdapterController(pedidoComandaIntegrationUseCase);
     }
     @Bean
     IPedidoRepositoryAdapterGateway pedidoAdapterGateway(SpringPedidoRepository springPedidoRepository){
@@ -60,5 +75,9 @@ public class BeanPedidoConfiguration {
     @Bean
     IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegrationAdapterGateway(PedidoClienteIntegration pedidoClienteIntegration){
         return new PedidoClienteIntegrationAdapterGateway(pedidoClienteIntegration);
+    }
+    @Bean
+    IPedidoComandaIntegrationAdapterGateway pedidoComandaIntegrationAdapterGateway(PedidoComandaIntegration pedidoComandaIntegration){
+        return new PedidoComandaIntegrationAdapterGateway(pedidoComandaIntegration);
     }
 }

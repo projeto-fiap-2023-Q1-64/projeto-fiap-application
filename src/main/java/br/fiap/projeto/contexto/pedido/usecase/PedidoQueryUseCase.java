@@ -1,14 +1,11 @@
 package br.fiap.projeto.contexto.pedido.usecase;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoQueryUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class PedidoQueryUseCase extends AbstractPedidoUseCase implements IPedidoQueryUseCase {
     public PedidoQueryUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway) {

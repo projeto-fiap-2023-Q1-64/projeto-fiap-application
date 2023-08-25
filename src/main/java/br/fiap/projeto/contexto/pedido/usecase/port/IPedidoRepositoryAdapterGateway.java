@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pedido.usecase.port;
 
-import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 

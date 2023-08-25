@@ -3,7 +3,6 @@ package br.fiap.projeto.contexto.pedido.usecase.port;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IPedidoQueryUseCase {
     List<Pedido> buscaTodos();
