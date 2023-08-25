@@ -2,8 +2,8 @@ package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoQueryUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
 
 import java.util.List;
 

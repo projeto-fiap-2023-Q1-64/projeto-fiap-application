@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pedido.usecase.port;
+package br.fiap.projeto.contexto.pedido.usecase.port.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidOperacaoProdutoException;

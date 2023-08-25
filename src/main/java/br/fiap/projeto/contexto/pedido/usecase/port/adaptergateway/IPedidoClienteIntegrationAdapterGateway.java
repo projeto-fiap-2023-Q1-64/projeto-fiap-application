@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pedido.usecase.port;
+package br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway;
 
 import java.util.UUID;
 

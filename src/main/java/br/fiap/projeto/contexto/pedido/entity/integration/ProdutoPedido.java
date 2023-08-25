@@ -1,9 +1,6 @@
 package br.fiap.projeto.contexto.pedido.entity.integration;
 
 import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
-import br.fiap.projeto.contexto.pedido.external.integration.port.Produto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.util.UUID;
 

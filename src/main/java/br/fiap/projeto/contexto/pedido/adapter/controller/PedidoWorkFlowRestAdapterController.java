@@ -3,10 +3,7 @@ package br.fiap.projeto.contexto.pedido.adapter.controller;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoWorkFlowRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoDtoMapper;
-import br.fiap.projeto.contexto.pedido.external.integration.PedidoClienteIntegration;
-import br.fiap.projeto.contexto.pedido.external.integration.PedidoProdutoIntegration;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoManagementUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoWorkFlowUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
 
 import java.util.UUID;
 

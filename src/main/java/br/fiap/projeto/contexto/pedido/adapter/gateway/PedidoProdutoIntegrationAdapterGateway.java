@@ -1,11 +1,9 @@
 package br.fiap.projeto.contexto.pedido.adapter.gateway;
 
 import br.fiap.projeto.contexto.pedido.adapter.mapper.ProdutoMapper;
-import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoProdutoIntegration;
-import br.fiap.projeto.contexto.pedido.external.integration.port.Produto;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoProdutoIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoProdutoIntegrationAdapterGateway;
 
 import java.util.UUID;
 

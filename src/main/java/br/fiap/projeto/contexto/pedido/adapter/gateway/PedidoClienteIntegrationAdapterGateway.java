@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.pedido.adapter.gateway;
 
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoClienteIntegration;
 import br.fiap.projeto.contexto.pedido.external.integration.port.Cliente;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoClienteIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoClienteIntegrationAdapterGateway;
 
 import java.util.UUID;
 

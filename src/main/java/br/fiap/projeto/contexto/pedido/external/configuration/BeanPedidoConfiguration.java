@@ -20,7 +20,14 @@ import br.fiap.projeto.contexto.pedido.usecase.PedidoComandaIntegrationUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoManagementUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoQueryUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoWorkFlowUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.*;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoClienteIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoComandaIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoProdutoIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoComandaIntegrationUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoManagementUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

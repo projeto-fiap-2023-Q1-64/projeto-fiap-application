@@ -4,7 +4,7 @@ import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoQueryRestA
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoDtoMapper;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoQueryUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
 
 import java.util.List;
 import java.util.stream.Collectors;

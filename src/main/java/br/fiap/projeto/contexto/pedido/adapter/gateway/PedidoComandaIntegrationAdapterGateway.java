@@ -3,7 +3,7 @@ package br.fiap.projeto.contexto.pedido.adapter.gateway;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.ComandaMapper;
 import br.fiap.projeto.contexto.pedido.entity.integration.ComandaPedido;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoComandaIntegration;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoComandaIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoComandaIntegrationAdapterGateway;
 
 import java.util.UUID;
 
@@ -15,9 +15,9 @@ public class PedidoComandaIntegrationAdapterGateway implements IPedidoComandaInt
     }
 
     @Override
-    public ComandaPedido criaComanda(UUID codigoProduto) {
+    public ComandaPedido criaComanda(UUID codigoPedido) {
         return ComandaMapper.toComandaPedido(
                 pedidoComandaIntegration.criaComanda(
-                        ComandaMapper.toCriaComanda(codigoProduto)));
+                        ComandaMapper.toCriaComanda(codigoPedido)));
     }
 }

@@ -4,8 +4,8 @@ import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoWorkFlowUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
 
 import java.util.UUID;
 

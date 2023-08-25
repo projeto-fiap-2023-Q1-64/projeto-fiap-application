@@ -3,7 +3,7 @@ package br.fiap.projeto.contexto.pedido.adapter.controller;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoComandaIntegrationRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoDtoMapper;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoComandaIntegrationUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoComandaIntegrationUseCase;
 
 import java.util.UUID;
 

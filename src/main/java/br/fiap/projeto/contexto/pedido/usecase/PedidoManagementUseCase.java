@@ -6,10 +6,10 @@ import br.fiap.projeto.contexto.pedido.entity.enums.OperacaoProduto;
 import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.ItemNotFoundException;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoClienteIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoManagementUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoProdutoIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoClienteIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoManagementUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoProdutoIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
 import org.hibernate.ObjectNotFoundException;
 
 import java.util.List;
