@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pedido.adapter.gateway;
 
+import br.fiap.projeto.contexto.pedido.adapter.mapper.ProdutoMapper;
 import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoProdutoIntegration;
@@ -16,13 +17,6 @@ public class PedidoProdutoIntegrationAdapterGateway implements IPedidoProdutoInt
     }
     @Override
     public ProdutoPedido getProduto(UUID codigoProduto) {
-        Produto produto = pedidoProdutoIntegration.getProduto(codigoProduto);
-        return new ProdutoPedido( UUID.fromString(produto.getCodigo()),
-                produto.getNome(),
-                produto.getDescricao(),
-                produto.getPreco(),
-                CategoriaProduto.valueOf(produto.getCategoria()),
-                produto.getImagem(),
-                produto.getTempoPreparoMin());
+        return ProdutoMapper.toProdutoPedido(pedidoProdutoIntegration.getProduto(codigoProduto));
     }
 }
