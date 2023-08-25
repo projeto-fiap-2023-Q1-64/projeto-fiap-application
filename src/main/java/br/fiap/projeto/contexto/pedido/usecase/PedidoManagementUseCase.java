@@ -11,7 +11,6 @@ import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoManagementUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoProdutoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
 import org.hibernate.ObjectNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -59,7 +58,6 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
             throw new ItemNotFoundException("Produto não encontrado!");
         }
     }
-    @Transactional
     @Override
     public void removerProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigoPedido);
@@ -79,7 +77,6 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
-    @Transactional
     @Override
     public Pedido reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigoPedido);

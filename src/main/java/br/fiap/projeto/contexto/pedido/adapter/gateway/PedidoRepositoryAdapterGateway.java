@@ -8,6 +8,7 @@ import br.fiap.projeto.contexto.pedido.external.repository.entity.PedidoEntity;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class PedidoRepositoryAdapterGateway implements IPedidoRepositoryAdapterG
         this.springPedidoRepository = springPedidoRepository;
     }
     @Override
+    @Transactional
     public Pedido salvar(Pedido pedido) {
         PedidoEntity pedidoEntity = springPedidoRepository.save(new PedidoEntity(PedidoMapper.toEntity(pedido)));
         return PedidoMapper.toDomain(pedidoEntity);
