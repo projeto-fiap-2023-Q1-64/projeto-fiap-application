@@ -15,37 +15,33 @@ public class PedidoQueryUseCase extends AbstractPedidoUseCase implements IPedido
         super(IPedidoRepositoryAdapterGateway);
     }
     @Override
-    public PedidoDTO buscaPedido(UUID codigo) {
-        return this.buscar(codigo).toPedidoDTO();
-    }
-    @Override
-    public List<PedidoDTO> buscaTodos() {
+    public List<Pedido> buscaTodos() {
         List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaTodos();
-        return pedidoLista.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+        return pedidoLista;
     }
     @Override
-    public List<PedidoDTO> buscarTodosRecebido(){
+    public List<Pedido> buscarTodosRecebido(){
         List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.RECEBIDO);
-        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+        return pedidosRecebidos;
     }
     @Override
-    public List<PedidoDTO> buscarTodosPagos(){
+    public List<Pedido> buscarTodosPagos(){
         List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PAGO);
-        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+        return pedidosRecebidos;
     }
     @Override
-    public List<PedidoDTO> buscarTodosEmPreparacao(){
+    public List<Pedido> buscarTodosEmPreparacao(){
         List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
-        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+        return pedidosRecebidos;
     }
     @Override
-    public List<PedidoDTO> buscarTodosPronto(){
+    public List<Pedido> buscarTodosPronto(){
         List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PRONTO);
-        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+        return pedidosRecebidos;
     }
     @Override
-    public List<PedidoDTO> buscarTodosFinalizado(){
+    public List<Pedido> buscarTodosFinalizado(){
         List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.FINALIZADO);
-        return pedidosRecebidos.stream().map(Pedido::toPedidoDTO).collect(Collectors.toList());
+        return pedidosRecebidos;
     }
 }

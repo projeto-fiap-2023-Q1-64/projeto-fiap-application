@@ -1,13 +1,13 @@
 package br.fiap.projeto.contexto.pedido.usecase.port;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.entity.Pedido;
 
 import java.util.UUID;
 
 public interface IPedidoWorkFlowUseCase {
-    PedidoDTO receber(UUID codigo) throws Exception;
-    PedidoDTO pagar(UUID codigo) throws Exception;
-    PedidoDTO preparar(UUID codigo) throws Exception;
-    PedidoDTO prontificar(UUID codigo) throws Exception;
-    PedidoDTO finalizar(UUID codigo) throws Exception;
+    Pedido receber(UUID codigo) throws Exception;
+    Pedido pagar(UUID codigo) throws Exception;
+    Pedido preparar(UUID codigo) throws Exception;
+    Pedido prontificar(UUID codigo) throws Exception;
+    Pedido finalizar(UUID codigo) throws Exception;
 }

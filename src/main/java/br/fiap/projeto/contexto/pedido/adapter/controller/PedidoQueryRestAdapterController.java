@@ -2,9 +2,12 @@ package br.fiap.projeto.contexto.pedido.adapter.controller;
 
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoQueryRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoDtoMapper;
+import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoQueryUseCase;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PedidoQueryRestAdapterController implements IPedidoQueryRestAdapterController {
     private final IPedidoQueryUseCase queryUseCase;
@@ -15,26 +18,31 @@ public class PedidoQueryRestAdapterController implements IPedidoQueryRestAdapter
 
     @Override
     public List<PedidoDTO> buscarTodosRecebido() {
-        return this.queryUseCase.buscarTodosRecebido();
+        List<Pedido> pedidos = this.queryUseCase.buscarTodosRecebido();
+        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosPagos() {
-        return this.queryUseCase.buscarTodosPagos();
+        List<Pedido> pedidos = this.queryUseCase.buscarTodosPagos();
+        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosEmPreparacao() {
-        return this.queryUseCase.buscarTodosEmPreparacao();
+        List<Pedido> pedidos = this.queryUseCase.buscarTodosEmPreparacao();
+        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosPronto() {
-        return this.queryUseCase.buscarTodosPronto();
+        List<Pedido> pedidos = this.queryUseCase.buscarTodosPronto();
+        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosFinalizado() {
-        return this.queryUseCase.buscarTodosFinalizado();
+        List<Pedido> pedidos = this.queryUseCase.buscarTodosFinalizado();
+        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
     }
 }

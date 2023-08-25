@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pedido.entity;
+package br.fiap.projeto.contexto.pedido.external.repository.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

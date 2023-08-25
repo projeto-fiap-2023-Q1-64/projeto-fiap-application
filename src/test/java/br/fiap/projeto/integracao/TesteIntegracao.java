@@ -79,7 +79,7 @@ public class TesteIntegracao {
         assertNotNull(pedido.getItens());
         assertTrue(pedido.getItens().stream()
                 .allMatch(x -> produtos.stream()
-                        .anyMatch(y -> y.getCodigo().equals(x.getCodigo().getProdutoCodigo().toString()))
+                        .anyMatch(y -> y.getCodigo().equals(x.getProdutoCodigo().toString()))
                 )
         );
 

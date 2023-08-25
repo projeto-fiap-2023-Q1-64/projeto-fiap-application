@@ -1,47 +1,63 @@
 package br.fiap.projeto.contexto.pedido.usecase;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.request.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.request.ProdutoPedidoDTO;
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
-import br.fiap.projeto.contexto.pedido.entity.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.OperacaoProduto;
+import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.ItemNotFoundException;
+import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoClienteIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoManagementUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoProdutoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IPedidoManagementUseCase {
-    public PedidoManagementUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway) {
+    private final IPedidoProdutoIntegrationAdapterGateway pedidoProdutoIntegrationAdapterGateway;
+    private final IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegrationAdapterGateway;
+
+    public PedidoManagementUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway,
+                                   IPedidoProdutoIntegrationAdapterGateway pedidoProdutoIntegrationAdapterGateway,
+                                   IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegrationAdapterGateway) {
         super(IPedidoRepositoryAdapterGateway);
+        this.pedidoProdutoIntegrationAdapterGateway = pedidoProdutoIntegrationAdapterGateway;
+        this.pedidoClienteIntegrationAdapterGateway = pedidoClienteIntegrationAdapterGateway;
+    }
+
+    @Override
+    public Pedido criaPedido(UUID codigoCliente) {
+        if (codigoCliente != null &&
+                !codigoCliente.toString().isEmpty() &&
+                !pedidoClienteIntegrationAdapterGateway.VerificaClienteExite(codigoCliente)){
+            throw new ObjectNotFoundException(codigoCliente, "cliente");
+        }
+        return IPedidoRepositoryAdapterGateway.salvar(new Pedido(codigoCliente));
     }
     @Override
-    public PedidoDTO criaPedido(PedidoCriarDTO pedidoDTO) {
-        return IPedidoRepositoryAdapterGateway.salvar(new Pedido(pedidoDTO)).toPedidoDTO();
-    }
-    @Override
-    public PedidoDTO adicionarProduto(UUID codigoPedido, ProdutoPedidoDTO produtoDTO) throws InvalidOperacaoProdutoException {
-        Pedido pedido = this.buscar(codigoPedido);
-        // TODO - Implementar busca correta do Produto
-        ItemPedido itemPedido = new ItemPedido(
-                new ItemPedidoCodigo(codigoPedido,
-                    produtoDTO.getCodigo()),
+    public Pedido adicionarProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException, ItemNotFoundException {
+        ProdutoPedido produtoPedido = pedidoProdutoIntegrationAdapterGateway.getProduto(codigoProduto);
+        if(produtoPedido != null) {
+            Pedido pedido = this.buscar(codigoPedido);
+            ItemPedido itemPedido = new ItemPedido(codigoPedido,
+                    codigoProduto,
                     pedido,
                     1,
-                    produtoDTO.getNome(),
-                    produtoDTO.getDescricao(),
-                    produtoDTO.getPreco(),
-                    produtoDTO.getCategoria(),
-                    produtoDTO.getImagem(),
-                    produtoDTO.getTempoPreparoMin());
-        pedido.adicionarItem(itemPedido);
-        this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
-        return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+                    produtoPedido.getNome(),
+                    produtoPedido.getDescricao(),
+                    produtoPedido.getPreco(),
+                    produtoPedido.getCategoria(),
+                    produtoPedido.getImagem(),
+                    produtoPedido.getTempoPreparoMin());
+            pedido.adicionarItem(itemPedido);
+            this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
+            return IPedidoRepositoryAdapterGateway.salvar(pedido);
+        }else{
+            throw new ItemNotFoundException("Produto não encontrado!");
+        }
     }
     @Transactional
     @Override
@@ -53,7 +69,7 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
     @Override
-    public PedidoDTO aumentarQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
+    public Pedido aumentarQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigoPedido);
         ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         if(itemPedido == null){
@@ -61,11 +77,11 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         }
         itemPedido.adicionarQuantidade();
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
-        return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
     @Transactional
     @Override
-    public PedidoDTO reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
+    public Pedido reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
         Pedido pedido = this.buscar(codigoPedido);
         ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         if(itemPedido == null){
@@ -76,7 +92,7 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
                 this.removerProduto(codigoPedido, codigoProduto);
             } else {
                 itemPedido.reduzirQuantidade();
-                return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+                return IPedidoRepositoryAdapterGateway.salvar(pedido);
             }
         }
         return null;
@@ -100,7 +116,7 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
     }
     private ItemPedido getItemPedidoByProduto(UUID codigoProduto, List<ItemPedido> itemPedidos){
         return itemPedidos.stream()
-                .filter(itemPedido -> itemPedido.getCodigo().getProdutoCodigo().equals(codigoProduto))
+                .filter(itemPedido -> itemPedido.getProdutoCodigo().equals(codigoProduto))
                 .findFirst()
                 .orElse(null);
     }

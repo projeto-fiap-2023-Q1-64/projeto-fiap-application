@@ -1,16 +1,15 @@
 package br.fiap.projeto.contexto.pedido.usecase.port;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.entity.Pedido;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface IPedidoQueryUseCase {
-    PedidoDTO buscaPedido(UUID codigo);
-    List<PedidoDTO> buscaTodos();
-    List<PedidoDTO> buscarTodosRecebido();
-    List<PedidoDTO> buscarTodosPagos();
-    List<PedidoDTO> buscarTodosEmPreparacao();
-    List<PedidoDTO> buscarTodosPronto();
-    List<PedidoDTO> buscarTodosFinalizado();
+    List<Pedido> buscaTodos();
+    List<Pedido> buscarTodosRecebido();
+    List<Pedido> buscarTodosPagos();
+    List<Pedido> buscarTodosEmPreparacao();
+    List<Pedido> buscarTodosPronto();
+    List<Pedido> buscarTodosFinalizado();
 }

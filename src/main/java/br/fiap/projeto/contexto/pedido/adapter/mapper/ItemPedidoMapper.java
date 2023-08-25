@@ -1,6 +1,7 @@
-package br.fiap.projeto.contexto.pedido.external.mapper;
+package br.fiap.projeto.contexto.pedido.adapter.mapper;
 
 import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
+import br.fiap.projeto.contexto.pedido.external.repository.entity.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.external.repository.entity.ItemPedidoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,7 @@ public class ItemPedidoMapper {
     private static PedidoMapper pedidoMapper;
 
     public static ItemPedidoEntity toEntity(ItemPedido itemPedido) {
-
-        return new ItemPedidoEntity(itemPedido.getCodigo(),
+        return new ItemPedidoEntity(new ItemPedidoCodigo(itemPedido.getPedidoCodigo(), itemPedido.getProdutoCodigo()),
                 pedidoMapper.toEntityWithoutItens(itemPedido.getPedido()),
                 itemPedido.getQuantidade(),
                 itemPedido.getProdutoNome(),
@@ -24,7 +24,8 @@ public class ItemPedidoMapper {
     }
 
     public static ItemPedido toDomain(ItemPedidoEntity itemPedidoEntity) {
-        return new ItemPedido(itemPedidoEntity.getCodigo(),
+        return new ItemPedido(itemPedidoEntity.getCodigo().getPedidoCodigo(),
+                itemPedidoEntity.getCodigo().getProdutoCodigo(),
                 pedidoMapper.toDomainWithoutItens(itemPedidoEntity.getPedido()),
                 itemPedidoEntity.getQuantidade(),
                 itemPedidoEntity.getProdutoNome(),

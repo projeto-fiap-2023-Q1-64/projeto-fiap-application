@@ -1,16 +1,12 @@
 package br.fiap.projeto.contexto.pedido.entity;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.ItemPedidoDTO;
 import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+import java.util.UUID;
+
 public class ItemPedido {
-	private ItemPedidoCodigo codigo;
+	private UUID pedidoCodigo;
+	private UUID produtoCodigo;
 	private Pedido pedido;
 	private Integer quantidade;
 	private String produtoNome;
@@ -20,13 +16,66 @@ public class ItemPedido {
 	private String imagem;
 	private Integer tempoPreparoMin;
 
+	public ItemPedido() {
+	}
+
+	public ItemPedido(UUID pedidoCodigo, UUID produtoCodigo, Pedido pedido, Integer quantidade, String produtoNome, String produtoDescricao, Double valorUnitario, CategoriaProduto categoriaProduto, String imagem, Integer tempoPreparoMin) {
+		this.pedidoCodigo = pedidoCodigo;
+		this.produtoCodigo = produtoCodigo;
+		this.pedido = pedido;
+		this.quantidade = quantidade;
+		this.produtoNome = produtoNome;
+		this.produtoDescricao = produtoDescricao;
+		this.valorUnitario = valorUnitario;
+		this.categoriaProduto = categoriaProduto;
+		this.imagem = imagem;
+		this.tempoPreparoMin = tempoPreparoMin;
+	}
+
+	public UUID getPedidoCodigo() {
+		return pedidoCodigo;
+	}
+
+	public UUID getProdutoCodigo() {
+		return produtoCodigo;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public String getProdutoNome() {
+		return produtoNome;
+	}
+
+	public String getProdutoDescricao() {
+		return produtoDescricao;
+	}
+
+	public Double getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public CategoriaProduto getCategoriaProduto() {
+		return categoriaProduto;
+	}
+
+	public String getImagem() {
+		return imagem;
+	}
+
+	public Integer getTempoPreparoMin() {
+		return tempoPreparoMin;
+	}
+
 	public void adicionarQuantidade() {
 		this.quantidade++;
 	}
 	public void reduzirQuantidade() {
 		this.quantidade--;
-	}
-	public ItemPedidoDTO toItemPedidoDTO() {
-		return new ItemPedidoDTO(this.codigo, this.pedido, this.quantidade, this.produtoNome, this.produtoDescricao, this.valorUnitario, this.categoriaProduto, this.imagem, this.tempoPreparoMin);
 	}
 }

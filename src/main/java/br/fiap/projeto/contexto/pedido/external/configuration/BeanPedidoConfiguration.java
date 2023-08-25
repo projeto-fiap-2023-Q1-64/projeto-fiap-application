@@ -6,23 +6,28 @@ import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoWorkFlowRestAdap
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoManagementRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoQueryRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoWorkFlowRestAdapterController;
+import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoClienteIntegrationAdapterGateway;
+import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoProdutoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.external.integration.PedidoClienteIntegration;
+import br.fiap.projeto.contexto.pedido.external.integration.PedidoProdutoIntegration;
 import br.fiap.projeto.contexto.pedido.external.repository.postgres.SpringPedidoRepository;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoManagementUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoQueryUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.PedidoWorkFlowUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoQueryUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoManagementUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoWorkFlowUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.port.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanPedidoConfiguration {
     @Bean
-    IPedidoManagementUseCase pedidoManagementUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway){
-        return new PedidoManagementUseCase(pedidoRepositoryAdapterGateway);
+    IPedidoManagementUseCase pedidoManagementUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
+                                                     IPedidoProdutoIntegrationAdapterGateway pedidoProdutoIntegrationAdapterGateway,
+                                                     IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegration){
+        return new PedidoManagementUseCase(pedidoRepositoryAdapterGateway,
+                pedidoProdutoIntegrationAdapterGateway,
+                pedidoClienteIntegration);
     }
     @Bean
     IPedidoQueryUseCase pedidoQueryUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway){
@@ -47,5 +52,13 @@ public class BeanPedidoConfiguration {
     @Bean
     IPedidoRepositoryAdapterGateway pedidoAdapterGateway(SpringPedidoRepository springPedidoRepository){
         return new PedidoRepositoryAdapterGateway(springPedidoRepository);
+    }
+    @Bean
+    IPedidoProdutoIntegrationAdapterGateway pedidoProdutoIntegrationAdapterGateway(PedidoProdutoIntegration pedidoProdutoIntegration){
+        return new PedidoProdutoIntegrationAdapterGateway(pedidoProdutoIntegration);
+    }
+    @Bean
+    IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegrationAdapterGateway(PedidoClienteIntegration pedidoClienteIntegration){
+        return new PedidoClienteIntegrationAdapterGateway(pedidoClienteIntegration);
     }
 }

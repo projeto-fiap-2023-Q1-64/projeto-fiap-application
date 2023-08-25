@@ -1,19 +1,11 @@
 package br.fiap.projeto.contexto.pedido.entity;
 
+import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.request.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Pedido {
  
 	private UUID codigo;
@@ -21,16 +13,41 @@ public class Pedido {
 	private UUID cliente;
 	private StatusPedido status;
 	private Double valorTotal;
-    public Pedido(PedidoDTO pedidoDTO) {
-		this.codigo = pedidoDTO.getCodigo();
-		this.itens = pedidoDTO.getItens();
-		this.cliente = pedidoDTO.getCliente();
-		this.status = pedidoDTO.getStatus();
-		this.valorTotal = pedidoDTO.getValorTotal();
-    }
-	public Pedido(PedidoCriarDTO pedidoCriarDTO){
-		if(pedidoCriarDTO != null) {
-			this.cliente = pedidoCriarDTO.getCliente();
+
+	public Pedido() {
+	}
+
+	public Pedido(UUID codigo, List<ItemPedido> itens, UUID cliente, StatusPedido status, Double valorTotal) {
+		this.codigo = codigo;
+		this.itens = itens;
+		this.cliente = cliente;
+		this.status = status;
+		this.valorTotal = valorTotal;
+	}
+
+	public UUID getCodigo() {
+		return codigo;
+	}
+
+	public List<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public UUID getCliente() {
+		return cliente;
+	}
+
+	public StatusPedido getStatus() {
+		return status;
+	}
+
+	public Double getValorTotal() {
+		return valorTotal;
+	}
+
+	public Pedido(UUID cliente){
+		if(cliente != null) {
+			this.cliente = cliente;
 		}
 		this.status = StatusPedido.INICIADO;
 		this.valorTotal = 0d;
@@ -41,15 +58,8 @@ public class Pedido {
 	public void adicionarItem(ItemPedido itemPedido) {
 		this.itens.add(itemPedido);
 	}
-	public void removerProduto(UUID produto) {}
-	public List<ItemPedido> listarItens() {
-		return null;
-	}
 	public void atualizarStatus(StatusPedido status){
 		this.status = status;
-	}
-	public PedidoDTO toPedidoDTO() {
-		return new PedidoDTO( codigo, itens, cliente, status, valorTotal);
 	}
 }
  

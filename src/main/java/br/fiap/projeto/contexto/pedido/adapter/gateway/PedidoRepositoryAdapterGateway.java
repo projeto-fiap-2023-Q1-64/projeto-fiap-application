@@ -1,12 +1,11 @@
 package br.fiap.projeto.contexto.pedido.adapter.gateway;
 
-import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.external.repository.postgres.SpringPedidoRepository;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pedido.external.repository.entity.PedidoEntity;
-import br.fiap.projeto.contexto.pedido.external.mapper.PedidoMapper;
+import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 

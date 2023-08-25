@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pedido.external.repository.entity;
 
-import br.fiap.projeto.contexto.pedido.entity.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,7 +36,6 @@ public class ItemPedidoEntity {
     private Integer tempoPreparoMin;
 
     public ItemPedidoEntity(ItemPedidoEntity itemPedidoEntity) {
-
         this.codigo = itemPedidoEntity.getCodigo();
         this.pedido = new PedidoEntity(itemPedidoEntity.getPedido());
         this.quantidade = itemPedidoEntity.getQuantidade();

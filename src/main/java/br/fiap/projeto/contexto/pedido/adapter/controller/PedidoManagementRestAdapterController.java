@@ -1,9 +1,8 @@
 package br.fiap.projeto.contexto.pedido.adapter.controller;
 
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoManagementRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.request.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.request.ProdutoPedidoDTO;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoDtoMapper;
 import br.fiap.projeto.contexto.pedido.usecase.port.IPedidoManagementUseCase;
 
 import java.util.UUID;
@@ -16,13 +15,18 @@ public class PedidoManagementRestAdapterController implements IPedidoManagementR
     }
 
     @Override
-    public PedidoDTO criaPedido(PedidoCriarDTO pedidoCriarDTO) {
-        return this.pedidoManagementUseCase.criaPedido(pedidoCriarDTO);
+    public PedidoDTO criaPedido(String codigoCliente) {
+        UUID cliente = null;
+        if(codigoCliente != null && !codigoCliente.isEmpty()){
+            cliente = UUID.fromString(codigoCliente);
+        }
+
+        return PedidoDtoMapper.toDto(this.pedidoManagementUseCase.criaPedido(cliente));
     }
 
     @Override
-    public PedidoDTO adicionarProduto(UUID codigoPedido, ProdutoPedidoDTO produtoPedidoDTO) throws Exception {
-        return this.pedidoManagementUseCase.adicionarProduto(codigoPedido, produtoPedidoDTO);
+    public PedidoDTO adicionarProduto(UUID codigoPedido, UUID codigoProduto) throws Exception {
+        return PedidoDtoMapper.toDto(this.pedidoManagementUseCase.adicionarProduto(codigoPedido, codigoProduto));
     }
 
     @Override
@@ -32,11 +36,11 @@ public class PedidoManagementRestAdapterController implements IPedidoManagementR
 
     @Override
     public PedidoDTO aumentarQuantidade(UUID codigoPedido, UUID produtoCodigo) throws Exception {
-        return this.pedidoManagementUseCase.aumentarQuantidade(codigoPedido, produtoCodigo);
+        return PedidoDtoMapper.toDto(this.pedidoManagementUseCase.aumentarQuantidade(codigoPedido, produtoCodigo));
     }
 
     @Override
     public PedidoDTO reduzirQuantidade(UUID codigoPedido, UUID produtoCodigo) throws Exception {
-        return this.pedidoManagementUseCase.reduzirQuantidade(codigoPedido, produtoCodigo);
+        return PedidoDtoMapper.toDto(this.pedidoManagementUseCase.reduzirQuantidade(codigoPedido, produtoCodigo));
     }
 }

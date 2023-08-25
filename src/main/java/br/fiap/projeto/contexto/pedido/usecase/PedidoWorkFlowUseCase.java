@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pedido.usecase;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
@@ -14,7 +13,7 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
     public PedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway) {
         super(IPedidoRepositoryAdapterGateway);
     }
-    public PedidoDTO receber(UUID codigo) throws Exception {
+    public Pedido receber(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.INICIADO)){
             if(pedido.getItens().isEmpty()){
@@ -25,46 +24,46 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         }else{
             throw new InvalidStatusException("Status inválido!");
         }
-        return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
     @Override
-    public PedidoDTO pagar(UUID codigo) throws Exception {
+    public Pedido pagar(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.RECEBIDO)){
             pedido.atualizarStatus(StatusPedido.PAGO);
         }else{
             throw new InvalidStatusException("Status inválido!");
         }
-        return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
     @Override
-    public PedidoDTO preparar(UUID codigo) throws Exception {
+    public Pedido preparar(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.PAGO)){
             pedido.atualizarStatus(StatusPedido.EM_PREPARACAO);
         }else{
             throw new InvalidStatusException("Status inválido!");
         }
-        return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
     @Override
-    public PedidoDTO prontificar(UUID codigo) throws Exception {
+    public Pedido prontificar(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.EM_PREPARACAO)){
             pedido.atualizarStatus(StatusPedido.PRONTO);
         }else{
             throw new InvalidStatusException("Status inválido!");
         }
-        return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
     @Override
-    public PedidoDTO finalizar(UUID codigo) throws Exception {
+    public Pedido finalizar(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.PRONTO)){
             pedido.atualizarStatus(StatusPedido.FINALIZADO);
         }else{
             throw new InvalidStatusException("Status inválido!");
         }
-        return IPedidoRepositoryAdapterGateway.salvar(pedido).toPedidoDTO();
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
 }

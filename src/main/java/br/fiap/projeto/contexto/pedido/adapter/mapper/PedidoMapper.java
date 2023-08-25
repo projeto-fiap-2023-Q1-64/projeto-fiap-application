@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.pedido.external.mapper;
+package br.fiap.projeto.contexto.pedido.adapter.mapper;
 
 import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
