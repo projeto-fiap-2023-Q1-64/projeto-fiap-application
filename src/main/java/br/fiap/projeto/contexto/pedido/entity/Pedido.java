@@ -45,9 +45,9 @@ public class Pedido {
 		return valorTotal;
 	}
 
-	public Pedido(UUID cliente){
-		if(cliente != null) {
-			this.cliente = cliente;
+	public Pedido(String cliente){
+		if(cliente != null && !cliente.isEmpty()) {
+			this.cliente = UUID.fromString(cliente);
 		}
 		this.status = StatusPedido.INICIADO;
 		this.valorTotal = 0d;

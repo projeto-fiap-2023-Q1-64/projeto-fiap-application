@@ -29,10 +29,10 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
     }
 
     @Override
-    public Pedido criaPedido(UUID codigoCliente) {
+    public Pedido criaPedido(String codigoCliente) {
         if (codigoCliente != null &&
-                !codigoCliente.toString().isEmpty() &&
-                !pedidoClienteIntegrationAdapterGateway.VerificaClienteExite(codigoCliente)){
+                !codigoCliente.isEmpty() &&
+                !pedidoClienteIntegrationAdapterGateway.verificaClienteExite(UUID.fromString(codigoCliente))){
             throw new ObjectNotFoundException(codigoCliente, "cliente");
         }
         return IPedidoRepositoryAdapterGateway.salvar(new Pedido(codigoCliente));

@@ -16,12 +16,7 @@ public class PedidoManagementRestAdapterController implements IPedidoManagementR
 
     @Override
     public PedidoDTO criaPedido(String codigoCliente) {
-        UUID cliente = null;
-        if(codigoCliente != null && !codigoCliente.isEmpty()){
-            cliente = UUID.fromString(codigoCliente);
-        }
-
-        return PedidoDtoMapper.toDto(this.pedidoManagementUseCase.criaPedido(cliente));
+        return PedidoDtoMapper.toDto(this.pedidoManagementUseCase.criaPedido(codigoCliente));
     }
 
     @Override

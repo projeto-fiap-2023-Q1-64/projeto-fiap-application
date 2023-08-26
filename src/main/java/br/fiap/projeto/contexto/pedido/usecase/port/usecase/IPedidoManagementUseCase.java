@@ -7,7 +7,7 @@ import br.fiap.projeto.contexto.pedido.usecase.exception.ItemNotFoundException;
 import java.util.UUID;
 
 public interface IPedidoManagementUseCase {
-    Pedido criaPedido(UUID codigoCliente);
+    Pedido criaPedido(String codigoCliente);
     Pedido adicionarProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException, ItemNotFoundException;
     Pedido aumentarQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException;
     Pedido reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException;
