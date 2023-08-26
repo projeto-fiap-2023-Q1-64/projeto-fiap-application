@@ -1,33 +1,16 @@
 package br.fiap.projeto.contexto.pedido.external.configuration;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoComandaIntegrationRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoManagementRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoQueryRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.PedidoWorkFlowRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoComandaIntegrationRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoManagementRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoQueryRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoWorkFlowRestAdapterController;
-import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoClienteIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoComandaIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoProdutoIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.adapter.gateway.PedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.adapter.controller.*;
+import br.fiap.projeto.contexto.pedido.adapter.controller.port.*;
+import br.fiap.projeto.contexto.pedido.adapter.gateway.*;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoClienteIntegration;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoComandaIntegration;
+import br.fiap.projeto.contexto.pedido.external.integration.PedidoPagamentoIntegration;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoProdutoIntegration;
 import br.fiap.projeto.contexto.pedido.external.repository.postgres.SpringPedidoRepository;
-import br.fiap.projeto.contexto.pedido.usecase.PedidoComandaIntegrationUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.PedidoManagementUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.PedidoQueryUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.PedidoWorkFlowUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoClienteIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoComandaIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoProdutoIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoComandaIntegrationUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoManagementUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
+import br.fiap.projeto.contexto.pedido.usecase.*;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.*;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -56,6 +39,14 @@ public class BeanPedidoConfiguration {
                 pedidoWorkFlowUseCase);
     }
     @Bean
+    IPedidoPagamentoIntegrationUseCase pedidoPagamentoIntegrationUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
+                                                                         IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway,
+                                                                         IPedidoWorkFlowUseCase pedidoWorkFlowUseCase){
+        return new PedidoPagamentoIntegrationUseCase(pedidoRepositoryAdapterGateway,
+                pedidoPagamentoIntegrationAdapterGateway,
+                pedidoWorkFlowUseCase);
+    }
+    @Bean
     IPedidoManagementRestAdapterController pedidoManagementRestAdapterController(IPedidoManagementUseCase pedidoUseCase){
         return new PedidoManagementRestAdapterController(pedidoUseCase);
     }
@@ -72,6 +63,10 @@ public class BeanPedidoConfiguration {
         return new PedidoComandaIntegrationRestAdapterController(pedidoComandaIntegrationUseCase);
     }
     @Bean
+    IPedidoPagamentoIntegrationRestAdapterController pedidoPagamentoIntegrationRestAdapterController(IPedidoPagamentoIntegrationUseCase pedidoPagamentoIntegrationUseCase){
+        return new PedidoPagamentoIntegrationRestAdapterController(pedidoPagamentoIntegrationUseCase);
+    }
+    @Bean
     IPedidoRepositoryAdapterGateway pedidoAdapterGateway(SpringPedidoRepository springPedidoRepository){
         return new PedidoRepositoryAdapterGateway(springPedidoRepository);
     }
@@ -86,5 +81,9 @@ public class BeanPedidoConfiguration {
     @Bean
     IPedidoComandaIntegrationAdapterGateway pedidoComandaIntegrationAdapterGateway(PedidoComandaIntegration pedidoComandaIntegration){
         return new PedidoComandaIntegrationAdapterGateway(pedidoComandaIntegration);
+    }
+    @Bean
+    IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway(PedidoPagamentoIntegration pagamentoIntegration){
+        return new PedidoPagamentoIntegrationAdapterGateway(pagamentoIntegration);
     }
 }

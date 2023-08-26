@@ -3,6 +3,7 @@ package br.fiap.projeto.contexto.pedido.usecase;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.entity.integration.ComandaPedido;
+import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoComandaIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoComandaIntegrationUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
@@ -24,17 +25,14 @@ public class PedidoComandaIntegrationUseCase implements IPedidoComandaIntegratio
         try {
             pedido = this.pedidoWorkFlowUseCase.preparar(codigoPedido);
             if (pedido == null || !pedido.getStatus().equals(StatusPedido.EM_PREPARACAO)) {
-                System.out.println("Erro na atualização do status!");
-                throw new Exception("Erro na atualização do status!");
+                throw new Exception(MensagemErro.STATUS_UPDATE_ERROR.getMessage());
             }
             ComandaPedido comandaPedido = pedidoComandaIntegrationAdapterGateway.criaComanda(codigoPedido);
             if (comandaPedido == null || comandaPedido.getCodigoComanda().toString().isEmpty()) {
-                System.out.println("Erro na criação da comanda!");
-                throw new Exception("Erro na criação da comanda!");
+                throw new Exception(MensagemErro.COMANDA_CREATE_ERROR.getMessage());
             }
         } catch (Exception e) {
-            System.out.println("Erro na integração com a Comanda!");
-            throw new Exception("Erro na integração com a Comanda!");
+            throw new Exception(MensagemErro.COMANDA_INTEGRATION_ERROR.getMessage());
         }
         return pedido;
     }

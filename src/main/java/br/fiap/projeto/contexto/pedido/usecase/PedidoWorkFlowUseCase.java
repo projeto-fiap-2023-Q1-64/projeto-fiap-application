@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
+import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
@@ -22,7 +23,7 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
                 pedido.atualizarStatus(StatusPedido.RECEBIDO);
             }
         }else{
-            throw new InvalidStatusException("Status inválido!");
+            throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
@@ -32,7 +33,7 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         if(pedido.getStatus().equals(StatusPedido.RECEBIDO)){
             pedido.atualizarStatus(StatusPedido.PAGO);
         }else{
-            throw new InvalidStatusException("Status inválido!");
+            throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
@@ -42,7 +43,7 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         if(pedido.getStatus().equals(StatusPedido.PAGO)){
             pedido.atualizarStatus(StatusPedido.EM_PREPARACAO);
         }else{
-            throw new InvalidStatusException("Status inválido!");
+            throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
@@ -52,7 +53,7 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         if(pedido.getStatus().equals(StatusPedido.EM_PREPARACAO)){
             pedido.atualizarStatus(StatusPedido.PRONTO);
         }else{
-            throw new InvalidStatusException("Status inválido!");
+            throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
@@ -62,7 +63,7 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         if(pedido.getStatus().equals(StatusPedido.PRONTO)){
             pedido.atualizarStatus(StatusPedido.FINALIZADO);
         }else{
-            throw new InvalidStatusException("Status inválido!");
+            throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }

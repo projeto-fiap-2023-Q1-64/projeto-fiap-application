@@ -4,6 +4,7 @@ import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.OperacaoProduto;
 import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
+import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.ItemNotFoundException;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoClienteIntegrationAdapterGateway;
@@ -55,7 +56,7 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
             this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
             return IPedidoRepositoryAdapterGateway.salvar(pedido);
         }else{
-            throw new ItemNotFoundException("Produto não encontrado!");
+            throw new ItemNotFoundException(MensagemErro.PRODUTO_NOT_FOUND.getMessage());
         }
     }
     @Override
@@ -71,7 +72,7 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         Pedido pedido = this.buscar(codigoPedido);
         ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         if(itemPedido == null){
-            throw new ItemNotFoundException("Item não encontrado na lista");
+            throw new ItemNotFoundException(MensagemErro.ITEM_NOT_FOUND_IN_LIST.getMessage());
         }
         itemPedido.adicionarQuantidade();
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
@@ -82,7 +83,7 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         Pedido pedido = this.buscar(codigoPedido);
         ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
         if(itemPedido == null){
-            throw new ItemNotFoundException("Item não encontrado na lista");
+            throw new ItemNotFoundException(MensagemErro.ITEM_NOT_FOUND_IN_LIST.getMessage());
         }else{
             this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.SUBTRAIR);
             if(itemPedido.getQuantidade() <= 1){
@@ -107,7 +108,7 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
                 valor += itemPedido.getValorUnitario();
                 break;
             default:
-                throw new InvalidOperacaoProdutoException("Operação inválida!");
+                throw new InvalidOperacaoProdutoException(MensagemErro.INVALID_OPERATION.getMessage());
         }
         pedido.atualizarValorTotal(valor);
     }

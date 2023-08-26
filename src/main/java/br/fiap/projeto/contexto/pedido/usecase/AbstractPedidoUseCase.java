@@ -1,6 +1,7 @@
 package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
+import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IAbstractPedidoUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
 
@@ -22,7 +23,7 @@ public abstract class AbstractPedidoUseCase implements IAbstractPedidoUseCase {
      */
     protected Pedido buscar(UUID codigo) {
         Optional<Pedido> optionalPedido = IPedidoRepositoryAdapterGateway.buscaPedido(codigo);
-        optionalPedido.orElseThrow(() -> new EntityNotFoundException("Pedido não encontrado!"));
+        optionalPedido.orElseThrow(() -> new EntityNotFoundException(MensagemErro.PEDIDO_NOT_FOUND.getMessage()));
         return optionalPedido.get();
     }
 }
