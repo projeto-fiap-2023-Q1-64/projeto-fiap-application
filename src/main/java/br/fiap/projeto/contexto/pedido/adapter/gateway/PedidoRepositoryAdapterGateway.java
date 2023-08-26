@@ -31,11 +31,7 @@ public class PedidoRepositoryAdapterGateway implements IPedidoRepositoryAdapterG
     @Override
     public Optional<Pedido> buscaPedido(UUID codigo) {
         Optional<PedidoEntity> pedidoEntity = springPedidoRepository.findByCodigo(codigo);
-        if (pedidoEntity.isPresent()) {
-            return Optional.of(PedidoMapper.toDomain(pedidoEntity.get()));
-        } else {
-            return Optional.empty();
-        }
+        return pedidoEntity.map(PedidoMapper::toDomain);
     }
     @Override
     public List<Pedido> buscaTodos() {
