@@ -26,4 +26,12 @@ public abstract class AbstractPedidoUseCase implements IAbstractPedidoUseCase {
         optionalPedido.orElseThrow(() -> new EntityNotFoundException(MensagemErro.PEDIDO_NOT_FOUND.getMessage()));
         return optionalPedido.get();
     }
+    protected Boolean pedidoExists(UUID codigo) {
+        try {
+            buscar(codigo);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 }

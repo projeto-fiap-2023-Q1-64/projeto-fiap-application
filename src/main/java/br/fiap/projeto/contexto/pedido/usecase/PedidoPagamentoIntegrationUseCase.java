@@ -27,7 +27,9 @@ public class PedidoPagamentoIntegrationUseCase extends AbstractPedidoUseCase imp
 
     @Override
     public Pedido pagar(UUID codigoPedido) throws Exception {
-        buscar(codigoPedido);
+        if(!pedidoExists(codigoPedido)){
+            throw new Exception(MensagemErro.PEDIDO_NOT_FOUND.getMessage());
+        }
 
         if(!isPagamentoAprovado(codigoPedido)){
             throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());
