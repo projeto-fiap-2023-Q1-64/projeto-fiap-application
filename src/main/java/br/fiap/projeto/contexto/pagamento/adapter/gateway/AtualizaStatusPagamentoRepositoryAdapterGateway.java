@@ -16,7 +16,7 @@ public class AtualizaStatusPagamentoRepositoryAdapterGateway implements IAtualiz
     }
 
     public void atualizaStatusPagamento(Pagamento pagamento){
-        Pagamento pagamentoStatusAtualizado = new Pagamento (springPagamentoRepository.findByCodigoPedido(pagamento.getCodigoPedido()));
-        this.springPagamentoRepository.save(new PagamentoEntity(pagamentoStatusAtualizado));
+        PagamentoEntity pagamentoStatusAtualizado = springPagamentoRepository.findByCodigoPedido(pagamento.getCodigoPedido());
+        this.springPagamentoRepository.save(pagamentoStatusAtualizado);
     }
 }

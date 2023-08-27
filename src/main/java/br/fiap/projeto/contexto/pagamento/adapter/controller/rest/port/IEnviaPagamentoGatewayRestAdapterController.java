@@ -7,5 +7,5 @@ public interface IEnviaPagamentoGatewayRestAdapterController {
 
     void enviaParaGatewayDePagamento(PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest);
 
-    PagamentoAEnviarAoGatewayDTORequest preparaParaEnviarPagamentoAoGateway(PedidoAPagarDTORequest pedidoAPagarDTORequest);
+    PagamentoAEnviarAoGatewayDTORequest preparaParaEnviarPagamentoAoGateway(PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest);
 }

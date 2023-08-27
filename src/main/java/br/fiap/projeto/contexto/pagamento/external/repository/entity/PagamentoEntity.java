@@ -34,13 +34,17 @@ public class PagamentoEntity {
 
     public PagamentoEntity() {}
 
+    //TODO usado nos Repositories para converter a Entity em Pagamento
+    public Pagamento conversorDePagamentoORMEntityParaPagamentoDomainEntity(){
+        return new Pagamento(codigo, codigoPedido, statusPagamento, dataPagamento, valorTotal);
+    }
+
     public PagamentoEntity(Pagamento pagamento) {
         this.setCodigo(pagamento.getCodigo());
         this.setCodigoPedido(pagamento.getCodigoPedido());
         this.setStatusPagamento(pagamento.getStatus());
         this.setDataPagamento(pagamento.getDataPagamento());
         this.setValorTotal(pagamento.getValorTotal());
-
     }
 
     /**

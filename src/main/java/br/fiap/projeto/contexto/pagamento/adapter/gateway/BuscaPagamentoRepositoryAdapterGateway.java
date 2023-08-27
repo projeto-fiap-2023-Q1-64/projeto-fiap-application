@@ -4,11 +4,12 @@ import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEntity;
 import br.fiap.projeto.contexto.pagamento.external.repository.postgres.SpringPagamentoRepository;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IBuscaPagamentoRepositoryAdapterGateway;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BuscaPagamentoRepositoryAdapterGateway implements IBuscaPagamentoRepositoryAdapterGateway {
 
@@ -19,24 +20,29 @@ public class BuscaPagamentoRepositoryAdapterGateway implements IBuscaPagamentoRe
     }
 
     @Override
-    public Page<Pagamento> findAll(Pageable pageable) {
-        Page<PagamentoEntity> listaDePagamentos = springPagamentoRepository.findAll(pageable);
-        return  listaDePagamentos.map(Pagamento::new);
+    public List<Pagamento> findAll() {
+        List<PagamentoEntity> listaDePagamentos = springPagamentoRepository.findAll();
+        return  listaDePagamentos.stream().map(PagamentoEntity::conversorDePagamentoORMEntityParaPagamentoDomainEntity).collect(Collectors.toList());
     }
 
     @Override
     public Pagamento findByCodigo(UUID codigo) {
-        return new Pagamento(springPagamentoRepository.findByCodigo(codigo));
+        PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigo(codigo);
+        if(pagamentoEntity.getCodigo() == null){
+            throw new ResourceNotFoundException("Código de pagamento não existe");
+        }
+        return pagamentoEntity.conversorDePagamentoORMEntityParaPagamentoDomainEntity();
     }
 
     @Override
-    public Page<Pagamento> findByStatusPagamento(StatusPagamento status, Pageable pageable) {
-        Page<PagamentoEntity> listaDePagamentos = springPagamentoRepository.findByStatusPagamento(status, pageable);
-        return  listaDePagamentos.map(Pagamento::new);
+    public List<Pagamento> findByStatusPagamento(StatusPagamento status) {
+        List<PagamentoEntity> listaDePagamentos = springPagamentoRepository.findByStatusPagamento(status);
+        return  listaDePagamentos.stream().map(PagamentoEntity::conversorDePagamentoORMEntityParaPagamentoDomainEntity).collect(Collectors.toList());
     }
 
     @Override
     public Pagamento findByCodigoPedido(String codigoPedido) {
-        return new Pagamento( springPagamentoRepository.findByCodigoPedido(codigoPedido));
+        PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigoPedido(codigoPedido);
+        return pagamentoEntity.conversorDePagamentoORMEntityParaPagamentoDomainEntity();
     }
 }

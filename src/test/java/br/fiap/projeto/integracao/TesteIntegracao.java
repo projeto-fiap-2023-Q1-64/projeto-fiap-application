@@ -3,7 +3,6 @@ package br.fiap.projeto.integracao;
 import br.fiap.projeto.config.CustomPageImpl;
 import br.fiap.projeto.contexto.comanda.domain.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoStatusDTOResponse;
@@ -92,7 +91,7 @@ public class TesteIntegracao {
 
         // Enviar para o gateway - PagamentosAprocessarController /url-do-gateway
         pedidoAPagar = new PedidoAPagarDTORequest(codigoPedido, pedido.getValorTotal());
-        pedidoAPagar.setStatusPagamento(StatusPagamento.PENDING);
+        //pedidoAPagar.setStatusPagamento(StatusPagamento.PENDING);
         httpEntity = new HttpEntity<>(pedidoAPagar);
         restTemplate.exchange(createUriWithPort("/pagamento/gateway/url-do-gateway"), HttpMethod.POST, httpEntity, Void.class);
 

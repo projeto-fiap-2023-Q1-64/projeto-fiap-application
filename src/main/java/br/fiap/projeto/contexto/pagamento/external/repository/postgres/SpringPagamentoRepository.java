@@ -17,8 +17,6 @@ public interface SpringPagamentoRepository extends JpaRepository<PagamentoEntity
 
     PagamentoEntity findByCodigo(UUID codigo);
 
-    Page<PagamentoEntity> findByStatusPagamento(StatusPagamento status, Pageable pageable);
-
     List<PagamentoEntity> findByStatusPagamento(StatusPagamento status);
 
     List<PagamentoEntity> findAll();

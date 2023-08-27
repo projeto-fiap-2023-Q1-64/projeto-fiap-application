@@ -2,17 +2,16 @@ package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port;
 
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IBuscaPagamentoRestAdapterController {
 
-    Page<PagamentoDTOResponse> findAll(Pageable pageable);
+    List<PagamentoDTOResponse> findAll();
     PagamentoDTOResponse findByCodigo(UUID codigo);
 
-    Page<PagamentoDTOResponse> findByStatusPagamento(StatusPagamento status, Pageable pageable);
+    List<PagamentoDTOResponse> findByStatusPagamento(StatusPagamento status);
 
     PagamentoDTOResponse findByCodigoPedido(String codigoPedido);
 

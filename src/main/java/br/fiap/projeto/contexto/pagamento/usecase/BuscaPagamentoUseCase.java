@@ -3,11 +3,10 @@ package br.fiap.projeto.contexto.pagamento.usecase;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IBuscaPagamentoRepositoryAdapterGateway;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,8 +18,8 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     }
 
     @Override
-    public Page<Pagamento> findAll(Pageable pageable) {
-        return pagamentoAdapterGateway.findAll(pageable);
+    public List<Pagamento> findAll() {
+        return pagamentoAdapterGateway.findAll();
     }
 
     @Override
@@ -30,8 +29,8 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     }
 
     @Override
-    public Page<Pagamento> findByStatusPagamento(StatusPagamento status, Pageable pageable) {
-        return pagamentoAdapterGateway.findByStatusPagamento(status, pageable);
+    public List<Pagamento> findByStatusPagamento(StatusPagamento status) {
+        return pagamentoAdapterGateway.findByStatusPagamento(status);
     }
 
     @Override

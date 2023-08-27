@@ -3,6 +3,7 @@ package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class PagamentoAEnviarAoGatewayDTORequest {
@@ -10,6 +11,7 @@ public class PagamentoAEnviarAoGatewayDTORequest {
     private String codigoPedido;
     private Double valorTotal;
     private StatusPagamento statusPagamento;
+    private Date dataPagamento;
 
     public PagamentoAEnviarAoGatewayDTORequest() {
     }
@@ -18,6 +20,9 @@ public class PagamentoAEnviarAoGatewayDTORequest {
         this.setCodigoPedido(pagamento.getCodigoPedido());
         this.setValorTotal(pagamento.getValorTotal());
         this.setStatusPagamento(pagamento.getStatus());
+    }
+    public Pagamento conversorDePagamentoAEnviarDTOParaPagamento(){
+        return new Pagamento(codigoPedido, valorTotal, statusPagamento, dataPagamento);
     }
 
     public String getCodigoPedido() {
@@ -42,6 +47,14 @@ public class PagamentoAEnviarAoGatewayDTORequest {
 
     public void setStatusPagamento(StatusPagamento statusPagamento) {
         this.statusPagamento = statusPagamento;
+    }
+
+    public Date getDataPagamento() {
+        return dataPagamento;
+    }
+
+    public void setDataPagamento(Date dataPagamento) {
+        this.dataPagamento = dataPagamento;
     }
 
     @Override

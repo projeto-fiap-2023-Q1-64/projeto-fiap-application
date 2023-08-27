@@ -34,11 +34,14 @@ public class EnviaPagamentoAoGatewayRestAdapterController implements  IEnviaPaga
     }
 
     @Override
-    public PagamentoAEnviarAoGatewayDTORequest preparaParaEnviarPagamentoAoGateway(PedidoAPagarDTORequest pedidoAPagarDTORequest) {
-        processaNovoPagamentoUseCase.verificaSeJaExistePagamentoParaOPedido(getByCodigoPedido(pedidoAPagarDTORequest));
-        atualizaStatusPagamentoUsecase.analisaStatusDoPagamento(pedidoAPagarDTORequest.getStatusPagamento(), StatusPagamento.IN_PROCESS, new Pagamento(pedidoAPagarDTORequest));
-        atualizaStatusPagamentoUsecase.salvaStatus(getByCodigoPedido(pedidoAPagarDTORequest));
-        return new PagamentoAEnviarAoGatewayDTORequest(getByCodigoPedido(pedidoAPagarDTORequest));
+    public PagamentoAEnviarAoGatewayDTORequest preparaParaEnviarPagamentoAoGateway(PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest) {
+        processaNovoPagamentoUseCase.verificaSeJaExistePagamentoParaOPedido(getByCodigoPedido(pagamentoAEnviarAoGatewayDTORequest));
+        atualizaStatusPagamentoUsecase.analisaStatusDoPagamento(
+                pagamentoAEnviarAoGatewayDTORequest.getStatusPagamento(),
+                StatusPagamento.IN_PROCESS,
+                pagamentoAEnviarAoGatewayDTORequest.conversorDePagamentoAEnviarDTOParaPagamento());
+        atualizaStatusPagamentoUsecase.salvaStatus(getByCodigoPedido(pagamentoAEnviarAoGatewayDTORequest));
+        return new PagamentoAEnviarAoGatewayDTORequest(getByCodigoPedido(pagamentoAEnviarAoGatewayDTORequest));
     }
 
     private Pagamento getByCodigoPedido(PedidoAPagarDTORequest pedidoAPagarDTORequest) {

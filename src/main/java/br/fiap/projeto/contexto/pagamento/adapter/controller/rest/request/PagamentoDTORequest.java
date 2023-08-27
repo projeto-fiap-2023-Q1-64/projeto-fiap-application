@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request;
 
+import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 
@@ -17,9 +18,12 @@ public class PagamentoDTORequest {
 
     private Date dataPagamento;
 
+    private Double valorTotal;
+
     public PagamentoDTORequest() {
     }
 
+    //TODO verificar o uso da validação aqui, DTO não deve manipular dados
     //Criação de um novo Pagamento: requer o código do pedido
     public PagamentoDTORequest(String codigoPedido) {
         this.status = StatusPagamento.PENDING;
@@ -31,6 +35,9 @@ public class PagamentoDTORequest {
         this.dataPagamento = new Date();
     }
 
+    public Pagamento conversorDePagamentoDTORequestParaPagamento(){
+        return new Pagamento(codigoPedido, valorTotal);
+    }
 
     public UUID getCodigo() {
         return codigo;
@@ -62,6 +69,15 @@ public class PagamentoDTORequest {
 
     public void setDataPagamento(Date dataPagamento) {
         this.dataPagamento = dataPagamento;
+    }
+
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package br.fiap.projeto.contexto.pagamento.external.api;
 
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IEnviaPagamentoGatewayRestAdapterController;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoAEnviarAoGatewayDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,10 @@ public class EnviaPagamentoParaGatewayPagamentoApiController {
 
     @PostMapping(value="/gateway-de-pagamento")
     @Transactional
-    public ResponseEntity<Void> enviaCompraParaGateway(@RequestBody PedidoAPagarDTORequest pedidoAPagarDTORequest) {
+    public ResponseEntity<Void> enviaCompraParaGateway(@RequestBody PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest) {
         enviaPagamentoGatewayRestAdapterController
                 .enviaParaGatewayDePagamento(enviaPagamentoGatewayRestAdapterController
-                        .preparaParaEnviarPagamentoAoGateway(pedidoAPagarDTORequest));
+                        .preparaParaEnviarPagamentoAoGateway(pagamentoAEnviarAoGatewayDTORequest));
         return ResponseEntity.ok().build();
     }
 

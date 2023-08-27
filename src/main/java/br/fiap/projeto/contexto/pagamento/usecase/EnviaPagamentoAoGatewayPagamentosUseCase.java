@@ -12,10 +12,11 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
         this.enviaPagamentoAoGatewayPagamentosAdapterGateway = enviaPagamentoAoGatewayPagamentosAdapterGateway;
     }
 
-    //TODO a interface que será usada para enviar deve ser uma que chama o MP
+    //TODO injetar a dependência que será usada para enviar deve ser uma que chama o MP
    @Override
     public void enviaRequestAoSistemaExternoPagamentos(Pagamento pagamento) {
-        //TODO verificar a chamada ao repository
-        enviaPagamentoAoGatewayPagamentosAdapterGateway.envia(pagamento);
+        //TODO aqui faria chamadas às integrações com o sistema externo - hoje apenas é simulado
+       System.out.println("Enviando pagamento ao Sistema Externo de Pagamentos: MercadoPago");
+       enviaPagamentoAoGatewayPagamentosAdapterGateway.persisteInfoDoPagamentoEnviadoAoGateway(pagamento);
     }
 }

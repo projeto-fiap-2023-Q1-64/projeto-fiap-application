@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.pagamento.external.api;
 
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IProcessaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,12 @@ public class ProcessaNovoPagamentoApiController {
         this.processaPagamentoRestAdapterController = processaPagamentoRestAdapterController;
     }
 
-    //input dos dados para um novo pagamento (inicia-pagamento)
     @PostMapping(value="/novo-pagamento")
     @Transactional
-    public ResponseEntity<PagamentoDTOResponse> iniciaPagamento(@RequestBody PagamentoDTORequest pagamentoDTORequest) {
-        processaPagamentoRestAdapterController.criaNovoPagamento(pagamentoDTORequest);
-        URI novoRecursoDePagamentoCriadoUri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/codigo}").buildAndExpand(pagamentoDTORequest.getCodigoPedido()).toUri();
-        return ResponseEntity.created(novoRecursoDePagamentoCriadoUri).body(new PagamentoDTOResponse(pagamentoDTORequest));
+    public ResponseEntity<PagamentoDTOResponse> iniciaPagamento(@RequestBody PedidoAPagarDTORequest pedidoAPagarDTORequest) {
+        processaPagamentoRestAdapterController.criaNovoPagamento(pedidoAPagarDTORequest);
+        URI novoRecursoDePagamentoCriadoUri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/codigo}").buildAndExpand(pedidoAPagarDTORequest.getCodigoPedido()).toUri();
+        return ResponseEntity.created(novoRecursoDePagamentoCriadoUri).body(new PagamentoDTOResponse(pedidoAPagarDTORequest.conversorDePedidoAPagarDTOParaPagamento()));
     }
 
 }

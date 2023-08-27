@@ -6,11 +6,11 @@ import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BuscaPagamentoRestAdapterController implements IBuscaPagamentoRestAdapterController {
 
@@ -21,9 +21,9 @@ public class BuscaPagamentoRestAdapterController implements IBuscaPagamentoRestA
     }
 
     @Override
-    public Page<PagamentoDTOResponse> findAll(Pageable pageable) {
-        Page<Pagamento> listaDePagamentos = buscaPagamentoUseCase.findAll(pageable);
-        return listaDePagamentos.map(PagamentoDTOResponse::new);
+    public List<PagamentoDTOResponse> findAll() {
+        List<Pagamento> listaDePagamentos = buscaPagamentoUseCase.findAll();
+        return listaDePagamentos.stream().map(PagamentoDTOResponse::new).collect(Collectors.toList());
     }
 
     @Override
@@ -34,9 +34,9 @@ public class BuscaPagamentoRestAdapterController implements IBuscaPagamentoRestA
     }
 
     @Override
-    public Page<PagamentoDTOResponse> findByStatusPagamento(StatusPagamento status, Pageable pageable) {
-        Page<Pagamento> listaDePagamentos = buscaPagamentoUseCase.findByStatusPagamento(status, pageable);
-        return listaDePagamentos.map(PagamentoDTOResponse::new);
+    public List<PagamentoDTOResponse> findByStatusPagamento(StatusPagamento status) {
+        List<Pagamento> listaDePagamentos = buscaPagamentoUseCase.findByStatusPagamento(status);
+        return listaDePagamentos.stream().map(PagamentoDTOResponse::new).collect(Collectors.toList());
     }
 
     @Override

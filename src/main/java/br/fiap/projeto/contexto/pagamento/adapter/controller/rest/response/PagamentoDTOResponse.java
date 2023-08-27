@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response;
 
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
@@ -26,14 +25,6 @@ public class PagamentoDTOResponse {
         this.setCodigoPedido(pagamento.getCodigoPedido());
         this.setStatus(pagamento.getStatus());
         this.setDataPagamento(pagamento.getDataPagamento());
-    }
-
-    //usado na criação de um novo pagamento
-    public PagamentoDTOResponse(PagamentoDTORequest pagamentoDTORequest){
-        this.setCodigo(pagamentoDTORequest.getCodigo());
-        this.setCodigoPedido(pagamentoDTORequest.getCodigoPedido());
-        this.setDataPagamento(pagamentoDTORequest.getDataPagamento());
-        this.setStatus(pagamentoDTORequest.getStatus());
     }
 
     public UUID getCodigo() {

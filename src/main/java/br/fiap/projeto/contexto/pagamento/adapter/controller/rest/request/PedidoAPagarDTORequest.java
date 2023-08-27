@@ -12,7 +12,6 @@ public class PedidoAPagarDTORequest {
 
     private String codigoPedido;
     private Double valorTotal;
-    private StatusPagamento statusPagamento;
     private Date dataPagamento;
     private List<Pedido> pedidos;
 
@@ -22,13 +21,11 @@ public class PedidoAPagarDTORequest {
     public PedidoAPagarDTORequest(String codigoPedido, Double valorTotal) {
         this.codigoPedido = codigoPedido;
         this.valorTotal = valorTotal;
-
     }
 
     public PedidoAPagarDTORequest(PagamentoDTORequest pagamentoDTO){
         this.setCodigoPedido(pagamentoDTO.getCodigoPedido());
         this.setDataPagamento(pagamentoDTO.getDataPagamento());
-        this.setStatusPagamento(pagamentoDTO.getStatus());
     }
 
     public PedidoAPagarDTORequest(List<Pedido> pedidos) {
@@ -40,9 +37,12 @@ public class PedidoAPagarDTORequest {
     }
     public PedidoAPagarDTORequest(Pagamento pagamento){
         this.setCodigoPedido(pagamento.getCodigoPedido());
-        this.setStatusPagamento(pagamento.getStatus());
         this.setDataPagamento(pagamento.getDataPagamento());
 
+    }
+
+    public Pagamento conversorDePedidoAPagarDTOParaPagamento(){
+        return new Pagamento(codigoPedido, valorTotal);
     }
 
     public String getCodigoPedido() {
@@ -58,12 +58,6 @@ public class PedidoAPagarDTORequest {
     }
 
     public Double getValorTotal() {return valorTotal; }
-
-    public void setStatusPagamento(StatusPagamento statusPagamento){this.statusPagamento = statusPagamento;}
-
-    public StatusPagamento getStatusPagamento() {
-        return statusPagamento;
-    }
 
     public Date getDataPagamento() {
         return dataPagamento;
