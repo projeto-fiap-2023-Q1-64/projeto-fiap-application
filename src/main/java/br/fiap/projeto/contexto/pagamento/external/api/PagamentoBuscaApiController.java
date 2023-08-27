@@ -16,12 +16,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/pagamento/busca")
-public class BuscaPagamentoApiController {
+public class PagamentoBuscaApiController {
 
     private final IBuscaPagamentoRestAdapterController buscaPagamentoRestAdapterController;
 
     @Autowired
-    public BuscaPagamentoApiController(IBuscaPagamentoRestAdapterController buscaPagamentoRestAdapterController){
+    public PagamentoBuscaApiController(IBuscaPagamentoRestAdapterController buscaPagamentoRestAdapterController){
         this.buscaPagamentoRestAdapterController = buscaPagamentoRestAdapterController;
     }
 
@@ -46,5 +46,12 @@ public class BuscaPagamentoApiController {
     @Transactional
     public ResponseEntity<PagamentoDTOResponse> buscaStatusPagamentoPorCodigoPedido(@PathVariable("codigoPedido") String codigoPedido ){
         return ResponseEntity.ok().body(buscaPagamentoRestAdapterController.findByCodigoPedido(codigoPedido));
+    }
+
+    //TODO adicionar Endpoint que será integrado ao Domínio de Pedidos - Todos os pagamentos Aprovados
+    @GetMapping(value="/aprovados")
+    @Transactional
+    public ResponseEntity <List<PagamentoDTOResponse>> buscaPagamentosAprovados(){
+        return ResponseEntity.ok(buscaPagamentoRestAdapterController.findByStatusPagamento(StatusPagamento.APPROVED));
     }
 }
