@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.external.api;
 
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IProcessaPagamentoRestAdapterController;
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +16,14 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/pagamento/processa")
-public class ProcessaNovoPagamentoApiController {
+public class PagamentoProcessaNovoApiController {
 
     //TODO Trazer a Integração do Pedido a Pagar para cá
     private final IProcessaPagamentoRestAdapterController processaPagamentoRestAdapterController;
 
 
     @Autowired
-    public ProcessaNovoPagamentoApiController(IProcessaPagamentoRestAdapterController processaPagamentoRestAdapterController) {
+    public PagamentoProcessaNovoApiController(IProcessaPagamentoRestAdapterController processaPagamentoRestAdapterController) {
         this.processaPagamentoRestAdapterController = processaPagamentoRestAdapterController;
     }
 
