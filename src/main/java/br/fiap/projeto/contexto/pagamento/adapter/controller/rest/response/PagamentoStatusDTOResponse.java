@@ -10,11 +10,18 @@ public class PagamentoStatusDTOResponse {
 
     private StatusPagamento status;
 
+    private String codigoPedido;
+
     public PagamentoStatusDTOResponse() {
     }
 
     public PagamentoStatusDTOResponse(UUID codigo, StatusPagamento status) {
         this.codigo = codigo;
+        this.status = status;
+    }
+
+    public PagamentoStatusDTOResponse(String codigo, StatusPagamento status) {
+        this.codigoPedido = codigoPedido;
         this.status = status;
     }
 
@@ -32,5 +39,13 @@ public class PagamentoStatusDTOResponse {
 
     public void setStatus(StatusPagamento status) {
         this.status = status;
+    }
+
+    public String getCodigoPedido() {
+        return codigoPedido;
+    }
+
+    public void setCodigoPedido(String codigoPedido) {
+        this.codigoPedido = codigoPedido;
     }
 }

@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request;
 
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
@@ -34,9 +35,32 @@ public class PagamentoDTORequest {
         }
         this.dataPagamento = new Date();
     }
+    //TODO usado no atualizar Status com a resposta do Gateway de Pagamento
+    public PagamentoDTORequest(PagamentoStatusDTORequest pagamentoStatusDTORequest) {
+        this.setCodigoPedido(pagamentoStatusDTORequest.getCodigoPedido());
+        this.setStatus(pagamentoStatusDTORequest.getStatus());
+    }
+
+    public PagamentoDTORequest(UUID codigo, String codigoPedido, StatusPagamento status, Date dataPagamento, Double valorTotal) {
+        this.codigo = codigo;
+        this.codigoPedido = codigoPedido;
+        this.status = status;
+        this.dataPagamento = dataPagamento;
+        this.valorTotal = valorTotal;
+    }
+
+    public PagamentoDTORequest completaDadosDoPagamentoRequest(PagamentoDTORequest pagamentoDTORequest, PagamentoDTOResponse pagamentoDTOStatusAtual) {
+               return new PagamentoDTORequest(
+                       pagamentoDTOStatusAtual.getCodigo(),
+                       pagamentoDTOStatusAtual.getCodigoPedido(),
+                       pagamentoDTORequest.getStatus(),
+                       pagamentoDTOStatusAtual.getDataPagamento(),
+                       pagamentoDTORequest.getValorTotal()
+               );
+    }
 
     public Pagamento conversorDePagamentoDTORequestParaPagamento(){
-        return new Pagamento(codigoPedido, valorTotal);
+        return new Pagamento(codigo, codigoPedido, status, dataPagamento, valorTotal);
     }
 
     public UUID getCodigo() {
@@ -103,5 +127,18 @@ public class PagamentoDTORequest {
                 '}';
     }
 
-
+    public void atualizaDadosRequest(PagamentoDTORequest pagamentoDTORequest, PagamentoDTOResponse pagamentoDTOStatusAtual) {
+        pagamentoDTORequest.atualizaCodigoDoPagamento(pagamentoDTOStatusAtual.getCodigo());
+        pagamentoDTORequest.atualizaValorTotal(pagamentoDTOStatusAtual.getValorTotal());
+        pagamentoDTORequest.atualizaDataPagamento(pagamentoDTOStatusAtual.getDataPagamento());
+    }
+    private void atualizaCodigoDoPagamento(UUID codigo) {
+       this.setCodigo(codigo);
+    }
+    private void atualizaValorTotal(Double valorTotal) {
+        this.setValorTotal(valorTotal);
+    }
+    private void atualizaDataPagamento(Date dataPagamento) {
+        this.setDataPagamento(dataPagamento);
+    }
 }

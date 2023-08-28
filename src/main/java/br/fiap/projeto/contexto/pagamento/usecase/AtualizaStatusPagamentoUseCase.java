@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.usecase;
 
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IAtualizaStatusPagamentoRepositoryAdapterGateway;
@@ -28,11 +29,12 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
             pagamentoEmAndamento.rejeitaPagamento();
         }
         //TODO verificar esse save - pode estar duplicando
-        atualizaStatusPagamentoAdapterGateway.atualizaStatusPagamento(pagamentoEmAndamento);
+        //atualizaStatusPagamentoAdapterGateway.atualizaStatusPagamento(pagamentoEmAndamento);
     }
 
     @Override
     public void salvaStatus(Pagamento pagamento) {
         atualizaStatusPagamentoAdapterGateway.atualizaStatusPagamento(pagamento);
     }
+
 }
