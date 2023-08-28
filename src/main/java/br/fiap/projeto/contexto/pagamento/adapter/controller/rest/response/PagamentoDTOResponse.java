@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response;
 
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
@@ -17,6 +18,8 @@ public class PagamentoDTOResponse {
 
     private Date dataPagamento;
 
+    private Double valorTotal;
+
     public PagamentoDTOResponse() {
     }
 
@@ -25,6 +28,7 @@ public class PagamentoDTOResponse {
         this.setCodigoPedido(pagamento.getCodigoPedido());
         this.setStatus(pagamento.getStatus());
         this.setDataPagamento(pagamento.getDataPagamento());
+        this.setValorTotal(pagamento.getValorTotal());
     }
 
     public UUID getCodigo() {
@@ -59,6 +63,14 @@ public class PagamentoDTOResponse {
         this.dataPagamento = dataPagamento;
     }
 
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,4 +93,10 @@ public class PagamentoDTOResponse {
                 ", dataPagamento=" + dataPagamento +
                 '}';
     }
+
+    public Pagamento conversorDePagamentoDTOResponseParaPagamento() {
+        return new Pagamento(codigo, codigoPedido, status, dataPagamento, valorTotal);
+    }
+
+
 }

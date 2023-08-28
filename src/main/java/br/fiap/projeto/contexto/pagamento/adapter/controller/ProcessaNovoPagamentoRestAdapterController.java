@@ -4,7 +4,6 @@ import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IProcessa
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IAtualizaStatusPagamentoUsecase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IProcessaNovoPagamentoUseCase;
 
@@ -12,13 +11,9 @@ public class ProcessaNovoPagamentoRestAdapterController implements IProcessaPaga
 
     private final IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase;
 
-    //TODO remover o atualizaStatus
-    private final IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase;
-
     private final IBuscaPagamentoUseCase buscaPagamentoUseCase;
-    public ProcessaNovoPagamentoRestAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase, IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase, IBuscaPagamentoUseCase buscaPagamentoUseCase) {
+    public ProcessaNovoPagamentoRestAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase, IBuscaPagamentoUseCase buscaPagamentoUseCase) {
         this.processaNovoPagamentoUseCase = processaNovoPagamentoUseCase;
-        this.atualizaStatusPagamentoUsecase = atualizaStatusPagamentoUsecase;
         this.buscaPagamentoUseCase = buscaPagamentoUseCase;
     }
 

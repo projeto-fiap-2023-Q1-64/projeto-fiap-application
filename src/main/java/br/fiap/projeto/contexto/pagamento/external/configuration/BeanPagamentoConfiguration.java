@@ -1,8 +1,10 @@
 package br.fiap.projeto.contexto.pagamento.external.configuration;
 
+import br.fiap.projeto.contexto.pagamento.adapter.controller.AtualizaStatusPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.BuscaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.EnviaPagamentoAoGatewayRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.ProcessaNovoPagamentoRestAdapterController;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IAtualizaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IBuscaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IEnviaPagamentoGatewayRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IProcessaPagamentoRestAdapterController;
@@ -50,8 +52,8 @@ public class BeanPagamentoConfiguration {
     }
 
     @Bean
-    IProcessaPagamentoRestAdapterController processaNovoPagamentoAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase, IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUseCase, IBuscaPagamentoUseCase buscaPagamentoUseCase){
-        return new ProcessaNovoPagamentoRestAdapterController(processaNovoPagamentoUseCase, atualizaStatusPagamentoUseCase, buscaPagamentoUseCase );
+    IProcessaPagamentoRestAdapterController processaNovoPagamentoAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new ProcessaNovoPagamentoRestAdapterController(processaNovoPagamentoUseCase, buscaPagamentoUseCase );
     }
 
     @Bean
@@ -86,5 +88,10 @@ public class BeanPagamentoConfiguration {
                                                                                            IBuscaPagamentoUseCase buscaPagamentoUseCase){
         return new EnviaPagamentoAoGatewayRestAdapterController(enviaPagamentoAoGatewayPagamentosUseCase,
                 processaNovoPagamentoUseCase, atualizaStatusPagamentoUsecase, buscaPagamentoUseCase);
+    }
+
+    @Bean
+    IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController(IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new AtualizaStatusPagamentoRestAdapterController(atualizaStatusPagamentoUsecase, buscaPagamentoUseCase);
     }
 }
