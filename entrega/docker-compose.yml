@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: test_db
+      POSTGRES_PASSWORD: "postgres-projeto-fiap-2023-Q1-64"
+    ports:
+      - "5432:5432"
+    restart: always
+  projeto-fiap:
+    image: rm350010/projeto-fiap-1:latest
+    environment:
+      - "SPRING_CONFIG_ADDITIONAL_LOCATION=classpath:application-docker.properties"
+    pull_policy: always
+    ports:
+      - "80:8080"
+    restart: always
+    depends_on:
+      - db
