@@ -17,7 +17,6 @@ public class AtualizaStatusPagamentoRestAdapterController implements IAtualizaPa
         this.buscaPagamentoUseCase = buscaPagamentoUseCase;
     }
 
-
     @Override
     public void atualizaStatusPagamento(PagamentoDTORequest pagamentoDTORequest) {
         PagamentoDTOResponse pagamentoDTOStatusAtual = new PagamentoDTOResponse(getByCodigoPedido(pagamentoDTORequest));
@@ -30,7 +29,6 @@ public class AtualizaStatusPagamentoRestAdapterController implements IAtualizaPa
         pagamentoDTORequest.atualizaDadosRequest(pagamentoDTORequest, pagamentoDTOStatusAtual);
         atualizaStatusPagamentoUsecase.salvaStatus(pagamentoDTORequest.conversorDePagamentoDTORequestParaPagamento());
     }
-
 
     private Pagamento getByCodigoPedido(PagamentoDTORequest pagamentoDTORequest){
         return buscaPagamentoUseCase.findByCodigoPedido(pagamentoDTORequest.getCodigoPedido());
