@@ -18,17 +18,17 @@ import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscar
 @RequestMapping("/comandas")
 public class BuscaFinalizadoStatusComandaApiExternal {
 
-    private final IBuscarPorStatusComandaRepositoryUseCase comandaServicePort;
+    private final IBuscarPorStatusComandaRepositoryUseCase comandaService;
 
     @Autowired
-    public BuscaFinalizadoStatusComandaApiExternal(IBuscarPorStatusComandaRepositoryUseCase comandaServicePort) {
-        this.comandaServicePort = comandaServicePort;
+    public BuscaFinalizadoStatusComandaApiExternal(IBuscarPorStatusComandaRepositoryUseCase comandaService) {
+        this.comandaService = comandaService;
     }
 
     @GetMapping("/busca-pendentes")
     @ResponseBody
     ResponseEntity<List<Comanda>> getComandasPendentes() throws ExceptionMessage, Exception {
-        List<Comanda> lista = this.comandaServicePort.buscaComandaPorStatus(StatusComanda.FINALIZADO);
+        List<Comanda> lista = this.comandaService.buscaComandaPorStatus(StatusComanda.FINALIZADO);
         return ResponseEntity.ok().body(lista);
     }
 

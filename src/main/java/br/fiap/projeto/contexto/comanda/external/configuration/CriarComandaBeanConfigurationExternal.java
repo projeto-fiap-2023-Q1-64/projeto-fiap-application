@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import br.fiap.projeto.contexto.comanda.adapter.controller.CriaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.ICriarComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.gateway.CriaComandaGatewayAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.gateway.portGateway.ICriaComandaGatewayAdapter;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.CriarComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.ICriarComandaUseCase;
@@ -27,7 +28,7 @@ public class CriarComandaBeanConfigurationExternal {
     }
 
     @Bean
-    ICriarComandaRepositoryUseCase criarComandaGatewayAdapter(
+    ICriaComandaGatewayAdapter criarUmaComandaGatewayAdapter(
             SpringComandaRepository springComandaRepository) {
         return new CriaComandaGatewayAdapter(springComandaRepository);
     }

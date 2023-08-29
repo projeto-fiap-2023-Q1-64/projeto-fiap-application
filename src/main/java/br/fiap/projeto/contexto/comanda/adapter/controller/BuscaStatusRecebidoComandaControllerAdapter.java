@@ -8,11 +8,11 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.BuscaPorStat
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
 
-public class BuscaStatusPreparacaoComandaControlleAdapter implements IBuscaPorStatusComandaControllerAdapter {
+public class BuscaStatusRecebidoComandaControllerAdapter implements IBuscaPorStatusComandaControllerAdapter {
 
     private final IBuscaPorStatusComandaUseCase buscarPorStatusComandaUseCase;
 
-    public BuscaStatusPreparacaoComandaControlleAdapter(
+    public BuscaStatusRecebidoComandaControllerAdapter(
             IBuscaPorStatusComandaUseCase buscarPorStatusComandaUseCase) {
         this.buscarPorStatusComandaUseCase = buscarPorStatusComandaUseCase;
     }

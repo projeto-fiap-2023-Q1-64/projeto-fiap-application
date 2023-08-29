@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import br.fiap.projeto.contexto.comanda.adapter.gateway.portGateway.IBuscaStatusComandaGatewayAdapter;
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
 @Component
 @Primary
-public class BuscaStatusRecebidoComandaGatewayAdapter implements IBuscarPorStatusComandaRepositoryUseCase {
+public class BuscaStatusRecebidoComandaGatewayAdapter implements IBuscaStatusComandaGatewayAdapter {
 
     private final SpringComandaRepository springComandaRepository;
 

@@ -5,7 +5,8 @@ import org.springframework.context.annotation.Configuration;
 
 import br.fiap.projeto.contexto.comanda.adapter.controller.BuscaPorComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IBuscaPorComandaControllerAdapter;
-import br.fiap.projeto.contexto.comanda.adapter.gateway.BuscaPorComandaRepositoryGatewayAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.gateway.BuscaPorComandaGatewayAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.gateway.portGateway.IBuscaPorComandaGatewayAdapter;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.BuscaComandaUseCase;
@@ -28,8 +29,9 @@ public class BuscaPorComandaBeanConfigurationExternal {
     }
 
     @Bean
-    IBuscarComandaRepositoryUseCase buscaPorComandaRepositoryGatewayAdapter(
-            SpringComandaRepository springComandaRepository) throws ExceptionMessage, Exception {
-        return new BuscaPorComandaRepositoryGatewayAdapter(springComandaRepository);
+    IBuscaPorComandaGatewayAdapter buscaPorUmaComandaGatewayAdapter(
+            SpringComandaRepository springComandaRepository) throws ExceptionMessage,
+            Exception {
+        return new BuscaPorComandaGatewayAdapter(springComandaRepository);
     }
 }

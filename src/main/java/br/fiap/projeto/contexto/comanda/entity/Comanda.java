@@ -14,6 +14,9 @@ public class Comanda {
 
 	private StatusComanda status;
 
+	public Comanda() {
+	}
+
 	public Comanda(UUID codigoComanda, UUID codigoPedido, StatusComanda status) throws ExceptionMessage {
 		if (!((codigoComanda == null) || (codigoPedido == null))) {
 
@@ -43,10 +46,6 @@ public class Comanda {
 	public UUID getCodigoComanda() {
 		return codigoComanda;
 	}
-
-	// public ComandaDTO toComandaDTO() {
-	// return new ComandaDTO(codigoComanda, codigoPedido, status);
-	// }
 
 	public void atualizaStatus(StatusComanda statusComanda) {
 		this.status = statusComanda;

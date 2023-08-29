@@ -14,12 +14,11 @@ import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+// @NoArgsConstructor
 @Table(name = "comandas")
 
 public class ComandaEntity {
@@ -33,6 +32,9 @@ public class ComandaEntity {
 
     @Column(nullable = false)
     private StatusComanda status;
+
+    public ComandaEntity() {
+    }
 
     public ComandaEntity(Comanda comanda) {
         this.codigoComanda = comanda.getCodigoComanda();

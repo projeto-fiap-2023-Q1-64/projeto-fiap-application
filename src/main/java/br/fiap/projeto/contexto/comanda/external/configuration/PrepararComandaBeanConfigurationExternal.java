@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import br.fiap.projeto.contexto.comanda.adapter.controller.PreparaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.gateway.PreparaComandaGatewayAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.gateway.portGateway.IAtualizaStatusComandaGatewayAdapter;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.PrepararComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 
@@ -30,7 +30,7 @@ public class PrepararComandaBeanConfigurationExternal {
     }
 
     @Bean
-    IAtualizarComandaRepositoryUseCase preparaComandaGatewayAdapter(
+    IAtualizaStatusComandaGatewayAdapter preparaUmaComandaGatewayAdapter(
             SpringComandaRepository springComandaRepository) {
         return new PreparaComandaGatewayAdapter(springComandaRepository);
     }

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "br.fiap.projeto.contexto.comanda.infrastructure")
-@EntityScan("br.fiap.projeto.contexto.comanda.infrastructure.entity")
+@EnableJpaRepositories(basePackages = "br.fiap.projeto.contexto.comanda.external")
+@EntityScan("br.fiap.projeto.contexto.comanda.external.repository.entity")
 public class PostgresComandaConfiguration {
 }

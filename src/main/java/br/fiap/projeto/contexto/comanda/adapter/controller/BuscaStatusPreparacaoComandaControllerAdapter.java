@@ -8,18 +8,18 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.BuscaPorStat
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
 
-public class BuscaStatusFinalizadoComandaControlleAdapter implements IBuscaPorStatusComandaControllerAdapter {
+public class BuscaStatusPreparacaoComandaControllerAdapter implements IBuscaPorStatusComandaControllerAdapter {
 
-    private final IBuscaPorStatusComandaUseCase buscarPorStatusUseCase;
+    private final IBuscaPorStatusComandaUseCase buscarPorStatusComandaUseCase;
 
-    public BuscaStatusFinalizadoComandaControlleAdapter(
-            IBuscaPorStatusComandaUseCase buscarPorStatusUseCase) {
-        this.buscarPorStatusUseCase = buscarPorStatusUseCase;
+    public BuscaStatusPreparacaoComandaControllerAdapter(
+            IBuscaPorStatusComandaUseCase buscarPorStatusComandaUseCase) {
+        this.buscarPorStatusComandaUseCase = buscarPorStatusComandaUseCase;
     }
 
     @Override
     public List<ComandaDTO> buscaPorStatus(BuscaPorStatusComandaDTO buscaStatusDTO) throws Exception {
-        return buscarPorStatusUseCase.buscaComandaPorStatus(buscaStatusDTO.getStatusComanda()).stream()
+        return buscarPorStatusComandaUseCase.buscaComandaPorStatus(buscaStatusDTO.getStatusComanda()).stream()
                 .map(ComandaDTO::newInstanceFromComanda).collect(Collectors.toList());
     }
 
