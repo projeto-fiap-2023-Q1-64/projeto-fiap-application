@@ -11,4 +11,5 @@ public interface IPedidoQueryUseCase {
     List<Pedido> buscarTodosEmPreparacao();
     List<Pedido> buscarTodosPronto();
     List<Pedido> buscarTodosFinalizado();
+    List<Pedido> buscarTodosPorStatusEDataCriacao();
 }

@@ -7,6 +7,7 @@ import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoReposi
 import br.fiap.projeto.contexto.pedido.external.repository.entity.PedidoEntity;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoMapper;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,12 @@ public class PedidoRepositoryAdapterGateway implements IPedidoRepositoryAdapterG
     @Override
     public List<Pedido> buscaPedidosPorStatus(StatusPedido statusPedido) {
         List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findByStatusEquals(statusPedido);
+        return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Pedido> buscaPedidosPorStatusData() {
+        List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findPedidosPorStatusEData();
         return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
     }
 }

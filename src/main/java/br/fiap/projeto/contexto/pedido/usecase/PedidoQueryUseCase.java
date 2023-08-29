@@ -18,27 +18,33 @@ public class PedidoQueryUseCase extends AbstractPedidoUseCase implements IPedido
     }
     @Override
     public List<Pedido> buscarTodosRecebido(){
-        List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.RECEBIDO);
-        return pedidosRecebidos;
+        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.RECEBIDO);
+        return pedidoLista;
     }
     @Override
     public List<Pedido> buscarTodosPagos(){
-        List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PAGO);
-        return pedidosRecebidos;
+        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PAGO);
+        return pedidoLista;
     }
     @Override
     public List<Pedido> buscarTodosEmPreparacao(){
-        List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
-        return pedidosRecebidos;
+        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
+        return pedidoLista;
     }
     @Override
     public List<Pedido> buscarTodosPronto(){
-        List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PRONTO);
-        return pedidosRecebidos;
+        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PRONTO);
+        return pedidoLista;
     }
     @Override
     public List<Pedido> buscarTodosFinalizado(){
-        List<Pedido> pedidosRecebidos = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.FINALIZADO);
-        return pedidosRecebidos;
+        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.FINALIZADO);
+        return pedidoLista;
+    }
+
+    @Override
+    public List<Pedido> buscarTodosPorStatusEDataCriacao() {
+        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatusData();
+        return pedidoLista;
     }
 }

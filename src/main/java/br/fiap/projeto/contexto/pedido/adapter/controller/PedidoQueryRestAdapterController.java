@@ -18,31 +18,34 @@ public class PedidoQueryRestAdapterController implements IPedidoQueryRestAdapter
 
     @Override
     public List<PedidoDTO> buscarTodosRecebido() {
-        List<Pedido> pedidos = this.queryUseCase.buscarTodosRecebido();
-        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
+        return this.convertList(this.queryUseCase.buscarTodosRecebido());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosPagos() {
-        List<Pedido> pedidos = this.queryUseCase.buscarTodosPagos();
-        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
+        return this.convertList(this.queryUseCase.buscarTodosPagos());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosEmPreparacao() {
-        List<Pedido> pedidos = this.queryUseCase.buscarTodosEmPreparacao();
-        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
+        return this.convertList(this.queryUseCase.buscarTodosEmPreparacao());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosPronto() {
-        List<Pedido> pedidos = this.queryUseCase.buscarTodosPronto();
-        return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
+        return this.convertList(this.queryUseCase.buscarTodosPronto());
     }
 
     @Override
     public List<PedidoDTO> buscarTodosFinalizado() {
-        List<Pedido> pedidos = this.queryUseCase.buscarTodosFinalizado();
+        return this.convertList(this.queryUseCase.buscarTodosFinalizado());
+    }
+
+    @Override
+    public List<PedidoDTO> buscarPorStatusEData() {
+        return this.convertList(this.queryUseCase.buscarTodosPorStatusEDataCriacao());
+    }
+    private List<PedidoDTO> convertList(List<Pedido> pedidos){
         return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
     }
 }

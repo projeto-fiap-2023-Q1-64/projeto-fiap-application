@@ -55,4 +55,10 @@ public class PedidoQueryApiController {
         List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosFinalizado();
         return ResponseEntity.ok().body(lista);
     }
+    @GetMapping("busca-pedidos")
+    @ResponseBody
+    public ResponseEntity<List<PedidoDTO>> getProdutos() {
+        List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarPorStatusEData();
+        return ResponseEntity.ok().body(lista);
+    }
 }

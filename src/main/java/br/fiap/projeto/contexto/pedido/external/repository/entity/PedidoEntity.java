@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,11 +27,14 @@ public class PedidoEntity {
     private StatusPedido status;
     @Column(nullable = false, precision = 2)
     private Double valorTotal;
+    @Column(nullable = false)
+    private LocalDateTime dataCriacao;
     public PedidoEntity(PedidoEntity pedido){
         this.codigo = pedido.getCodigo();
         this.itens = pedido.getItens();
         this.cliente = pedido.getCliente();
         this.status = pedido.getStatus();
         this.valorTotal = pedido.getValorTotal();
+        this.dataCriacao = pedido.getDataCriacao();
     }
 }

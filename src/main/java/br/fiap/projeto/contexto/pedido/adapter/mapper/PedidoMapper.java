@@ -23,7 +23,8 @@ public class PedidoMapper {
                                 itensPedidoEntity,
                                 pedido.getCliente(),
                                 pedido.getStatus(),
-                                pedido.getValorTotal());
+                                pedido.getValorTotal(),
+                                pedido.getDataCriacao());
         }
 
         public static PedidoEntity toEntityWithoutItens(Pedido pedido) {
@@ -31,7 +32,8 @@ public class PedidoMapper {
                                 null,
                                 pedido.getCliente(),
                                 pedido.getStatus(),
-                                pedido.getValorTotal());
+                                pedido.getValorTotal(),
+                                pedido.getDataCriacao());
         }
 
         public static Pedido toDomain(PedidoEntity pedidoEntity) {
@@ -42,7 +44,8 @@ public class PedidoMapper {
                                 itensPedido,
                                 pedidoEntity.getCliente(),
                                 pedidoEntity.getStatus(),
-                                pedidoEntity.getValorTotal());
+                                pedidoEntity.getValorTotal(),
+                                pedidoEntity.getDataCriacao());
         }
 
         public static Pedido toDomainWithoutItens(PedidoEntity pedidoEntity) {
@@ -50,6 +53,7 @@ public class PedidoMapper {
                                 null,
                                 pedidoEntity.getCliente(),
                                 pedidoEntity.getStatus(),
-                                pedidoEntity.getValorTotal());
+                                pedidoEntity.getValorTotal(),
+                                pedidoEntity.getDataCriacao());
         }
 }

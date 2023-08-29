@@ -11,6 +11,7 @@ public class PedidoDtoMapper {
                 pedido.getItens(),
                 pedido.getCliente(),
                 pedido.getStatus(),
-                pedido.getValorTotal());
+                pedido.getValorTotal(),
+                pedido.getDataCriacao());
     }
 }
