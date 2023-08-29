@@ -7,17 +7,18 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
 
-public class PreparaComandaControllerAdapter implements IAtualizaComandaControllerAdapter {
+public class FinalizaComandaControllerAdapter implements IAtualizaComandaControllerAdapter {
 
-    private final IAtualizarComandaUseCase preparaComandaUseCase;
+    private final IAtualizarComandaUseCase atualizarComandaUseCase;
 
-    public PreparaComandaControllerAdapter(IAtualizarComandaUseCase preparaComandaUseCase) {
-        this.preparaComandaUseCase = preparaComandaUseCase;
+    public FinalizaComandaControllerAdapter(IAtualizarComandaUseCase atualizarComandaUseCase) {
+        this.atualizarComandaUseCase = atualizarComandaUseCase;
     }
 
     @Override
     public ComandaDTO atualizaStatusComanda(UUID codigoComanda) throws ExceptionMessage {
-        return ComandaDTO.newInstanceFromComanda(preparaComandaUseCase.atualizar(codigoComanda));
+        return ComandaDTO.newInstanceFromComanda(
+                atualizarComandaUseCase.atualizar(codigoComanda));
     }
 
 }

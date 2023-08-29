@@ -1,23 +1,23 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarComandaRepositoryPortUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarComandaRepositoryUseCase;
 
-public class BuscaComandaUseCase implements IBuscarComandaRepositoryPortUseCase {
+public class BuscaComandaUseCase implements IBuscaPorComandaUseCase {
 
-    private final IBuscarComandaRepositoryPortUseCase buscarComandaRepositoryPortUseCase;
+    private final IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase;
 
-    public BuscaComandaUseCase(IBuscarComandaRepositoryPortUseCase buscarComandaRepositoryPortUseCase) {
-        this.buscarComandaRepositoryPortUseCase = buscarComandaRepositoryPortUseCase;
+    public BuscaComandaUseCase(IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase) {
+        this.buscarComandaRepositoryUseCase = buscarComandaRepositoryUseCase;
     }
 
     @Override
-    public Optional<Comanda> buscar(UUID codigoComanda) throws ExceptionMessage {
-        return buscarComandaRepositoryPortUseCase.buscar(codigoComanda);
+    public Comanda buscaComandaPorStatus(UUID codigoComanda) throws ExceptionMessage {
+        return buscarComandaRepositoryUseCase.buscar(codigoComanda);
     }
 
 }

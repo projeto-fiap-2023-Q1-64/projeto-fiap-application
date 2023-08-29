@@ -6,14 +6,15 @@ import java.util.stream.Collectors;
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryPortUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
-public class BuscaPreparacaoStatusComandaUseCase implements IBuscarPorStatusComandaRepositoryPortUseCase {
+public class BuscaPreparacaoStatusComandaUseCase implements IBuscaPorStatusComandaUseCase {
 
-    private final IBuscarPorStatusComandaRepositoryPortUseCase buscarPorStatusComandaRepositoryPortUseCase;
+    private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryPortUseCase;
 
     public BuscaPreparacaoStatusComandaUseCase(
-            IBuscarPorStatusComandaRepositoryPortUseCase buscarPorStatusComandaRepositoryPortUseCase) {
+            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryPortUseCase) {
         this.buscarPorStatusComandaRepositoryPortUseCase = buscarPorStatusComandaRepositoryPortUseCase;
     }
 

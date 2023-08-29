@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 
-public interface IAtualizaComandaPortControllerAdapter {
+public interface IAtualizaComandaControllerAdapter {
 
     ComandaDTO atualizaStatusComanda(UUID codigoComanda)
             throws Exception;

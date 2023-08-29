@@ -3,22 +3,39 @@ package br.fiap.projeto.contexto.comanda.external.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
+import br.fiap.projeto.contexto.comanda.adapter.controller.BuscaStatusFinalizadoComandaControlleAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.controller.port.IBuscaPorStatusComandaControllerAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.gateway.BuscaStatusFinalizadoComandaGatewayAdapter;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.external.integration.ComandaPedidoIntegration;
+import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.BuscaFinalizadoStatusComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusPortUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryPortUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
 @Configuration
 public class BuscaFinalizadoStatusComandaBeanConfigurationExternal {
 
     @Bean
-    IBuscaPorStatusPortUseCase comandaService(
-            IBuscarPorStatusComandaRepositoryPortUseCase buscaFinalizadoComandaRepositoryPortUseCase,
-            ComandaPedidoIntegration comandaPedidoIntegration) throws ExceptionMessage, Exception {
-        return (IBuscaPorStatusPortUseCase) new BuscaFinalizadoStatusComandaUseCase(
-                buscaFinalizadoComandaRepositoryPortUseCase)
-                .buscaComandaPorStatus(StatusComanda.FINALIZADO);
+    IBuscaPorStatusComandaUseCase buscaFinalizadoStatusComandaUseCase(
+            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase)
+            throws ExceptionMessage, Exception {
+        return new BuscaFinalizadoStatusComandaUseCase(
+                buscarPorStatusComandaRepositoryUseCase);
+    }
+
+    @Bean
+    IBuscaPorStatusComandaControllerAdapter buscaStatusFinalizadoComandaControlleAdapter(
+            IBuscaPorStatusComandaUseCase buscarPorStatusUseCase)
+            throws ExceptionMessage, Exception {
+        return new BuscaStatusFinalizadoComandaControlleAdapter(
+                buscarPorStatusUseCase);
+    }
+
+    @Bean
+    IBuscarPorStatusComandaRepositoryUseCase buscaStatusFinalizadoComandaGatewayAdapter(
+            SpringComandaRepository springComandaRepository)
+            throws ExceptionMessage, Exception {
+        return new BuscaStatusFinalizadoComandaGatewayAdapter(
+                springComandaRepository);
     }
 }

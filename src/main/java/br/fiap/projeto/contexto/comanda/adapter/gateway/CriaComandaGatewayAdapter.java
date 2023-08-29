@@ -8,11 +8,11 @@ import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryPortUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 
 @Component
 @Primary
-public class CriaComandaGatewayAdapter implements ICriarComandaRepositoryPortUseCase {
+public class CriaComandaGatewayAdapter implements ICriarComandaRepositoryUseCase {
 
     private final SpringComandaRepository springComandaRepository;
 

@@ -6,6 +6,6 @@ import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 
-public interface IBuscaPorStatusPortUseCase {
-    List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage;
+public interface IBuscaPorStatusComandaUseCase {
+    List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage, Exception;
 }

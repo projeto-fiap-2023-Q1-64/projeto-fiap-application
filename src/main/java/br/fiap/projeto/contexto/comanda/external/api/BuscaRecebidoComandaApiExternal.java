@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryPortUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
 @RestController
 @RequestMapping("/comandas")
 public class BuscaRecebidoComandaApiExternal {
 
-    private final IBuscarPorStatusComandaRepositoryPortUseCase buscaRecebidoComandaRepositoryPortUseCase;
+    private final IBuscarPorStatusComandaRepositoryUseCase buscaRecebidoComandaRepositoryPortUseCase;
 
     @Autowired
     public BuscaRecebidoComandaApiExternal(
-            IBuscarPorStatusComandaRepositoryPortUseCase buscaRecebidoComandaRepositoryPortUseCase) {
+            IBuscarPorStatusComandaRepositoryUseCase buscaRecebidoComandaRepositoryPortUseCase) {
         this.buscaRecebidoComandaRepositoryPortUseCase = buscaRecebidoComandaRepositoryPortUseCase;
     }
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fiap.projeto.contexto.comanda.adapter.controller.port.ICriarComandaPortControllerAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.controller.port.ICriarComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.CriarComandaDTO;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
@@ -17,17 +17,17 @@ import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 @RequestMapping("/comandas")
 public class CriarComandaApiExternal {
 
-    private final ICriarComandaPortControllerAdapter criarComandaPortControllerAdapter;
+    private final ICriarComandaControllerAdapter criarComandaControllerAdapter;
 
     @Autowired
-    public CriarComandaApiExternal(ICriarComandaPortControllerAdapter criarComandaPortControllerAdapter) {
-        this.criarComandaPortControllerAdapter = criarComandaPortControllerAdapter;
+    public CriarComandaApiExternal(ICriarComandaControllerAdapter criarComandaControllerAdapter) {
+        this.criarComandaControllerAdapter = criarComandaControllerAdapter;
     }
 
     @PostMapping
     ResponseEntity<ComandaDTO> criaComanda(@RequestBody CriarComandaDTO criarComandaDTO) throws ExceptionMessage {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(this.criarComandaPortControllerAdapter.criaComanda(criarComandaDTO));
+                .body(this.criarComandaControllerAdapter.criaComanda(criarComandaDTO));
     }
 
 }

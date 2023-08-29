@@ -4,6 +4,6 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.BuscaPorComa
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 
-public interface IBuscaPorComandaPortControllerAdapter {
+public interface IBuscaPorComandaControllerAdapter {
     ComandaDTO buscaPorComanda(BuscaPorComandaDTO buscaPorComandaDTO) throws ExceptionMessage;
 }

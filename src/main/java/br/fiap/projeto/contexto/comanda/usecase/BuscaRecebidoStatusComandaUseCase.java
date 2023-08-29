@@ -6,21 +6,22 @@ import java.util.stream.Collectors;
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryPortUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
-public class BuscaRecebidoStatusComandaUseCase implements IBuscarPorStatusComandaRepositoryPortUseCase {
+public class BuscaRecebidoStatusComandaUseCase implements IBuscaPorStatusComandaUseCase {
 
-    private final IBuscarPorStatusComandaRepositoryPortUseCase buscarPorStatusComandaRepositoryPortUseCase;
+    private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase;
 
     public BuscaRecebidoStatusComandaUseCase(
-            IBuscarPorStatusComandaRepositoryPortUseCase buscarPorStatusComandaRepositoryPortUseCase) {
-        this.buscarPorStatusComandaRepositoryPortUseCase = buscarPorStatusComandaRepositoryPortUseCase;
+            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase) {
+        this.buscarPorStatusComandaRepositoryUseCase = buscarPorStatusComandaRepositoryUseCase;
     }
 
     @Override
     public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage, Exception {
         status = StatusComanda.RECEBIDO;
-        return buscarPorStatusComandaRepositoryPortUseCase.buscaComandaPorStatus(status).stream()
+        return buscarPorStatusComandaRepositoryUseCase.buscaComandaPorStatus(status).stream()
                 .collect(Collectors.toList());
     }
 

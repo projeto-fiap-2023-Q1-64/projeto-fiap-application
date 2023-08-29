@@ -16,12 +16,12 @@ import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscar
 
 @Component
 @Primary
-public class BuscarPorStatusComandaGatewayAdapter implements IBuscarPorStatusComandaRepositoryUseCase {
+public class BuscaStatusPreparacaoComandaGatewayAdapter implements IBuscarPorStatusComandaRepositoryUseCase {
 
     private final SpringComandaRepository springComandaRepository;
 
     @Autowired
-    public BuscarPorStatusComandaGatewayAdapter(SpringComandaRepository springComandaRepository) {
+    public BuscaStatusPreparacaoComandaGatewayAdapter(SpringComandaRepository springComandaRepository) {
         this.springComandaRepository = springComandaRepository;
     }
 

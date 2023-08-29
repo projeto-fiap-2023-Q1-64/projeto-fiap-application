@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaPortControllerAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 
 @RestController
 @RequestMapping("/comandas")
 public class PrepararComandaApiExternal {
 
-    private final IAtualizaComandaPortControllerAdapter atualizarComandaPortControllerAdapter;
+    private final IAtualizaComandaControllerAdapter atualizarComandaPortControllerAdapter;
 
     @Autowired
-    public PrepararComandaApiExternal(IAtualizaComandaPortControllerAdapter atualizarComandaPortControllerAdapter) {
+    public PrepararComandaApiExternal(IAtualizaComandaControllerAdapter atualizarComandaPortControllerAdapter) {
         this.atualizarComandaPortControllerAdapter = atualizarComandaPortControllerAdapter;
     }
 

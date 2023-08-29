@@ -6,6 +6,6 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.BuscaPorStat
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 
-public interface IBuscaPorStatusComandaPortControllerAdapter {
-    List<ComandaDTO> buscaPorStatus(BuscaPorStatusComandaDTO buscaStatusComandaDTO) throws ExceptionMessage;
+public interface IBuscaPorStatusComandaControllerAdapter {
+    List<ComandaDTO> buscaPorStatus(BuscaPorStatusComandaDTO buscaStatusComandaDTO) throws ExceptionMessage, Exception;
 }

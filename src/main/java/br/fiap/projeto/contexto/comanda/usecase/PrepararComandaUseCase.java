@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -8,19 +7,19 @@ import javax.persistence.EntityNotFoundException;
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaPortUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarComandaRepositoryPortUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryPortUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 
-public class PrepararComandaUseCase implements IAtualizarComandaPortUseCase {
+public class PrepararComandaUseCase implements IAtualizarComandaUseCase {
 
-    private final IBuscarComandaRepositoryPortUseCase buscarComandaRepositoryPortUseCase;
-    private final ICriarComandaRepositoryPortUseCase criarComandaRepositoryPortUseCase;
+    private final IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase;
+    private final ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase;
 
-    public PrepararComandaUseCase(IBuscarComandaRepositoryPortUseCase buscarComandaRepositoryPortUseCase,
-            ICriarComandaRepositoryPortUseCase criarComandaRepositoryPortUseCase) {
-        this.buscarComandaRepositoryPortUseCase = buscarComandaRepositoryPortUseCase;
-        this.criarComandaRepositoryPortUseCase = criarComandaRepositoryPortUseCase;
+    public PrepararComandaUseCase(IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase,
+            ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase) {
+        this.buscarComandaRepositoryUseCase = buscarComandaRepositoryUseCase;
+        this.criarComandaRepositoryUseCase = criarComandaRepositoryUseCase;
     }
 
     @Override
@@ -31,13 +30,17 @@ public class PrepararComandaUseCase implements IAtualizarComandaPortUseCase {
         } else {
             throw new ExceptionMessage(comanda.getStatus().toString());
         }
-        return criarComandaRepositoryPortUseCase.criar(comanda);
+        return criarComandaRepositoryUseCase.criar(comanda);
     }
 
     private Comanda buscar(UUID codigoComanda) throws ExceptionMessage {
-        Optional<Comanda> optionalComanda = buscarComandaRepositoryPortUseCase.buscar(codigoComanda);
-        optionalComanda.orElseThrow(() -> new EntityNotFoundException("Comanda não encontrada!"));
-        return optionalComanda.get();
+        Comanda comanda = buscarComandaRepositoryUseCase
+                .buscar(codigoComanda);
+        if (comanda.getCodigoComanda() == null) {
+            new EntityNotFoundException("Comanda não encontrada!");
+        }
+
+        return comanda;
     }
 
 }
