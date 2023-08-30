@@ -34,7 +34,7 @@ public class PagamentoEntity {
 
     public PagamentoEntity() {}
 
-    //TODO usado nos Repositories para converter a Entity em Pagamento
+    //INFO usado nos Repositories para converter a Entity em Pagamento
     public Pagamento conversorDePagamentoORMEntityParaPagamentoDomainEntity(){
         return new Pagamento(codigo, codigoPedido, statusPagamento, dataPagamento, valorTotal);
     }

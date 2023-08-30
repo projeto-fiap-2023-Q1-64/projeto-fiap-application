@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request;
 
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
-import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.external.integration.port.Pedido;
 
 import java.util.Date;
@@ -41,6 +40,7 @@ public class PedidoAPagarDTORequest {
 
     }
 
+    //INFO usado na criação de um Novo Pagamento
     public Pagamento conversorDePedidoAPagarDTOParaPagamento(){
         return new Pagamento(codigoPedido, valorTotal);
     }

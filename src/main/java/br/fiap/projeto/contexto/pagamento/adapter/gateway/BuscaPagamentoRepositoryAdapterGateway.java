@@ -4,7 +4,6 @@ import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEntity;
 import br.fiap.projeto.contexto.pagamento.external.repository.postgres.SpringPagamentoRepository;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IBuscaPagamentoRepositoryAdapterGateway;
 
 import java.util.List;
@@ -28,9 +27,6 @@ public class BuscaPagamentoRepositoryAdapterGateway implements IBuscaPagamentoRe
     @Override
     public Pagamento findByCodigo(UUID codigo) {
         PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigo(codigo);
-        if(pagamentoEntity.getCodigo() == null){
-            throw new ResourceNotFoundException("Código de pagamento não existe");
-        }
         return pagamentoEntity.conversorDePagamentoORMEntityParaPagamentoDomainEntity();
     }
 

@@ -15,6 +15,7 @@ public class EnviaPagamentoParaGatewayPagamentosRepositoryAdapterGateway impleme
 
     @Override //TODO verificar uso do envia pelo UseCase
     public void persisteInfoDoPagamentoEnviadoAoGateway(Pagamento pagamento) {
+        System.out.println("RepositoryAdapterGateway: ");
         System.out.println("Informações sobre o pagamento em andamento foram atualizadas.");
     }
 

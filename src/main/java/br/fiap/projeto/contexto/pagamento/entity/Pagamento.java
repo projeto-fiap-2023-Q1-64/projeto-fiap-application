@@ -23,7 +23,7 @@ public class Pagamento {
 		this.valorTotal = valorTotal;
 	}
 
-	//INFO usado no conversor do PagamentoDTORequest e PedidoAPagarDTORequest
+	//INFO usado no conversor do PedidoAPagarDTORequest
 	public Pagamento(String codigoPedido,  Double valorTotal){
 		if(codigoPedido.isEmpty()){
 			throw new ResourceNotFoundException("Código de pedido inexistente");
@@ -39,6 +39,12 @@ public class Pagamento {
 		this.codigoPedido = codigoPedido;
 		this.valorTotal = valorTotal;
 		this.dataPagamento = dataPagamento;
+		this.status = status;
+	}
+
+	//INFO usado no conversor do PagamentoNovoDTOResponse apresentar apenas Cod e Status
+	public Pagamento(String codigoPedido, StatusPagamento status){
+		this.codigoPedido = codigoPedido;
 		this.status = status;
 	}
 
@@ -83,22 +89,22 @@ public class Pagamento {
 				'}';
 	}
 
-	public void colocaEmProcessamento() {
-		this.setStatus(StatusPagamento.IN_PROCESS);
+	public void colocaEmProcessamento(Pagamento pagamento) {
+		pagamento.setStatus(StatusPagamento.IN_PROCESS);
 		System.out.println("Notifica pedido: " + this.getCodigoPedido() + ", pagamento está em processamento.");
 	}
 
-	public void aprovaPagamento() {
-		this.setStatus(StatusPagamento.APPROVED);
+	public void aprovaPagamento(Pagamento pagamento) {
+		pagamento.setStatus(StatusPagamento.APPROVED);
 		System.out.println("Notifica aprovação do pagamento do pedido: " + this.getCodigoPedido());
 	}
-	public void cancelaPagamento() {
-		this.setStatus(StatusPagamento.CANCELLED);
+	public void cancelaPagamento(Pagamento pagamento) {
+		pagamento.setStatus(StatusPagamento.CANCELLED);
 		System.out.println("Notifica cancelamento do pagamento do pedido: " + this.getCodigoPedido());
 	}
 
-	public void rejeitaPagamento() {
-		this.setStatus(StatusPagamento.REJECTED);
+	public void rejeitaPagamento(Pagamento pagamento) {
+		pagamento.setStatus(StatusPagamento.REJECTED);
 		System.out.println("Notifica rejeição do pagamento do pedido: " + this.getCodigoPedido());
 	}
 

@@ -18,9 +18,10 @@ public class ProcessaNovoPagamentoRepositoryAdapterGateway implements IProcessaN
     }
 
     @Override
-    public void salvaNovoPagamento(Pagamento pagamento) {
+    public Pagamento salvaNovoPagamento(Pagamento pagamento) {
         //TODO não está sendo verificado se já existe em banco um pagamento pra esse que está a ser salvo
         springPagamentoRepository.save(new PagamentoEntity(pagamento));
+        return getPagamento(pagamento);
     }
 
     @Override
@@ -36,18 +37,22 @@ public class ProcessaNovoPagamentoRepositoryAdapterGateway implements IProcessaN
     }
 
     @Override
-    public void verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento) {
+    public Boolean verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento) {
         Pagamento possivelPagamento = getPossivelPagamento(pagamento);
         //INFO será enviado ao Gateway de Pagamentos se estiver com Pending, qualquer outro status deverá ser rejeitado
         if(!possivelPagamento.getStatus().equals(StatusPagamento.PENDING)) {
             throw new ResourceAlreadyInProcessException("Pedido:  " + pagamento.getCodigoPedido() + " já possui pagamento. INFO: " + possivelPagamento);
         }
+        return true;
     }
 
     private Pagamento getPossivelPagamento(Pagamento pagamento) {
         if(pagamento.getCodigoPedido() == null){
             throw new ResourceNotFoundException("Código do Pedido inválido");
         }
+        return getPagamento(pagamento);
+    }
+    private Pagamento getPagamento(Pagamento pagamento) {
         PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigoPedido(pagamento.getCodigoPedido());
         return pagamentoEntity.conversorDePagamentoORMEntityParaPagamentoDomainEntity();
     }

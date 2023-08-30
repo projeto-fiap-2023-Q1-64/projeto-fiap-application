@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.pagamento.usecase;
 
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.UnprocessablePaymentException;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IAtualizaStatusPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IAtualizaStatusPagamentoUsecase;
 
@@ -16,20 +16,35 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
 
     @Override
     public void analisaStatusDoPagamento(StatusPagamento statusAtual, StatusPagamento statusRequest, Pagamento pagamentoEmAndamento) {
+
+        validaCondicoesDeStatusEnviadasNaRequest(statusAtual, statusRequest, pagamentoEmAndamento);
+
         if(pagamentoEmAndamento.podeSerProcessado(statusAtual, statusRequest)){
-            pagamentoEmAndamento.colocaEmProcessamento();
+            System.out.println("Pode ser processado ");
+            pagamentoEmAndamento.colocaEmProcessamento(pagamentoEmAndamento);
         }
         if(pagamentoEmAndamento.podeSerAprovado(statusAtual, statusRequest)) {
-            pagamentoEmAndamento.aprovaPagamento();
+            System.out.println("Pode ser aprovado ");
+            pagamentoEmAndamento.aprovaPagamento(pagamentoEmAndamento);
         }
         if(pagamentoEmAndamento.podeSerCancelado(statusAtual, statusRequest)){
-            pagamentoEmAndamento.cancelaPagamento();
+            System.out.println("Pode ser cancelado ");
+            pagamentoEmAndamento.cancelaPagamento(pagamentoEmAndamento);
         }
         if(pagamentoEmAndamento.podeSerRejeitado(statusAtual, statusRequest)){
-            pagamentoEmAndamento.rejeitaPagamento();
+            System.out.println("Pode ser rejeitado ");
+            pagamentoEmAndamento.rejeitaPagamento(pagamentoEmAndamento);
         }
-        //TODO verificar esse save - pode estar duplicando
-        //atualizaStatusPagamentoAdapterGateway.atualizaStatusPagamento(pagamentoEmAndamento);
+
+    }
+
+    private static void validaCondicoesDeStatusEnviadasNaRequest(StatusPagamento statusAtual, StatusPagamento statusRequest, Pagamento pagamentoEmAndamento) {
+        if( !pagamentoEmAndamento.podeSerProcessado(statusAtual, statusRequest) &&
+            !pagamentoEmAndamento.podeSerAprovado(statusAtual, statusRequest)   &&
+            !pagamentoEmAndamento.podeSerCancelado(statusAtual, statusRequest)  &&
+            !pagamentoEmAndamento.podeSerRejeitado(statusAtual, statusRequest)  ){
+            throw  new UnprocessablePaymentException("Mudança de Status de Pagamento inválida.");
+        }
     }
 
     @Override

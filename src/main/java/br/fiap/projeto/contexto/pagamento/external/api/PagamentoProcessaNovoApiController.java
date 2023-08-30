@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.pagamento.external.api;
 
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IProcessaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoNovoDTOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +18,7 @@ import java.net.URI;
 @RequestMapping("/pagamento/processa")
 public class PagamentoProcessaNovoApiController {
 
-    //TODO Trazer a Integração do Pedido a Pagar para cá
     private final IProcessaPagamentoRestAdapterController processaPagamentoRestAdapterController;
-
 
     @Autowired
     public PagamentoProcessaNovoApiController(IProcessaPagamentoRestAdapterController processaPagamentoRestAdapterController) {
@@ -29,10 +27,10 @@ public class PagamentoProcessaNovoApiController {
 
     @PostMapping(value="/novo-pagamento")
     @Transactional
-    public ResponseEntity<PagamentoDTOResponse> iniciaPagamento(@RequestBody PedidoAPagarDTORequest pedidoAPagarDTORequest) {
-        processaPagamentoRestAdapterController.criaNovoPagamento(pedidoAPagarDTORequest);
+    public ResponseEntity<PagamentoNovoDTOResponse> iniciaPagamento(@RequestBody PedidoAPagarDTORequest pedidoAPagarDTORequest) {
+        PagamentoNovoDTOResponse pagamentoDTOResponse = processaPagamentoRestAdapterController.criaNovoPagamento(pedidoAPagarDTORequest);
         URI novoRecursoDePagamentoCriadoUri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/codigo}").buildAndExpand(pedidoAPagarDTORequest.getCodigoPedido()).toUri();
-        return ResponseEntity.created(novoRecursoDePagamentoCriadoUri).body(new PagamentoDTOResponse(pedidoAPagarDTORequest.conversorDePedidoAPagarDTOParaPagamento()));
+        return ResponseEntity.created(novoRecursoDePagamentoCriadoUri).body(pagamentoDTOResponse);
     }
 
 }

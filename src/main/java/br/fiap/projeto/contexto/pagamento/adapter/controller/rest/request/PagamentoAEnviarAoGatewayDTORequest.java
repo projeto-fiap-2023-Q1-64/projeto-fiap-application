@@ -15,14 +15,10 @@ public class PagamentoAEnviarAoGatewayDTORequest {
 
     public PagamentoAEnviarAoGatewayDTORequest() {
     }
-
     public PagamentoAEnviarAoGatewayDTORequest(Pagamento pagamento){
         this.setCodigoPedido(pagamento.getCodigoPedido());
         this.setValorTotal(pagamento.getValorTotal());
         this.setStatusPagamento(pagamento.getStatus());
-    }
-    public Pagamento conversorDePagamentoAEnviarDTOParaPagamento(){
-        return new Pagamento(codigoPedido, valorTotal, statusPagamento, dataPagamento);
     }
 
     public String getCodigoPedido() {
@@ -49,6 +45,7 @@ public class PagamentoAEnviarAoGatewayDTORequest {
         this.statusPagamento = statusPagamento;
     }
 
+    //TODO validar a manutenção de enviar a Data ao Gateway - se possível remover
     public Date getDataPagamento() {
         return dataPagamento;
     }

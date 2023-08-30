@@ -24,23 +24,6 @@ public class PagamentoDTORequest {
     public PagamentoDTORequest() {
     }
 
-    //TODO verificar o uso da validação aqui, DTO não deve manipular dados
-    //Criação de um novo Pagamento: requer o código do pedido
-    public PagamentoDTORequest(String codigoPedido) {
-        this.status = StatusPagamento.PENDING;
-        if(!(codigoPedido == null)){
-            this.codigoPedido = codigoPedido;
-        }else{
-            throw new ResourceNotFoundException("Código de pedido inexistente");
-        }
-        this.dataPagamento = new Date();
-    }
-    //TODO usado no atualizar Status com a resposta do Gateway de Pagamento
-    public PagamentoDTORequest(PagamentoStatusDTORequest pagamentoStatusDTORequest) {
-        this.setCodigoPedido(pagamentoStatusDTORequest.getCodigoPedido());
-        this.setStatus(pagamentoStatusDTORequest.getStatus());
-    }
-
     public PagamentoDTORequest(UUID codigo, String codigoPedido, StatusPagamento status, Date dataPagamento, Double valorTotal) {
         this.codigo = codigo;
         this.codigoPedido = codigoPedido;
@@ -49,14 +32,10 @@ public class PagamentoDTORequest {
         this.valorTotal = valorTotal;
     }
 
-    public PagamentoDTORequest completaDadosDoPagamentoRequest(PagamentoDTORequest pagamentoDTORequest, PagamentoDTOResponse pagamentoDTOStatusAtual) {
-               return new PagamentoDTORequest(
-                       pagamentoDTOStatusAtual.getCodigo(),
-                       pagamentoDTOStatusAtual.getCodigoPedido(),
-                       pagamentoDTORequest.getStatus(),
-                       pagamentoDTOStatusAtual.getDataPagamento(),
-                       pagamentoDTORequest.getValorTotal()
-               );
+    //INFO usado no atualizar Status com a resposta do Gateway de Pagamento
+    public PagamentoDTORequest(PagamentoStatusDTORequest pagamentoStatusDTORequest) {
+        this.setCodigoPedido(pagamentoStatusDTORequest.getCodigoPedido());
+        this.setStatus(pagamentoStatusDTORequest.getStatus());
     }
 
     public Pagamento conversorDePagamentoDTORequestParaPagamento(){
