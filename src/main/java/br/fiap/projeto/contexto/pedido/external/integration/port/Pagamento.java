@@ -13,5 +13,5 @@ import java.util.Date;
 public class Pagamento {
     private String codigoPedido;
     private Date dataPagamento;
-    private StatusPagamento statusPagamento;
+    private StatusPagamento status;
 }
