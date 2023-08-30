@@ -1,11 +1,11 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
-import java.util.UUID;
-
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
+
+import java.util.UUID;
 
 public class BuscaComandaUseCase implements IBuscaPorComandaUseCase {
 

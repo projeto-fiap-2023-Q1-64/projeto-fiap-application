@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pagamento.application.rest;
 
-import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoStatusDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 
 import java.net.URI;
 import java.util.UUID;

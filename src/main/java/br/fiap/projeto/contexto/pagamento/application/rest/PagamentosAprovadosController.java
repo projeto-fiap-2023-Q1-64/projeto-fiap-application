@@ -3,8 +3,6 @@ package br.fiap.projeto.contexto.pagamento.application.rest;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
-import com.sun.xml.bind.v2.TODO;
-import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

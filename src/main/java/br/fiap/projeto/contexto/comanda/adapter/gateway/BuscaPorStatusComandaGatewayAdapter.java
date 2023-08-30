@@ -1,12 +1,5 @@
 package br.fiap.projeto.contexto.comanda.adapter.gateway;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
@@ -14,20 +7,20 @@ import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
-@Component
-@Primary
-public class BuscaStatusPreparacaoComandaGatewayAdapter implements IBuscarPorStatusComandaRepositoryUseCase {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BuscaPorStatusComandaGatewayAdapter implements IBuscarPorStatusComandaRepositoryUseCase {
 
     private final SpringComandaRepository springComandaRepository;
 
-    @Autowired
-    public BuscaStatusPreparacaoComandaGatewayAdapter(SpringComandaRepository springComandaRepository) {
+    public BuscaPorStatusComandaGatewayAdapter(SpringComandaRepository springComandaRepository) {
         this.springComandaRepository = springComandaRepository;
     }
 
     @Override
-    public List<Comanda> buscaComandaPorStatus(StatusComanda statusComanda) throws ExceptionMessage {
-        List<ComandaEntity> resultados = springComandaRepository.findByStatus(statusComanda);
+    public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage {
+        List<ComandaEntity> resultados = springComandaRepository.findByStatus(status);
         List<Comanda> comandas = new ArrayList<>();
         if (!resultados.isEmpty()) {
             for (ComandaEntity comandaEntity : resultados) {

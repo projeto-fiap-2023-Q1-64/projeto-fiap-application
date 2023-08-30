@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.identificacao.domain.port.repository;
 
-import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 import br.fiap.projeto.contexto.identificacao.application.rest.response.ClienteDTO;
+import br.fiap.projeto.contexto.identificacao.domain.entity.Cliente;
 
 import java.util.List;
 

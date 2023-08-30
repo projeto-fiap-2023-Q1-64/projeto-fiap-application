@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.identificacao.domain.entity;
 
+import br.fiap.projeto.contexto.identificacao.domain.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Cpf;
 import br.fiap.projeto.contexto.identificacao.domain.vo.Email;
-import br.fiap.projeto.contexto.identificacao.domain.exception.EntradaInvalidaException;
 
 public class Cliente {
 

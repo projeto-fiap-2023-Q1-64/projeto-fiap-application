@@ -3,15 +3,13 @@ package br.fiap.projeto.contexto.pagamento.application.rest;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;
 import br.fiap.projeto.contexto.pagamento.infrastructure.integration.PedidoIntegration;
-import br.fiap.projeto.contexto.pagamento.infrastructure.integration.port.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Endpoint que simula o processamento do pagamento de pedidos recebidos

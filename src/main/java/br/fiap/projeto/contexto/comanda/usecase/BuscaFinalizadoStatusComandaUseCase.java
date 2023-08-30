@@ -1,15 +1,15 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusFinalizadoComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
-public class BuscaFinalizadoStatusComandaUseCase implements IBuscaPorStatusComandaUseCase {
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class BuscaFinalizadoStatusComandaUseCase implements IBuscaPorStatusFinalizadoComandaUseCase {
 
     private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase;
 
@@ -19,9 +19,8 @@ public class BuscaFinalizadoStatusComandaUseCase implements IBuscaPorStatusComan
     }
 
     @Override
-    public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage, Exception {
-        status = StatusComanda.FINALIZADO;
-        return buscarPorStatusComandaRepositoryUseCase.buscaComandaPorStatus(status)
+    public List<Comanda> buscaComandaPorStatusFinalizado() throws ExceptionMessage, Exception {
+        return buscarPorStatusComandaRepositoryUseCase.buscaComandaPorStatus(StatusComanda.FINALIZADO)
                 .stream()
                 .collect(Collectors.toList());
     }

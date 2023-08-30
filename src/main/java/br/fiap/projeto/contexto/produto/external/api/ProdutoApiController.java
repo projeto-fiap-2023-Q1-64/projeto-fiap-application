@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.produto.external.api;
 
+import br.fiap.projeto.contexto.produto.adapter.controller.port.IProdutoRestAdapterController;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.request.ProdutoDTORequest;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.response.ProdutoDTOResponse;
-import br.fiap.projeto.contexto.produto.adapter.controller.port.IProdutoRestAdapterController;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,12 @@
 package br.fiap.projeto.contexto.pedido.domain.service;
 
+import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.request.ProdutoPedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.ItemPedidoDTO;
+import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.ItemPedido;
 import br.fiap.projeto.contexto.pedido.domain.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.domain.Pedido;
-import br.fiap.projeto.contexto.pedido.application.rest.response.ItemPedidoDTO;
-import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
-import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.application.rest.request.ProdutoPedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.OperacaoProduto;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.domain.exception.InvalidOperacaoProdutoException;

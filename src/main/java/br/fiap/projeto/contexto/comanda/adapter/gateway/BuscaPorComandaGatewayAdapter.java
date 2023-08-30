@@ -1,21 +1,18 @@
 package br.fiap.projeto.contexto.comanda.adapter.gateway;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 
-// @Component
-// @Primary
+import java.util.Optional;
+import java.util.UUID;
+
 public class BuscaPorComandaGatewayAdapter implements IBuscarPorComandaRepositoryUseCase {
 
     private final SpringComandaRepository springComandaRepository;
 
-    // @Autowired
     public BuscaPorComandaGatewayAdapter(SpringComandaRepository springComandaRepository) {
         this.springComandaRepository = springComandaRepository;
     }

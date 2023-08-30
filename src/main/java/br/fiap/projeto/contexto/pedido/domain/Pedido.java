@@ -1,15 +1,15 @@
 package br.fiap.projeto.contexto.pedido.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import br.fiap.projeto.contexto.pedido.application.rest.request.PedidoCriarDTO;
 import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor

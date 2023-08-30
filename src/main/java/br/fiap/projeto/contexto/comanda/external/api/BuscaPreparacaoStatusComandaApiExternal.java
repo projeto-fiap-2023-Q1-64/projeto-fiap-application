@@ -1,7 +1,9 @@
 package br.fiap.projeto.contexto.comanda.external.api;
 
-import java.util.List;
-
+import br.fiap.projeto.contexto.comanda.adapter.controller.port.IBuscaPorStatusPreparacaoComandaControllerAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
+import br.fiap.projeto.contexto.comanda.entity.Comanda;
+import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,28 +11,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.fiap.projeto.contexto.comanda.entity.Comanda;
-import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
+import java.util.List;
 
 @RestController
 @RequestMapping("/comandas")
 public class BuscaPreparacaoStatusComandaApiExternal {
 
-    private final IBuscarPorStatusComandaRepositoryUseCase buscaPorStatusComandaPortControllerAdapter;
+    private final IBuscaPorStatusPreparacaoComandaControllerAdapter buscarPorStatusPreparacaoComandaControlleAdapter;
 
     @Autowired
     public BuscaPreparacaoStatusComandaApiExternal(
-            IBuscarPorStatusComandaRepositoryUseCase buscaPorStatusComandaPortControllerAdapter) {
-        this.buscaPorStatusComandaPortControllerAdapter = buscaPorStatusComandaPortControllerAdapter;
+            IBuscaPorStatusPreparacaoComandaControllerAdapter buscarPorStatusPreparacaoComandaControlleAdapter) {
+        this.buscarPorStatusPreparacaoComandaControlleAdapter = buscarPorStatusPreparacaoComandaControlleAdapter;
     }
 
-    @GetMapping("/busca-pendentes")
+    @GetMapping("/busca-preparacao")
     @ResponseBody
-    ResponseEntity<List<Comanda>> getComandasPendentes() throws ExceptionMessage, Exception {
-        final List<Comanda> lista = this.buscaPorStatusComandaPortControllerAdapter
-                .buscaComandaPorStatus(StatusComanda.EM_PREPARACAO);
+    ResponseEntity<List<ComandaDTO>> getComandasPendentes() throws ExceptionMessage, Exception {
+        final List<ComandaDTO> lista = this.buscarPorStatusPreparacaoComandaControlleAdapter
+                .buscaPorStatusPreparacao();
         return ResponseEntity.ok().body(lista);
     }
 
