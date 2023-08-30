@@ -7,8 +7,8 @@ import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.Pedido
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoStatusDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pedido.application.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.domain.enums.StatusPedido;
+import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
+import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.response.ProdutoDTOResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,11 +49,11 @@ public class TesteIntegracao {
         PedidoDTO pedido;
         String codigoPedido;
         List<ProdutoDTOResponse> produtos;
-        PedidoAPagarDTORequest pedidoAPagar;
+        PedidoAPagarDTO pedidoAPagar;
         HttpEntity<?> httpEntity;
-        Page<PagamentoDTOResponse> pagamentosAprovados;
-        PagamentoDTOResponse pagamentoPedido;
-        PagamentoStatusDTOResponse pagamentoStatusDTOResponse;
+        Page<PagamentoDTO> pagamentosAprovados;
+        PagamentoDTO pagamentoPedido;
+        PagamentoStatusDTO pagamentoStatusDTO;
         ComandaDTO comanda;
         List<ComandaDTO> comandasPendentes;
 
@@ -90,13 +90,13 @@ public class TesteIntegracao {
         assertTrue(pedido.getStatus().equals(StatusPedido.RECEBIDO));
 
         // Enviar para o gateway - PagamentosAprocessarController /url-do-gateway
-        pedidoAPagar = new PedidoAPagarDTORequest(codigoPedido, pedido.getValorTotal());
-        //pedidoAPagar.setStatusPagamento(StatusPagamento.PENDING);
+        pedidoAPagar = new PedidoAPagarDTO(codigoPedido, pedido.getValorTotal());
+        pedidoAPagar.setStatusPagamento(StatusPagamento.PENDING);
         httpEntity = new HttpEntity<>(pedidoAPagar);
         restTemplate.exchange(createUriWithPort("/pagamento/gateway/url-do-gateway"), HttpMethod.POST, httpEntity, Void.class);
 
         // Recupera pagamentos aprovados - /por-status/{status}
-        pagamentosAprovados = restTemplate.exchange(createUriWithPort("/pagamentos/por-status/" + StatusPagamento.IN_PROCESS), HttpMethod.GET, null,new ParameterizedTypeReference<CustomPageImpl<PagamentoDTOResponse>>(){}).getBody();
+        pagamentosAprovados = restTemplate.exchange(createUriWithPort("/pagamentos/por-status/" + StatusPagamento.IN_PROCESS), HttpMethod.GET, null,new ParameterizedTypeReference<CustomPageImpl<PagamentoDTO>>(){}).getBody();
         assertNotNull(pagamentosAprovados);
 
         pagamentoPedido = pagamentosAprovados.stream()
@@ -106,12 +106,12 @@ public class TesteIntegracao {
         assertNotNull(pagamentoPedido);
 
          // Muda o status para aprovado - @PatchMapping(value="/atualiza-pagamento/{codigo}")
-         pagamentoStatusDTOResponse = new PagamentoStatusDTOResponse(pagamentoPedido.getCodigo(), StatusPagamento.APPROVED);
-         httpEntity = new HttpEntity(pagamentoStatusDTOResponse);
-         restTemplate.patchForObject(createUriWithPort("/pagamentos/atualiza-pagamento/" + pagamentoStatusDTOResponse.getCodigo().toString()), httpEntity, Void.class);
+         pagamentoStatusDTO = new PagamentoStatusDTO(pagamentoPedido.getCodigo(), StatusPagamento.APPROVED);
+         httpEntity = new HttpEntity(pagamentoStatusDTO);
+         restTemplate.patchForObject(createUriWithPort("/pagamentos/atualiza-pagamento/" + pagamentoStatusDTO.getCodigo().toString()), httpEntity, Void.class);
 
          // Valida se o status alterou para aprovado
-        pagamentosAprovados = restTemplate.exchange(createUriWithPort("/pagamentos/por-status/" + StatusPagamento.APPROVED), HttpMethod.GET, null,new ParameterizedTypeReference<CustomPageImpl<PagamentoDTOResponse>>(){}).getBody();
+        pagamentosAprovados = restTemplate.exchange(createUriWithPort("/pagamentos/por-status/" + StatusPagamento.APPROVED), HttpMethod.GET, null,new ParameterizedTypeReference<CustomPageImpl<PagamentoDTO>>(){}).getBody();
         assertNotNull(pagamentosAprovados);
 
         pagamentoPedido = pagamentosAprovados.stream()
