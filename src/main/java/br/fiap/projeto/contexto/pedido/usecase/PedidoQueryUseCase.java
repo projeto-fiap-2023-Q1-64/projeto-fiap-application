@@ -2,9 +2,11 @@ package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PedidoQueryUseCase extends AbstractPedidoUseCase implements IPedidoQueryUseCase {
@@ -44,7 +46,19 @@ public class PedidoQueryUseCase extends AbstractPedidoUseCase implements IPedido
 
     @Override
     public List<Pedido> buscarTodosPorStatusEDataCriacao() {
-        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatusData();
+        // Define os status que queremos filtrar
+        List<StatusPedido> statuses = new ArrayList<>();
+        statuses.add(StatusPedido.RECEBIDO);
+        statuses.add(StatusPedido.PAGO);
+        statuses.add(StatusPedido.EM_PREPARACAO);
+        statuses.add(StatusPedido.PRONTO);
+
+        // Recupera os pedidos destes estados
+        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidorPorStatuses(statuses);
+
+        // Ordenamos de acordo com o status e data de criação do pedido
+        Collections.sort(pedidoLista, new PedidoStatusDataComparator());
+
         return pedidoLista;
     }
 }

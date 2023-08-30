@@ -46,8 +46,8 @@ public class PedidoRepositoryAdapterGateway implements IPedidoRepositoryAdapterG
     }
 
     @Override
-    public List<Pedido> buscaPedidosPorStatusData() {
-        List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findPedidosPorStatusEData();
+    public List<Pedido> buscaPedidorPorStatuses(List<StatusPedido> statuses) {
+        List<PedidoEntity> listaPedidoEntity = springPedidoRepository.findByStatusIn(statuses);
         return listaPedidoEntity.stream().map(PedidoMapper::toDomain).collect(Collectors.toList());
     }
 }
