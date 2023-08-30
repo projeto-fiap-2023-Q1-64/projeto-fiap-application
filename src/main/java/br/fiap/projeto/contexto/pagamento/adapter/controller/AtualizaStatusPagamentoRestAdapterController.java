@@ -20,11 +20,13 @@ public class AtualizaStatusPagamentoRestAdapterController implements IAtualizaPa
     @Override
     public void atualizaStatusPagamento(PagamentoDTORequest pagamentoDTORequest) {
         PagamentoDTOResponse pagamentoDTOStatusAtual = new PagamentoDTOResponse(getByCodigoPedido(pagamentoDTORequest));
+
         atualizaStatusPagamentoUsecase.analisaStatusDoPagamento(
                 pagamentoDTOStatusAtual.getStatus(),
                 pagamentoDTORequest.getStatus(),
                 pagamentoDTOStatusAtual.conversorDePagamentoDTOResponseParaPagamento()
         );
+
         //INFO aqui o pagamentoDTORequest precisa receber os outros dados do pagamento pois chegará sem
         pagamentoDTORequest.atualizaDadosRequest(pagamentoDTORequest, pagamentoDTOStatusAtual);
         atualizaStatusPagamentoUsecase.salvaStatus(pagamentoDTORequest.conversorDePagamentoDTORequestParaPagamento());

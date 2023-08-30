@@ -4,9 +4,9 @@ import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 
 public interface IProcessaNovoPagamentoRepositoryAdapterGateway {
 
-    void salvaNovoPagamento(Pagamento pagamento);
+    Pagamento salvaNovoPagamento(Pagamento pagamento);
 
     void verificaCondicoesParaCriarPagamento(Pagamento pagamento);
 
-    void verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento);
+    Boolean verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento);
 }

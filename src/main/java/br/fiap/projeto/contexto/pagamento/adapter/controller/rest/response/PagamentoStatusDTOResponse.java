@@ -20,11 +20,6 @@ public class PagamentoStatusDTOResponse {
         this.status = status;
     }
 
-    public PagamentoStatusDTOResponse(String codigo, StatusPagamento status) {
-        this.codigoPedido = codigoPedido;
-        this.status = status;
-    }
-
     public UUID getCodigo() {
         return codigo;
     }

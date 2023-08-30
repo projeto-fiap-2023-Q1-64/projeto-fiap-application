@@ -1,23 +1,24 @@
-package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request;
+package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response;
 
+import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
-public class PagamentoStatusDTORequest {
+public class PagamentoNovoDTOResponse {
 
     private String codigoPedido;
 
     private StatusPagamento status;
 
-    public PagamentoStatusDTORequest() {
-    }
 
-    public PagamentoStatusDTORequest(String codigoPedido, StatusPagamento status) {
+    public PagamentoNovoDTOResponse(String codigoPedido, StatusPagamento status) {
         this.codigoPedido = codigoPedido;
         this.status = status;
     }
 
-    public PagamentoStatusDTORequest(String codigoPedido) {
-        this.codigoPedido = codigoPedido;
+    //INFO usado no retorno da criação de um Novo Pagamento
+    public PagamentoNovoDTOResponse(Pagamento pagamento) {
+        this.setCodigoPedido(pagamento.getCodigoPedido());
+        this.setStatus(pagamento.getStatus());
     }
 
     public String getCodigoPedido() {

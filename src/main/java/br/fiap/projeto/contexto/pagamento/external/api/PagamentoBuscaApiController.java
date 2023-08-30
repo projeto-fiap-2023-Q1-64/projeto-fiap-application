@@ -3,6 +3,7 @@ package br.fiap.projeto.contexto.pagamento.external.api;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IBuscaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,14 @@ public class PagamentoBuscaApiController {
     @GetMapping(value="/{codigoPagamento}")
     @Transactional
     public ResponseEntity<PagamentoDTOResponse> buscaPagamentoPorCodigo(@PathVariable("codigoPagamento") UUID codigo){
-        return ResponseEntity.ok().body( buscaPagamentoRestAdapterController.findByCodigo(codigo));
+        PagamentoDTOResponse possivelPagamentoDTOResponse;
+        try{
+            possivelPagamentoDTOResponse = buscaPagamentoRestAdapterController.findByCodigo(codigo);
+        }
+        catch(Exception e){
+            throw new ResourceNotFoundException("Pagamento com código " + codigo + " inexistente.");
+        }
+        return ResponseEntity.ok().body(possivelPagamentoDTOResponse);
     }
 
     @GetMapping(value="/por-status/{status}")
@@ -45,10 +53,16 @@ public class PagamentoBuscaApiController {
     @GetMapping(value="/por-codigo-pedido/{codigoPedido}")
     @Transactional
     public ResponseEntity<PagamentoDTOResponse> buscaStatusPagamentoPorCodigoPedido(@PathVariable("codigoPedido") String codigoPedido ){
-        return ResponseEntity.ok().body(buscaPagamentoRestAdapterController.findByCodigoPedido(codigoPedido));
+        PagamentoDTOResponse possivelPagamentoDTOResponse;
+        try{
+            possivelPagamentoDTOResponse = buscaPagamentoRestAdapterController.findByCodigoPedido(codigoPedido);
+        }
+        catch(Exception e){
+            throw new ResourceNotFoundException("Pagamento com código de Pedido: " + codigoPedido + " inexistente.");
+        }
+        return ResponseEntity.ok().body(possivelPagamentoDTOResponse);
     }
 
-    //TODO adicionar Endpoint que será integrado ao Domínio de Pedidos - Todos os pagamentos Aprovados
     @GetMapping(value="/aprovados")
     @Transactional
     public ResponseEntity <List<PagamentoDTOResponse>> buscaPagamentosAprovados(){
