@@ -3,10 +3,10 @@ package br.fiap.projeto.integracao;
 import br.fiap.projeto.config.CustomPageImpl;
 import br.fiap.projeto.contexto.comanda.domain.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.domain.enums.StatusComanda;
-import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
-import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoStatusDTO;
-import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
-import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PedidoAPagarDTORequest;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoStatusDTOResponse;
+import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.response.ProdutoDTOResponse;
@@ -79,7 +79,7 @@ public class TesteIntegracao {
         assertNotNull(pedido.getItens());
         assertTrue(pedido.getItens().stream()
                 .allMatch(x -> produtos.stream()
-                        .anyMatch(y -> y.getCodigo().equals(x.getProdutoCodigo().toString()))
+                        .anyMatch(y -> y.getCodigo().equals(x.getCodigo().getProdutoCodigo().toString()))
                 )
         );
 
