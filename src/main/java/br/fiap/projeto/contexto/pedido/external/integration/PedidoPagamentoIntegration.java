@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(value="pedidoPagamentoIntegration", url = "http://localhost:8080/pagamento")
 public interface PedidoPagamentoIntegration {
-    @RequestMapping(method = RequestMethod.GET, value = "/busca-por-pedido/{codigoPedido}")
+    @RequestMapping(method = RequestMethod.GET, value = "/busca/por-codigo-pedido/{codigoPedido}")
     public Pagamento buscaStatusPagamentoPorCodigoPedido(@PathVariable("codigoPedido") String codigoPedido);
 }

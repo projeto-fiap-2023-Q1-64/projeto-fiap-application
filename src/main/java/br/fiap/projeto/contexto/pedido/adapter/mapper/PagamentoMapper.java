@@ -7,6 +7,6 @@ public class PagamentoMapper {
     public static PagamentoPedido toPagamentoPedido(Pagamento pagamento){
         return new PagamentoPedido(pagamento.getCodigoPedido(),
                 pagamento.getDataPagamento(),
-                pagamento.getStatusPagamento());
+                pagamento.getStatus());
     }
 }
