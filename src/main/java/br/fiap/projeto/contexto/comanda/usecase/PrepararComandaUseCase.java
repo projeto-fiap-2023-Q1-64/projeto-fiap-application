@@ -8,15 +8,15 @@ import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 
 public class PrepararComandaUseCase implements IAtualizarComandaUseCase {
 
-    private final IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase;
+    private final IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase;
     private final ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase;
 
-    public PrepararComandaUseCase(IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase,
+    public PrepararComandaUseCase(IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase,
             ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase) {
         this.buscarComandaRepositoryUseCase = buscarComandaRepositoryUseCase;
         this.criarComandaRepositoryUseCase = criarComandaRepositoryUseCase;

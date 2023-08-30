@@ -11,17 +11,17 @@ import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscar
 
 public class BuscaFinalizadoStatusComandaUseCase implements IBuscaPorStatusComandaUseCase {
 
-    private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryPortUseCase;
+    private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase;
 
     public BuscaFinalizadoStatusComandaUseCase(
-            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryPortUseCase) {
-        this.buscarPorStatusComandaRepositoryPortUseCase = buscarPorStatusComandaRepositoryPortUseCase;
+            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase) {
+        this.buscarPorStatusComandaRepositoryUseCase = buscarPorStatusComandaRepositoryUseCase;
     }
 
     @Override
     public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage, Exception {
         status = StatusComanda.FINALIZADO;
-        return buscarPorStatusComandaRepositoryPortUseCase.buscaComandaPorStatus(status)
+        return buscarPorStatusComandaRepositoryUseCase.buscaComandaPorStatus(status)
                 .stream()
                 .collect(Collectors.toList());
     }

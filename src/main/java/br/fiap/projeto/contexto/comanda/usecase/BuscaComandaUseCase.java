@@ -5,13 +5,13 @@ import java.util.UUID;
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 
 public class BuscaComandaUseCase implements IBuscaPorComandaUseCase {
 
-    private final IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase;
+    private final IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase;
 
-    public BuscaComandaUseCase(IBuscarComandaRepositoryUseCase buscarComandaRepositoryUseCase) {
+    public BuscaComandaUseCase(IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase) {
         this.buscarComandaRepositoryUseCase = buscarComandaRepositoryUseCase;
     }
 

@@ -11,17 +11,17 @@ import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscar
 
 public class BuscaPreparacaoStatusComandaUseCase implements IBuscaPorStatusComandaUseCase {
 
-    private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryPortUseCase;
+    private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase;
 
     public BuscaPreparacaoStatusComandaUseCase(
-            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryPortUseCase) {
-        this.buscarPorStatusComandaRepositoryPortUseCase = buscarPorStatusComandaRepositoryPortUseCase;
+            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase) {
+        this.buscarPorStatusComandaRepositoryUseCase = buscarPorStatusComandaRepositoryUseCase;
     }
 
     @Override
     public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage, Exception {
         status = StatusComanda.EM_PREPARACAO;
-        return buscarPorStatusComandaRepositoryPortUseCase.buscaComandaPorStatus(status).stream()
+        return buscarPorStatusComandaRepositoryUseCase.buscaComandaPorStatus(status).stream()
                 .collect(Collectors.toList());
     }
 
