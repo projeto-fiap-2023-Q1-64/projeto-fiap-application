@@ -42,6 +42,11 @@ public class PedidoQueryRestAdapterController implements IPedidoQueryRestAdapter
     }
 
     @Override
+    public List<PedidoDTO> buscarTodosCancelado() {
+        return this.convertList(this.queryUseCase.buscarTodosCancelado());
+    }
+
+    @Override
     public List<PedidoDTO> buscarPorStatusEData() {
         return this.convertList(this.queryUseCase.buscarTodosPorStatusEDataCriacao());
     }

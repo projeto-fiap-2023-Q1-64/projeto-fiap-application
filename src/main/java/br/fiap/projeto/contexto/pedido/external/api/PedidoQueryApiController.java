@@ -44,20 +44,27 @@ public class PedidoQueryApiController {
 
     @GetMapping("busca-prontos")
     @ResponseBody
-    public ResponseEntity<List<PedidoDTO>> getProdutosProntos() {
+    public ResponseEntity<List<PedidoDTO>> getPedidosProntos() {
         List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosPronto();
         return ResponseEntity.ok().body(lista);
     }
 
     @GetMapping("busca-entregues")
     @ResponseBody
-    public ResponseEntity<List<PedidoDTO>> getProdutosEntregues() {
+    public ResponseEntity<List<PedidoDTO>> getPedidosEntregues() {
         List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosFinalizado();
         return ResponseEntity.ok().body(lista);
     }
+    @GetMapping("busca-cancelados")
+    @ResponseBody
+    public ResponseEntity<List<PedidoDTO>> getPedidosCancelados() {
+        List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarTodosCancelado();
+        return ResponseEntity.ok().body(lista);
+    }
+
     @GetMapping("busca-pedidos")
     @ResponseBody
-    public ResponseEntity<List<PedidoDTO>> getProdutos() {
+    public ResponseEntity<List<PedidoDTO>> getPedidos() {
         List<PedidoDTO> lista = this.pedidoQueryRestAdapterController.buscarPorStatusEData();
         return ResponseEntity.ok().body(lista);
     }

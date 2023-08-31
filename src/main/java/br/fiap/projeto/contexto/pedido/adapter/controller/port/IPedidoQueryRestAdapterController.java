@@ -10,5 +10,6 @@ public interface IPedidoQueryRestAdapterController {
     List<PedidoDTO> buscarTodosEmPreparacao();
     List<PedidoDTO> buscarTodosPronto();
     List<PedidoDTO> buscarTodosFinalizado();
+    List<PedidoDTO> buscarTodosCancelado();
     List<PedidoDTO> buscarPorStatusEData();
 }
