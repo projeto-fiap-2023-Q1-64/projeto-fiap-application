@@ -7,6 +7,7 @@ import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PedidoQueryRestAdapterController implements IPedidoQueryRestAdapterController {
@@ -14,6 +15,11 @@ public class PedidoQueryRestAdapterController implements IPedidoQueryRestAdapter
 
     public PedidoQueryRestAdapterController(IPedidoQueryUseCase queryUseCase) {
         this.queryUseCase = queryUseCase;
+    }
+
+    @Override
+    public PedidoDTO buscaPedido(UUID codigoPedido) {
+        return PedidoDtoMapper.toDto(this.queryUseCase.buscaPedido(codigoPedido));
     }
 
     @Override
@@ -50,6 +56,7 @@ public class PedidoQueryRestAdapterController implements IPedidoQueryRestAdapter
     public List<PedidoDTO> buscarPorStatusEData() {
         return this.convertList(this.queryUseCase.buscarTodosPorStatusEDataCriacao());
     }
+
     private List<PedidoDTO> convertList(List<Pedido> pedidos){
         return pedidos.stream().map(PedidoDtoMapper::toDto).collect(Collectors.toList());
     }

@@ -8,11 +8,18 @@ import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class PedidoQueryUseCase extends AbstractPedidoUseCase implements IPedidoQueryUseCase {
     public PedidoQueryUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway) {
         super(IPedidoRepositoryAdapterGateway);
     }
+
+    @Override
+    public Pedido buscaPedido(UUID codigoPedido) {
+        return this.buscar(codigoPedido);
+    }
+
     @Override
     public List<Pedido> buscaTodos() {
         return IPedidoRepositoryAdapterGateway.buscaTodos();

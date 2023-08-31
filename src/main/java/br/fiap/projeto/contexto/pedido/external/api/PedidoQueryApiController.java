@@ -2,14 +2,13 @@ package br.fiap.projeto.contexto.pedido.external.api;
 
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoQueryRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -19,6 +18,11 @@ public class PedidoQueryApiController {
     @Autowired
     public PedidoQueryApiController(IPedidoQueryRestAdapterController pedidoQueryRestAdapterController) {
         this.pedidoQueryRestAdapterController = pedidoQueryRestAdapterController;
+    }
+    @GetMapping("/{codigo}")
+    @ResponseBody
+    public ResponseEntity<PedidoDTO> getPedido(@ApiParam(value = "Código do Pedido") @PathVariable("codigo") UUID codigo) {
+        return ResponseEntity.ok().body(this.pedidoQueryRestAdapterController.buscaPedido(codigo));
     }
 
     @GetMapping("busca-recebidos")
