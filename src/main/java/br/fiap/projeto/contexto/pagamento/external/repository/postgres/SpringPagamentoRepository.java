@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface SpringPagamentoRepository extends JpaRepository<PagamentoEntity, UUID> {
-    PagamentoEntity findByCodigoPedido(String codigoPedido);
+    List<PagamentoEntity> findByCodigoPedido(String codigoPedido);
 
     PagamentoEntity findByCodigo(UUID codigo);
 

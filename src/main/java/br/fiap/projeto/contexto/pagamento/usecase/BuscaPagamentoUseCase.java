@@ -34,8 +34,8 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     }
 
     @Override
-    public Pagamento findByCodigoPedido(String codigoPedido) {
-        Optional<Pagamento> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedido(codigoPedido));
+    public List<Pagamento> findByCodigoPedido(String codigoPedido) {
+        Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedido(codigoPedido));
         return possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Pedido com ID " + codigoPedido + " não foi encontrado."));
     }
 }

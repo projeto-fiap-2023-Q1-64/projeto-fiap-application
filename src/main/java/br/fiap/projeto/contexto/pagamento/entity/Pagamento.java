@@ -117,7 +117,7 @@ public class Pagamento {
 	}
 
 	public boolean podeSerCancelado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.CANCELLED);
+		return statusAtual.equals(StatusPagamento.REJECTED) && statusRequest.equals(StatusPagamento.CANCELLED);
 	}
 
 	public boolean podeSerRejeitado(StatusPagamento statusAtual, StatusPagamento statusRequest) {

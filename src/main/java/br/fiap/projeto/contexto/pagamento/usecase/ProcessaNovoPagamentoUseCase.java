@@ -16,8 +16,10 @@ public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCa
     @Override
     public Pagamento criaNovoPagamento(Pagamento pagamento) {
         //  TODO ativar verificações para impedir que seja salvo um novo pagamento para um pedido já pago/em processamento
-        //  processaNovoPagamentoAdapterGateway.verificaSeJaExistePagamentoParaOPedido(pagamento);
-        //  processaNovoPagamentoAdapterGateway.verificaCondicoesParaCriarPagamento(pagamento);
+
+        if(processaNovoPagamentoAdapterGateway.verificaSeJaExistePagamentoParaOPedido(pagamento)){
+            processaNovoPagamentoAdapterGateway.verificaCondicoesParaCriarPagamento(pagamento);
+        }
         processaNovoPagamentoAdapterGateway.salvaNovoPagamento(pagamento);
         System.out.println("USE CASE: Novo pagamento criado para o pedido: " + pagamento.getCodigoPedido());
         return pagamento;
