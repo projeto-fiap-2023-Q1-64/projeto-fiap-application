@@ -13,7 +13,7 @@ public interface IBuscaPagamentoUseCase {
 
     List<Pagamento> findByStatusPagamento(StatusPagamento status);
 
-    Pagamento findByCodigoPedido(String codigoPedido);
+    List<Pagamento> findByCodigoPedido(String codigoPedido);
 
 
 }

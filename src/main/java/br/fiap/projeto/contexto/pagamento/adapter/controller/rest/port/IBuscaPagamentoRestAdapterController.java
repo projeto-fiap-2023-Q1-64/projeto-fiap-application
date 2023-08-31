@@ -15,5 +15,7 @@ public interface IBuscaPagamentoRestAdapterController {
 
     PagamentoDTOResponse findByCodigoPedido(String codigoPedido);
 
+    PagamentoDTOResponse findByCodigoPedidoAtualizarStatus(String codigoPedido);
+
 
 }

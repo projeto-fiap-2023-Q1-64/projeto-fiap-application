@@ -6,7 +6,7 @@ public interface IProcessaNovoPagamentoRepositoryAdapterGateway {
 
     Pagamento salvaNovoPagamento(Pagamento pagamento);
 
-    void verificaCondicoesParaCriarPagamento(Pagamento pagamento);
+    Pagamento verificaCondicoesParaCriarPagamento(Pagamento pagamento);
 
     Boolean verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento);
 }

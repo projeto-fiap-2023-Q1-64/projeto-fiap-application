@@ -106,6 +106,12 @@ public class PagamentoDTORequest {
                 '}';
     }
 
+    /**
+     * Atualiza o objeto PagamentoDTORequest completando com os atributos que não foram passados na request,
+     * considerando os valores que estão persistidos.
+     * @param pagamentoDTORequest
+     * @param pagamentoDTOStatusAtual
+     */
     public void atualizaDadosRequest(PagamentoDTORequest pagamentoDTORequest, PagamentoDTOResponse pagamentoDTOStatusAtual) {
         pagamentoDTORequest.atualizaCodigoDoPagamento(pagamentoDTOStatusAtual.getCodigo());
         pagamentoDTORequest.atualizaValorTotal(pagamentoDTOStatusAtual.getValorTotal());

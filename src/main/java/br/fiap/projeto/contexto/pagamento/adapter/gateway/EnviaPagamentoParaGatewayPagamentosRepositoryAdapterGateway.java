@@ -5,6 +5,9 @@ import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEn
 import br.fiap.projeto.contexto.pagamento.external.repository.postgres.SpringPagamentoRepository;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IEnviaPagamentoAoGatewayPagamentosRepositoryAdapterGateway;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class EnviaPagamentoParaGatewayPagamentosRepositoryAdapterGateway implements IEnviaPagamentoAoGatewayPagamentosRepositoryAdapterGateway {
 
     private final SpringPagamentoRepository springPagamentoRepository;
@@ -20,10 +23,10 @@ public class EnviaPagamentoParaGatewayPagamentosRepositoryAdapterGateway impleme
     }
 
     @Override //TODO preparar o que está em banco para despachar o request ao MP
-    public Pagamento preparaRequest(Pagamento pagamento) {
+    public List<Pagamento> preparaRequest(Pagamento pagamento) {
 
-        PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigoPedido(pagamento.getCodigoPedido());
+        List<PagamentoEntity> listaPagamentoEntity = springPagamentoRepository.findByCodigoPedido(pagamento.getCodigoPedido());
 
-        return pagamentoEntity.conversorDePagamentoORMEntityParaPagamentoDomainEntity();
+        return listaPagamentoEntity.stream().map(PagamentoEntity::conversorDePagamentoORMEntityParaPagamentoDomainEntity).collect(Collectors.toList());
     }
 }

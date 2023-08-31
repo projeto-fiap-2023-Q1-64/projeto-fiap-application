@@ -37,8 +37,8 @@ public class BuscaPagamentoRepositoryAdapterGateway implements IBuscaPagamentoRe
     }
 
     @Override
-    public Pagamento findByCodigoPedido(String codigoPedido) {
-        PagamentoEntity pagamentoEntity = springPagamentoRepository.findByCodigoPedido(codigoPedido);
-        return pagamentoEntity.conversorDePagamentoORMEntityParaPagamentoDomainEntity();
+    public List<Pagamento> findByCodigoPedido(String codigoPedido) {
+        List<PagamentoEntity> listaPagamentoEntity = springPagamentoRepository.findByCodigoPedido(codigoPedido);
+        return listaPagamentoEntity.stream().map(PagamentoEntity::conversorDePagamentoORMEntityParaPagamentoDomainEntity).collect(Collectors.toList());
     }
 }

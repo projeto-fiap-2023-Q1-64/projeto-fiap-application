@@ -41,8 +41,24 @@ public class BuscaPagamentoRestAdapterController implements IBuscaPagamentoRestA
 
     @Override
     public PagamentoDTOResponse findByCodigoPedido(String codigoPedido) {
-        Optional<Pagamento> possivelPagamento = Optional.ofNullable(buscaPagamentoUseCase.findByCodigoPedido(codigoPedido));
-        Pagamento pagamento = possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Pedido com ID " + codigoPedido + " não foi encontrado."));
-        return new PagamentoDTOResponse(pagamento);
+        List<Pagamento> listaDePagamentosPorCodigoPedido = buscaPagamentoUseCase.findByCodigoPedido(codigoPedido);
+
+        Optional<Pagamento> possivelPagamento = listaDePagamentosPorCodigoPedido
+                .stream()
+                .filter(pagamento -> codigoPedido.equals(pagamento.getCodigoPedido())
+                        && !StatusPagamento.REJECTED.equals(pagamento.getStatus()))
+                .findFirst();
+        return new PagamentoDTOResponse(possivelPagamento.orElseThrow( () -> new ResourceNotFoundException("Pagamento não encontrado.") ));
+    }
+
+    @Override
+    public PagamentoDTOResponse findByCodigoPedidoAtualizarStatus(String codigoPedido) {
+        List<Pagamento> listaDePagamentosPorCodigoPedido = buscaPagamentoUseCase.findByCodigoPedido(codigoPedido);
+
+        Optional<Pagamento> possivelPagamento = listaDePagamentosPorCodigoPedido
+                .stream()
+                .filter(pagamento -> codigoPedido.equals(pagamento.getCodigoPedido()))
+                .findFirst();
+        return new PagamentoDTOResponse(possivelPagamento.orElseThrow( () -> new ResourceNotFoundException("Pagamento não encontrado.") ));
     }
 }
