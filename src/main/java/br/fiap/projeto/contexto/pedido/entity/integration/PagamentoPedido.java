@@ -32,4 +32,7 @@ public class PagamentoPedido {
     public Boolean isPago(){
         return this.statusPagamento.getDescricao().equals(StatusPagamento.APPROVED.getDescricao());
     }
+    public Boolean isCanceled(){
+        return this.statusPagamento.getDescricao().equals(StatusPagamento.CANCELLED.getDescricao());
+    }
 }

@@ -67,4 +67,11 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         }
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
+
+    @Override
+    public Pedido cancelar(UUID codigo) throws Exception {
+        Pedido pedido = this.buscar(codigo);
+        pedido.atualizarStatus(StatusPedido.CANCELADO);
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
+    }
 }

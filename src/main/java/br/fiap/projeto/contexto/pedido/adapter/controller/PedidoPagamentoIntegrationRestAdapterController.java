@@ -15,7 +15,7 @@ public class PedidoPagamentoIntegrationRestAdapterController implements IPedidoP
         this.pedidoPagamentoIntegrationUseCase = pedidoPagamentoIntegrationUseCase;
     }
     @Override
-    public PedidoDTO pagar(UUID codigoPedido) throws Exception {
-        return PedidoDtoMapper.toDto(pedidoPagamentoIntegrationUseCase.pagar(codigoPedido));
+    public PedidoDTO atualizarPagamentoPedido(UUID codigoPedido) throws Exception {
+        return PedidoDtoMapper.toDto(pedidoPagamentoIntegrationUseCase.atualizarPagamentoPedido(codigoPedido));
     }
 }

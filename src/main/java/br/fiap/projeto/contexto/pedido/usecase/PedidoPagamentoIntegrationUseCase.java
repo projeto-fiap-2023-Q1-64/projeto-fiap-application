@@ -1,6 +1,8 @@
 package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
+import br.fiap.projeto.contexto.pedido.entity.enums.StatusPagamento;
+import br.fiap.projeto.contexto.pedido.entity.integration.PagamentoPedido;
 import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoPagamentoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
@@ -21,19 +23,20 @@ public class PedidoPagamentoIntegrationUseCase extends AbstractPedidoUseCase imp
         this.pedidoWorkFlowUseCase = pedidoWorkFlowUseCase;
     }
 
-    private Boolean isPagamentoAprovado(UUID codigoPedido) {
-        return pedidoPagamentoIntegrationAdapterGateway.buscaStatusPagamentoPorCodigoPedido(codigoPedido).isPago();
-    }
-
     @Override
-    public Pedido pagar(UUID codigoPedido) throws Exception {
+    public Pedido atualizarPagamentoPedido(UUID codigoPedido) throws Exception {
         if(!pedidoExists(codigoPedido)){
             throw new Exception(MensagemErro.PEDIDO_NOT_FOUND.getMessage());
         }
 
-        if(!isPagamentoAprovado(codigoPedido)){
-            throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());
+        PagamentoPedido pagamentoPedido = pedidoPagamentoIntegrationAdapterGateway.buscaStatusPagamentoPorCodigoPedido(codigoPedido);
+        if(pagamentoPedido.isPago()){
+            return pedidoWorkFlowUseCase.pagar(codigoPedido);
         }
-        return pedidoWorkFlowUseCase.pagar(codigoPedido);
+        if(pagamentoPedido.isCanceled()){
+            return pedidoWorkFlowUseCase.cancelar(codigoPedido);
+        }
+
+        throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());
     }
 }
