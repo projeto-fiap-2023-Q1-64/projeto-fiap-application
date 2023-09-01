@@ -7,5 +7,6 @@ public interface IAtualizaStatusPagamentoUsecase {
     void analisaStatusDoPagamento(StatusPagamento statusAtual, StatusPagamento statusRequest, Pagamento pagamentoEmAndamento);
 
     void salvaStatus(Pagamento pagamento);
+    void atualizaStatusPagamento(String codigoPedido, StatusPagamento statusPagamento);
 
 }

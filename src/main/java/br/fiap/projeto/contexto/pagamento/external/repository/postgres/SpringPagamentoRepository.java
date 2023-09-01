@@ -13,6 +13,9 @@ import java.util.UUID;
 public interface SpringPagamentoRepository extends JpaRepository<PagamentoEntity, UUID> {
     List<PagamentoEntity> findByCodigoPedido(String codigoPedido);
 
+    List<PagamentoEntity> findByCodigoPedidoAndStatusPagamentoNot(String codigoPedido, StatusPagamento status);
+    List<PagamentoEntity> findByCodigoPedidoAndStatusPagamento(String codigoPedido, StatusPagamento status);
+
     PagamentoEntity findByCodigo(UUID codigo);
 
     List<PagamentoEntity> findByStatusPagamento(StatusPagamento status);

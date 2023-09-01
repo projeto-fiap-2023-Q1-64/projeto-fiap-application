@@ -22,43 +22,25 @@ public class BuscaPagamentoRestAdapterController implements IBuscaPagamentoRestA
 
     @Override
     public List<PagamentoDTOResponse> findAll() {
-        List<Pagamento> listaDePagamentos = buscaPagamentoUseCase.findAll();
-        return listaDePagamentos.stream().map(PagamentoDTOResponse::new).collect(Collectors.toList());
+        return convertList(buscaPagamentoUseCase.findAll());
     }
 
     @Override
     public PagamentoDTOResponse findByCodigo(UUID codigo) {
-        Optional<Pagamento> possivelPagamento = Optional.ofNullable(buscaPagamentoUseCase.findByCodigo(codigo));
-        Pagamento pagamento = possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
-        return new PagamentoDTOResponse(pagamento);
+        return new PagamentoDTOResponse(buscaPagamentoUseCase.findByCodigo(codigo));
     }
 
     @Override
     public List<PagamentoDTOResponse> findByStatusPagamento(StatusPagamento status) {
-        List<Pagamento> listaDePagamentos = buscaPagamentoUseCase.findByStatusPagamento(status);
-        return listaDePagamentos.stream().map(PagamentoDTOResponse::new).collect(Collectors.toList());
+        return convertList(buscaPagamentoUseCase.findByStatusPagamento(status));
     }
 
     @Override
     public PagamentoDTOResponse findByCodigoPedido(String codigoPedido) {
-        List<Pagamento> listaDePagamentosPorCodigoPedido = buscaPagamentoUseCase.findByCodigoPedido(codigoPedido);
-
-        Optional<Pagamento> possivelPagamento = listaDePagamentosPorCodigoPedido
-                .stream()
-                .filter(pagamento -> codigoPedido.equals(pagamento.getCodigoPedido())
-                        && !StatusPagamento.REJECTED.equals(pagamento.getStatus()))
-                .findFirst();
-        return new PagamentoDTOResponse(possivelPagamento.orElseThrow( () -> new ResourceNotFoundException("Pagamento não encontrado.") ));
+        return new PagamentoDTOResponse(buscaPagamentoUseCase.findByCodigoPedidoNotRejected(codigoPedido));
     }
 
-    @Override
-    public PagamentoDTOResponse findByCodigoPedidoAtualizarStatus(String codigoPedido) {
-        List<Pagamento> listaDePagamentosPorCodigoPedido = buscaPagamentoUseCase.findByCodigoPedido(codigoPedido);
-
-        Optional<Pagamento> possivelPagamento = listaDePagamentosPorCodigoPedido
-                .stream()
-                .filter(pagamento -> codigoPedido.equals(pagamento.getCodigoPedido()))
-                .findFirst();
-        return new PagamentoDTOResponse(possivelPagamento.orElseThrow( () -> new ResourceNotFoundException("Pagamento não encontrado.") ));
+    private List<PagamentoDTOResponse> convertList(List<Pagamento> listaDePagamentos){
+        return listaDePagamentos.stream().map(PagamentoDTOResponse::new).collect(Collectors.toList());
     }
 }

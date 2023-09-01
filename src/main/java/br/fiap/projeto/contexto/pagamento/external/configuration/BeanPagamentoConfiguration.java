@@ -67,8 +67,10 @@ public class BeanPagamentoConfiguration {
     }
 
     @Bean
-    IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase(IAtualizaStatusPagamentoRepositoryAdapterGateway atualizaStatusPagamentoAdapterGateway){
-        return new AtualizaStatusPagamentoUseCase(atualizaStatusPagamentoAdapterGateway);
+    IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase(IAtualizaStatusPagamentoRepositoryAdapterGateway atualizaStatusPagamentoAdapterGateway,
+                                                                   IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new AtualizaStatusPagamentoUseCase(atualizaStatusPagamentoAdapterGateway,
+                buscaPagamentoUseCase);
     }
 
     @Bean
@@ -91,7 +93,7 @@ public class BeanPagamentoConfiguration {
     }
 
     @Bean
-    IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController(IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase, IBuscaPagamentoUseCase buscaPagamentoUseCase){
-        return new AtualizaStatusPagamentoRestAdapterController(atualizaStatusPagamentoUsecase, buscaPagamentoUseCase);
+    IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController(IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase){
+        return new AtualizaStatusPagamentoRestAdapterController(atualizaStatusPagamentoUsecase);
     }
 }

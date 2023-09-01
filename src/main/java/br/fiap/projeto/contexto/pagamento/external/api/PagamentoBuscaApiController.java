@@ -40,14 +40,7 @@ public class PagamentoBuscaApiController {
     @Transactional
     @ApiOperation(value = "Busca pagamento com o código do pagamento", notes="Esse endpoint permite a busca de Pagamento usando o código do Pedido.")
     public ResponseEntity<PagamentoDTOResponse> buscaPagamentoPorCodigo(@ApiParam(value="Código do Pagamento") @PathVariable("codigoPagamento") UUID codigo){
-        PagamentoDTOResponse possivelPagamentoDTOResponse;
-        try{
-            possivelPagamentoDTOResponse = buscaPagamentoRestAdapterController.findByCodigo(codigo);
-        }
-        catch(Exception e){
-            throw new ResourceNotFoundException("Pagamento com código " + codigo + " inexistente.");
-        }
-        return ResponseEntity.ok().body(possivelPagamentoDTOResponse);
+        return ResponseEntity.ok().body(buscaPagamentoRestAdapterController.findByCodigo(codigo));
     }
 
     @GetMapping(value="/por-status/{status}")
@@ -61,14 +54,7 @@ public class PagamentoBuscaApiController {
     @Transactional
     @ApiOperation(value = "Busca pagamento com o código do Pedido", notes="Esse endpoint permite a busca de Pagamento usando o código do Pedido.")
     public ResponseEntity<PagamentoDTOResponse> buscaStatusPagamentoPorCodigoPedido(@ApiParam(value="Código do Pedido") @PathVariable("codigoPedido") String codigoPedido ){
-        PagamentoDTOResponse possivelPagamentoDTOResponse;
-        try{
-            possivelPagamentoDTOResponse = buscaPagamentoRestAdapterController.findByCodigoPedido(codigoPedido);
-        }
-        catch(Exception e){
-            throw new ResourceNotFoundException("Pagamento com código de Pedido: " + codigoPedido + " inexistente.");
-        }
-        return ResponseEntity.ok().body(possivelPagamentoDTOResponse);
+        return ResponseEntity.ok().body(buscaPagamentoRestAdapterController.findByCodigoPedido(codigoPedido));
     }
 
     @GetMapping(value="/aprovados")

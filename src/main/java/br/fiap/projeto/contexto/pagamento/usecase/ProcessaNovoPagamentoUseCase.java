@@ -27,8 +27,7 @@ public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCa
 
     @Override
     public Boolean verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento) {
-        processaNovoPagamentoAdapterGateway.verificaSeJaExistePagamentoParaOPedido(pagamento);
-        return true;
+        return processaNovoPagamentoAdapterGateway.verificaSeJaExistePagamentoParaOPedido(pagamento);
     }
 
     @Override

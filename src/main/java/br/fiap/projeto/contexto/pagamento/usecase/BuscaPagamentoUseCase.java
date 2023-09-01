@@ -1,5 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.usecase;
 
+import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
@@ -25,7 +26,8 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     @Override
     public Pagamento findByCodigo(UUID codigo) {
         Optional<Pagamento> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigo(codigo));
-        return possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+        possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Pagamento com código " + codigo + " inexistente."));
+        return possivelPagamento.get();
     }
 
     @Override
@@ -37,5 +39,19 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     public List<Pagamento> findByCodigoPedido(String codigoPedido) {
         Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedido(codigoPedido));
         return possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Pedido com ID " + codigoPedido + " não foi encontrado."));
+    }
+
+    @Override
+    public Pagamento findByCodigoPedidoNotRejected(String codigoPedido) {
+        Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamentoNot(codigoPedido, StatusPagamento.REJECTED));
+        possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Pedido com ID " + codigoPedido + " não foi encontrado."));
+        return possivelPagamento.get().stream().findFirst().get();
+    }
+
+    @Override
+    public Pagamento findByCodigoPedidoRejected(String codigoPedido) {
+        Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamento(codigoPedido, StatusPagamento.REJECTED));
+        possivelPagamento.orElseThrow(() -> new ResourceNotFoundException("Pedido com ID " + codigoPedido + " não foi encontrado."));
+        return possivelPagamento.get().stream().findFirst().get();
     }
 }
