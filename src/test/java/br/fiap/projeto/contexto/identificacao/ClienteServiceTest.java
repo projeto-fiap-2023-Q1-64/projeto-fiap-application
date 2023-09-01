@@ -49,7 +49,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testeInsere() throws EntradaInvalidaException {
+    public void testeInsere() throws EntradaInvalidaException, EntidadeNaoEncontradaException {
 
         ClienteRequestDTO cliente = new ClienteRequestDTO("NomeTeste", "98765432109", "teste@teste.com");
         ClienteResponseDTO resultado = clienteRestAdapterController.insere(cliente);

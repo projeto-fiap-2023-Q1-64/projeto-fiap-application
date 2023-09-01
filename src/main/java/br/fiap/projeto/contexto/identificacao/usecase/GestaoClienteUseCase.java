@@ -7,7 +7,7 @@ import br.fiap.projeto.contexto.identificacao.usecase.port.IClienteRepositoryAda
 import br.fiap.projeto.contexto.identificacao.usecase.port.IGestaoClienteUsecase;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import static br.fiap.projeto.contexto.identificacao.entity.Cliente.*;
@@ -21,14 +21,15 @@ public class GestaoClienteUseCase implements IGestaoClienteUsecase {
     }
 
     @Override
-    public Cliente insere(Cliente clienteRef) throws EntradaInvalidaException {
-        Cliente clienteExistente;
-        clienteExistente = clienteRepositoryAdapterGateway.buscaPorCpf(clienteRef.getCpf().getNumero());
-        if (Objects.nonNull(clienteExistente)) {
+    public Cliente insere(Cliente clienteRef) throws EntradaInvalidaException, EntidadeNaoEncontradaException {
+        Optional<Cliente> clienteExistente = clienteRepositoryAdapterGateway.buscaPorCpf(clienteRef.getCpf().getNumero());
+
+        if(clienteExistente.isPresent()) {
             throw new EntradaInvalidaException(CPF_DUPLICADO);
         }
+
         clienteExistente = clienteRepositoryAdapterGateway.buscaPorEmail(clienteRef.getEmail().getEndereco());
-        if (Objects.nonNull(clienteExistente)) {
+        if (clienteExistente.isPresent()) {
             throw new EntradaInvalidaException(EMAIL_DUPLICADO);
         }
 
@@ -42,21 +43,21 @@ public class GestaoClienteUseCase implements IGestaoClienteUsecase {
             throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
         }
 
-        Cliente clienteExistente;
-        clienteExistente = busca(clienteRef.getCodigo());
+        Cliente clienteExistente = busca(clienteRef.getCodigo());
         if (clienteExistente == null) {
             throw new EntidadeNaoEncontradaException(ENTIDADE_NAO_ENCONTRADA);
         }
 
-        Cliente clienteAAtualizar;
-        clienteAAtualizar = new Cliente(clienteExistente.getCodigo(), clienteRef.getNome(), clienteRef.getCpf().getNumero(), clienteRef.getEmail().getEndereco());
+        Cliente clienteAAtualizar = new Cliente(clienteExistente.getCodigo(), clienteRef.getNome(), clienteRef.getCpf().getNumero(), clienteRef.getEmail().getEndereco());
         return clienteRepositoryAdapterGateway.atualiza(clienteAAtualizar);
     }
 
     @Override
     public void remove(String codigo) throws EntidadeNaoEncontradaException, EntradaInvalidaException {
-        Cliente cliente = busca(codigo);
-        clienteRepositoryAdapterGateway.remove(cliente.getCodigo());
+        Optional<Cliente> cliente = this.clienteRepositoryAdapterGateway.buscaPorCodigoEDataExclusaoNula(codigo);
+        cliente.orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente não encontrado!"));
+        cliente.get().adicionaDataDeExclusao();
+        clienteRepositoryAdapterGateway.remove(cliente.get());
     }
 
     @Override
@@ -65,11 +66,9 @@ public class GestaoClienteUseCase implements IGestaoClienteUsecase {
             throw new EntradaInvalidaException(Cliente.CODIGO_AUSENTE);
         }
 
-        Cliente cliente = clienteRepositoryAdapterGateway.busca(codigo);
-        if (Objects.isNull(cliente)) {
-            throw new EntidadeNaoEncontradaException("Cliente não encontrado!");
-        }
-        return cliente;
+        Optional<Cliente> cliente = clienteRepositoryAdapterGateway.busca(codigo);
+        cliente.orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente não encontrado!"));
+        return cliente.get();
     }
 
     @Override
@@ -79,10 +78,8 @@ public class GestaoClienteUseCase implements IGestaoClienteUsecase {
 
     @Override
     public Cliente buscaPorCpf(String cpf) throws EntidadeNaoEncontradaException {
-        Cliente clienteEncontrado = clienteRepositoryAdapterGateway.buscaPorCpf(cpf);
-        if (clienteEncontrado == null) {
-            throw new EntidadeNaoEncontradaException(ENTIDADE_NAO_ENCONTRADA);
-        }
-        return clienteEncontrado;
+        Optional<Cliente> clienteEncontrado = clienteRepositoryAdapterGateway.buscaPorCpf(cpf);
+        clienteEncontrado.orElseThrow(() -> new EntidadeNaoEncontradaException(ENTIDADE_NAO_ENCONTRADA));
+        return clienteEncontrado.get();
     }
 }
