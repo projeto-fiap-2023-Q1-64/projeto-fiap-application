@@ -19,7 +19,7 @@ public class BuscaPorComandaPorCodigoPedidoGatewayAdapter implements IBuscarPorC
 
     @Override
     public Optional<Comanda> buscar(UUID codigoPedido) throws EntradaInvalidaException {
-        Optional<ComandaEntity> comandaEntity = springComandaRepository.findById(codigoPedido);
+        Optional<ComandaEntity> comandaEntity = springComandaRepository.findByCodigoPedido(codigoPedido);
         return comandaEntity.map(ComandaEntity::toComanda);
     }
 
