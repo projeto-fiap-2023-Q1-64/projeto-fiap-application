@@ -1,13 +1,13 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
-import br.fiap.projeto.contexto.comanda.entity.Comanda;
-import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
-import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaNaoEncontradaException;
-import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
-
 import java.util.Optional;
 import java.util.UUID;
+
+import br.fiap.projeto.contexto.comanda.entity.Comanda;
+import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaNaoEncontradaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 
 public class BuscaComandaUseCase implements IBuscaPorComandaUseCase {
 
@@ -18,7 +18,8 @@ public class BuscaComandaUseCase implements IBuscaPorComandaUseCase {
     }
 
     @Override
-    public Comanda buscaComandaPorStatus(UUID codigoComanda) throws EntradaInvalidaException, ComandaNaoEncontradaException {
+    public Comanda buscaComandaPorStatus(UUID codigoComanda)
+            throws EntradaInvalidaException, ComandaNaoEncontradaException {
         Optional<Comanda> comanda = buscarComandaRepositoryUseCase.buscar(codigoComanda);
         comanda.orElseThrow(() -> new ComandaNaoEncontradaException("Comanda não encontrada!"));
         comanda.get().validarDados();

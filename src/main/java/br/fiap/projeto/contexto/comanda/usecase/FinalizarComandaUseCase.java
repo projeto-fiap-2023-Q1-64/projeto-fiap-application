@@ -1,5 +1,10 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.persistence.EntityNotFoundException;
+
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.integration.ComandaPedidoIntegration;
@@ -7,9 +12,6 @@ import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaExcepti
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.UUID;
 
 public class FinalizarComandaUseCase implements IAtualizarComandaUseCase {
 
@@ -27,30 +29,31 @@ public class FinalizarComandaUseCase implements IAtualizarComandaUseCase {
     }
 
     @Override
-    public Comanda finalizar(UUID codigoComanda) throws EntradaInvalidaException {
-        Comanda comanda = this.buscar(codigoComanda);
+    public Comanda alterarStatus(UUID codigoComanda) throws EntradaInvalidaException {
+        Comanda comanda = this.buscar(codigoComanda).get();
         if (!comanda.getStatus().equals(StatusComanda.EM_PREPARACAO)) {
-            throw new EntradaInvalidaException("Status da comanda inválido para esta operação! Precisa estar em EM_PREPARACAO.");
+            throw new EntradaInvalidaException(
+                    "Status da comanda inválido para esta operação! Precisa estar em EM_PREPARACAO.");
         }
 
         comanda.atualizaStatus(StatusComanda.FINALIZADO);
-        UUID codigo = enviarStatusPedido(comanda.getCodigoPedido());
-        if (codigo == null) {
+        String codigo = enviarStatusPedido(comanda.getCodigoPedido());
+        if (codigo.equals(null)) {
             throw new EntradaInvalidaException(comanda.getStatus().toString());
         }
 
         return criarComandaRepositoryUseCase.criar(comanda);
     }
 
-    private Comanda buscar(UUID codigoComanda) throws EntradaInvalidaException {
-        Comanda comanda = buscarComandaRepositoryUseCase.buscar(codigoComanda);
-        if (comanda.getCodigoComanda() == null) {
+    private Optional<Comanda> buscar(UUID codigoComanda) throws EntradaInvalidaException {
+        Optional<Comanda> comanda = buscarComandaRepositoryUseCase.buscar(codigoComanda);
+        if (comanda.get() == null) {
             throw new EntityNotFoundException("Comanda não encontrada!");
         }
         return comanda;
     }
 
-    private UUID enviarStatusPedido(UUID codigoPedido) {
+    private String enviarStatusPedido(UUID codigoPedido) {
         return comandaPedidoIntegration.prontificar(codigoPedido.toString()).getBody();
     }
 
