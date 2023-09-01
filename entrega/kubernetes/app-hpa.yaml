@@ -7,8 +7,8 @@ spec:
     apiVersion: apps/v1
     kind: deployment
     name: projetofiap-deployment
-  minReplicas: 1
-  maxReplicas: 1
+  minReplicas: 2
+  maxReplicas: 4
   metrics:
     - type: Resource
       resource:

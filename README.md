@@ -16,6 +16,9 @@
 * Executar ```kubectl delete -f entrega\kubernetes``` para parar a execução
 * Executar ```kubectl apply -f entrega\kubernetes``` para iniciar a execução
 
+Obs.: Para rodar localmente, usar o comando ```kubectl config set-context docker-desktop``` 
+para alterar o contexto para o docker-desktop (se necessário)
+
 ---
 ## Entrega Fase 1
 
