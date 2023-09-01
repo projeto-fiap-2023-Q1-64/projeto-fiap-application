@@ -10,17 +10,17 @@ import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.BuscaPreparacaoStatusComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusPrepararComandaRepositoryUseCase;
 
 @Configuration
 public class BuscaPreparacaoStatusComandaBeanConfigurationExternal {
 
         @Bean
         IBuscaPorStatusComandaUseCase buscaPreparacaoStatusComandaUseCase(
-                        IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase)
+                        IBuscarPorStatusPrepararComandaRepositoryUseCase buscarPorStatusPrepararComandaRepositoryUseCase)
                         throws ExceptionMessage, Exception {
                 return new BuscaPreparacaoStatusComandaUseCase(
-                                buscarPorStatusComandaRepositoryUseCase);
+                                buscarPorStatusPrepararComandaRepositoryUseCase);
         }
 
         @Bean
@@ -32,7 +32,7 @@ public class BuscaPreparacaoStatusComandaBeanConfigurationExternal {
         }
 
         @Bean
-        IBuscarPorStatusComandaRepositoryUseCase buscaStatusPreparacaoComandaGatewayAdapter(
+        IBuscarPorStatusPrepararComandaRepositoryUseCase buscaPorStatusPreparacaoComandaGatewayAdapter(
                         SpringComandaRepository springComandaRepository)
                         throws ExceptionMessage, Exception {
                 return new BuscaStatusPreparacaoComandaGatewayAdapter(

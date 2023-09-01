@@ -10,7 +10,7 @@ import br.fiap.projeto.contexto.comanda.external.integration.ComandaPedidoIntegr
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.FinalizarComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarFinalizarComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 
@@ -33,7 +33,7 @@ public class FinalizarComandaBeanConfigurationExternal {
     }
 
     @Bean
-    IAtualizarComandaRepositoryUseCase finalizaUmaComandaGatewayAdapter(
+    IAtualizarFinalizarComandaRepositoryUseCase finalizaUmaComandaGatewayAdapter(
             SpringComandaRepository springComandaRepository) {
         return new FinalizaComandaGatewayAdapter(springComandaRepository);
     }

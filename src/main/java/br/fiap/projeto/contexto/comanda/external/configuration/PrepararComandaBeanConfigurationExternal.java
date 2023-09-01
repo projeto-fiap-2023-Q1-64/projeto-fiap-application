@@ -9,7 +9,7 @@ import br.fiap.projeto.contexto.comanda.adapter.gateway.PreparaComandaGatewayAda
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.PrepararComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarPrepararComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 
@@ -30,7 +30,7 @@ public class PrepararComandaBeanConfigurationExternal {
     }
 
     @Bean
-    IAtualizarComandaRepositoryUseCase preparaUmaComandaGatewayAdapter(
+    IAtualizarPrepararComandaRepositoryUseCase preparaAComandaGatewayAdapter(
             SpringComandaRepository springComandaRepository) {
         return new PreparaComandaGatewayAdapter(springComandaRepository);
     }

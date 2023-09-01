@@ -7,21 +7,21 @@ import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusPrepararComandaRepositoryUseCase;
 
 public class BuscaPreparacaoStatusComandaUseCase implements IBuscaPorStatusComandaUseCase {
 
-    private final IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase;
+    private final IBuscarPorStatusPrepararComandaRepositoryUseCase buscarPorStatusPrepararComandaRepositoryUseCase;
 
     public BuscaPreparacaoStatusComandaUseCase(
-            IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase) {
-        this.buscarPorStatusComandaRepositoryUseCase = buscarPorStatusComandaRepositoryUseCase;
+            IBuscarPorStatusPrepararComandaRepositoryUseCase buscarPorStatusPrepararComandaRepositoryUseCase) {
+        this.buscarPorStatusPrepararComandaRepositoryUseCase = buscarPorStatusPrepararComandaRepositoryUseCase;
     }
 
     @Override
     public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage, Exception {
         status = StatusComanda.EM_PREPARACAO;
-        return buscarPorStatusComandaRepositoryUseCase.buscaComandaPorStatus(status).stream()
+        return buscarPorStatusPrepararComandaRepositoryUseCase.buscaComandaPorStatus(status).stream()
                 .collect(Collectors.toList());
     }
 

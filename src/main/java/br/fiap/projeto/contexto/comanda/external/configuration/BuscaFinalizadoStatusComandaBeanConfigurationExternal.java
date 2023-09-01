@@ -11,6 +11,7 @@ import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComan
 import br.fiap.projeto.contexto.comanda.usecase.BuscaFinalizadoStatusComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusFinalizarComandaRepositoryUseCase;
 
 @Configuration
 public class BuscaFinalizadoStatusComandaBeanConfigurationExternal {
@@ -32,7 +33,7 @@ public class BuscaFinalizadoStatusComandaBeanConfigurationExternal {
         }
 
         @Bean
-        IBuscarPorStatusComandaRepositoryUseCase buscaStatusFinalizadoComandaGatewayAdapter(
+        IBuscarPorStatusFinalizarComandaRepositoryUseCase buscaPorStatusFinalizadoComandaGatewayAdapter(
                         SpringComandaRepository springComandaRepository)
                         throws ExceptionMessage, Exception {
                 return new BuscaStatusFinalizadoComandaGatewayAdapter(

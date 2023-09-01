@@ -12,11 +12,11 @@ import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusFinalizarComandaRepositoryUseCase;
 
 @Component
 @Primary
-public class BuscaStatusFinalizadoComandaGatewayAdapter implements IBuscarPorStatusComandaRepositoryUseCase {
+public class BuscaStatusFinalizadoComandaGatewayAdapter implements IBuscarPorStatusFinalizarComandaRepositoryUseCase {
 
     private final SpringComandaRepository springComandaRepository;
 
