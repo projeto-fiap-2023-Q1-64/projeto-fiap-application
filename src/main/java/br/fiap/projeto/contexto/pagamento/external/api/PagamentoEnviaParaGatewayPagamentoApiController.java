@@ -31,9 +31,9 @@ public class PagamentoEnviaParaGatewayPagamentoApiController {
     @Transactional
     @ApiOperation(value = "Envia o Pagamento Gateway de Pagamentos", notes="Esse endpoint efetua o envio ao sistema externo de pagamentos - Integração com o Gateway que efetua a transação bancária.")
     public ResponseEntity<Void> enviaCompraParaGateway(@RequestBody PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest) {
-        enviaPagamentoGatewayRestAdapterController
-                .enviaParaGatewayDePagamento(enviaPagamentoGatewayRestAdapterController
-                        .preparaParaEnviarPagamentoAoGateway(pagamentoAEnviarAoGatewayDTORequest));
+
+        PagamentoAEnviarAoGatewayDTORequest dto = enviaPagamentoGatewayRestAdapterController.preparaParaEnviarPagamentoAoGateway(pagamentoAEnviarAoGatewayDTORequest);
+        enviaPagamentoGatewayRestAdapterController.enviaParaGatewayDePagamento(dto);
         return ResponseEntity.ok().build();
     }
 

@@ -32,7 +32,7 @@ public class FinalizarComandaUseCase implements IAtualizarComandaUseCase {
         Comanda comanda = this.buscar(codigoComanda);
         if (comanda.getStatus().equals(StatusComanda.EM_PREPARACAO)) {
             comanda.atualizaStatus(StatusComanda.FINALIZADO);
-            UUID codigo = enviarStatusPedido(comanda.getCodigoPedido());
+            String codigo = enviarStatusPedido(comanda.getCodigoPedido());
             if (codigo == null) {
                 throw new ExceptionMessage(comanda.getStatus().toString());
             }
@@ -50,7 +50,7 @@ public class FinalizarComandaUseCase implements IAtualizarComandaUseCase {
         return comanda;
     }
 
-    private UUID enviarStatusPedido(UUID codigoPedido) {
+    private String enviarStatusPedido(UUID codigoPedido) {
         return comandaPedidoIntegration.prontificar(codigoPedido.toString()).getBody();
     }
 
