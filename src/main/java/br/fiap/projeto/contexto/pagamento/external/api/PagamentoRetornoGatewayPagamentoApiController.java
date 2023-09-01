@@ -21,12 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PagamentoRetornoGatewayPagamentoApiController {
 
     private final IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController;
-    private final IBuscaPagamentoRestAdapterController buscaPagamentoRestAdapterController;
 
     @Autowired
-    public PagamentoRetornoGatewayPagamentoApiController(IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController, IBuscaPagamentoRestAdapterController buscaPagamentoRestAdapterController) {
+    public PagamentoRetornoGatewayPagamentoApiController(IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController) {
         this.atualizaPagamentoRestAdapterController = atualizaPagamentoRestAdapterController;
-        this.buscaPagamentoRestAdapterController = buscaPagamentoRestAdapterController;
     }
 
     //INFO Vai simular a chegada do Código do Pedido e seu novo Status como resposta simulada do Gateway
@@ -34,11 +32,6 @@ public class PagamentoRetornoGatewayPagamentoApiController {
     @PatchMapping(value="/atualiza-status")
     @ApiOperation(value="Atualiza Status dos Pagamentos", notes="Esse endpoint atualiza os status dos pagamentos, simulando o retorno que virá após envio ao Gateway de Pagamentos.")
     public ResponseEntity<Void> atualizaStatusComRespostaDoGatewayPagamento(@RequestBody PagamentoStatusDTORequest pagamentoStatusDTORequest){
-        try{
-            buscaPagamentoRestAdapterController.findByCodigoPedidoAtualizarStatus(pagamentoStatusDTORequest.getCodigoPedido());
-        }catch(Exception e){
-            throw new ResourceNotFoundException("Ocorreu um erro ao buscar o pagamento para o pedido: " + pagamentoStatusDTORequest.getCodigoPedido());
-        }
         atualizaPagamentoRestAdapterController.atualizaStatusPagamento(new PagamentoDTORequest(pagamentoStatusDTORequest));
         return ResponseEntity.ok().build() ;
     }

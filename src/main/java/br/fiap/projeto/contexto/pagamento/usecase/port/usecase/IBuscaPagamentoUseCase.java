@@ -14,6 +14,6 @@ public interface IBuscaPagamentoUseCase {
     List<Pagamento> findByStatusPagamento(StatusPagamento status);
 
     List<Pagamento> findByCodigoPedido(String codigoPedido);
-
-
+    Pagamento findByCodigoPedidoNotRejected(String codigoPedido);
+    Pagamento findByCodigoPedidoRejected(String codigoPedido);
 }
