@@ -43,7 +43,7 @@ public class ComandaEntity {
         this.status = comanda.getStatus();
     }
 
-    public Comanda toComanda() throws EntradaInvalidaException {
+    public Comanda toComanda() {
         return new Comanda(codigoComanda, codigoPedido, status);
     }
 }
