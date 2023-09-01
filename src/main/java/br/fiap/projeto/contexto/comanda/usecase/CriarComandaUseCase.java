@@ -1,39 +1,40 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
+import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaNaoEncontradaException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.ICriarComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
-
-import java.util.UUID;
 
 public class CriarComandaUseCase implements ICriarComandaUseCase {
 
     private final ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase;
+    private final IBuscarPorComandaPorCodigoPedidoRepositoryUseCase buscarPorComandaPorCodigoPedidoRepositoryUseCase;
 
-    public CriarComandaUseCase(ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase) {
+    public CriarComandaUseCase(ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase,
+            IBuscarPorComandaPorCodigoPedidoRepositoryUseCase buscarPorComandaPorCodigoPedidoRepositoryUseCase) {
         this.criarComandaRepositoryUseCase = criarComandaRepositoryUseCase;
+        this.buscarPorComandaPorCodigoPedidoRepositoryUseCase = buscarPorComandaPorCodigoPedidoRepositoryUseCase;
     }
 
     @Override
     public Comanda criarComanda(UUID codigoPedido) throws EntradaInvalidaException {
-        if(codigoPedido == null){
+        if (codigoPedido == null) {
             throw new EntradaInvalidaException("Código de pedido inválido!");
         }
-
-        //TODO: buscar comanda por código do pedido e validar que não existe, caso exista dar um erro
+        Optional<Comanda> comanda = buscarPorComandaPorCodigoPedidoRepositoryUseCase.buscar(codigoPedido);
+        if (comanda.empty() != null) {
+            new ComandaNaoEncontradaException("Comanda já existe");
+        }
 
         return criarComandaRepositoryUseCase.criar(new Comanda(UUID.randomUUID(),
                 codigoPedido,
                 StatusComanda.RECEBIDO));
     }
-
-    // TODO: utilizar o modelo e criar um gateway que busca comanda por código do pedido para injetar aqui e fazer a consulta para a validação.
-//    private Comanda buscar(UUID codigoComanda) throws EntradaInvalidaException {
-//        Optional<Comanda> comanda = buscarComandaRepositoryUseCase.buscar(codigoComanda);
-//        comanda.orElseThrow(() -> new EntityNotFoundException("Comanda não encontrada!"));
-//        return comanda.get();
-//    }
 
 }
