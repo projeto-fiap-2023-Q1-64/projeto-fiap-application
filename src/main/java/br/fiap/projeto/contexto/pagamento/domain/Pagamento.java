@@ -1,14 +1,13 @@
 package br.fiap.projeto.contexto.pagamento.domain;
 
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.infrastructure.entity.PagamentoEntity;
+
+import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Pagamento {
 

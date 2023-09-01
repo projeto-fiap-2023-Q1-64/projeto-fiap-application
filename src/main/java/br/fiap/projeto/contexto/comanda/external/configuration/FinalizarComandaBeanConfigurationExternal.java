@@ -1,8 +1,5 @@
 package br.fiap.projeto.contexto.comanda.external.configuration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import br.fiap.projeto.contexto.comanda.adapter.controller.FinalizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.gateway.FinalizaComandaGatewayAdapter;
@@ -13,6 +10,8 @@ import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComand
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarFinalizarComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FinalizarComandaBeanConfigurationExternal {
@@ -28,8 +27,8 @@ public class FinalizarComandaBeanConfigurationExternal {
 
     @Bean
     IAtualizaComandaControllerAdapter finalizaComandaControllerAdapter(
-            IAtualizarComandaUseCase atualizarComandaUseCase) {
-        return new FinalizaComandaControllerAdapter(atualizarComandaUseCase);
+            IAtualizarComandaUseCase finalizarComandaUseCase) {
+        return new FinalizaComandaControllerAdapter(finalizarComandaUseCase);
     }
 
     @Bean

@@ -1,18 +1,13 @@
 package br.fiap.projeto.contexto.comanda.external.api;
 
-import java.util.UUID;
-
+import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
+import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
-import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/comandas")
@@ -21,8 +16,8 @@ public class FinalizarComandaApiExternal {
     private final IAtualizaComandaControllerAdapter finalizaComandaPortControllerAdapter;
 
     @Autowired
-    public FinalizarComandaApiExternal(IAtualizaComandaControllerAdapter finalizaComandaPortControllerAdapter) {
-        this.finalizaComandaPortControllerAdapter = finalizaComandaPortControllerAdapter;
+    public FinalizarComandaApiExternal(IAtualizaComandaControllerAdapter finalizaComandaControllerAdapter) {
+        this.finalizaComandaPortControllerAdapter = finalizaComandaControllerAdapter;
     }
 
     @PatchMapping("/{codigo-comanda}/finalizar")

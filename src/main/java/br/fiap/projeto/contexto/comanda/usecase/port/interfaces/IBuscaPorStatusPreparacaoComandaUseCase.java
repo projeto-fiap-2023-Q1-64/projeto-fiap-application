@@ -3,10 +3,8 @@ package br.fiap.projeto.contexto.comanda.usecase.port.interfaces;
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 
-import java.util.UUID;
+import java.util.List;
 
-public interface ICriarComandaUseCase {
-
-    Comanda criarComanda(UUID codigoPedido) throws ExceptionMessage;
-
+public interface IBuscaPorStatusPreparacaoComandaUseCase {
+    List<Comanda> buscaComandaPorStatusPreparacao() throws ExceptionMessage, Exception;
 }

@@ -1,8 +1,5 @@
 package br.fiap.projeto.contexto.comanda.external.configuration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import br.fiap.projeto.contexto.comanda.adapter.controller.PreparaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.gateway.PreparaComandaGatewayAdapter;
@@ -12,6 +9,8 @@ import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComand
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarPrepararComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class PrepararComandaBeanConfigurationExternal {
@@ -25,12 +24,12 @@ public class PrepararComandaBeanConfigurationExternal {
 
     @Bean
     IAtualizaComandaControllerAdapter preparaComandaControllerAdapter(
-            IAtualizarComandaUseCase preparaComandaUseCase) {
-        return new PreparaComandaControllerAdapter(preparaComandaUseCase);
+            IAtualizarComandaUseCase prepararComandaUseCase) {
+        return new PreparaComandaControllerAdapter(prepararComandaUseCase);
     }
 
     @Bean
-    IAtualizarPrepararComandaRepositoryUseCase preparaAComandaGatewayAdapter(
+    IAtualizarComandaRepositoryUseCase preparaUmaComandaGatewayAdapter(
             SpringComandaRepository springComandaRepository) {
         return new PreparaComandaGatewayAdapter(springComandaRepository);
     }

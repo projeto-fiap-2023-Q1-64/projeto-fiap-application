@@ -1,24 +1,17 @@
 package br.fiap.projeto.contexto.comanda.adapter.gateway;
 
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarPrepararComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
 
 @Component
 @Primary
-public class PreparaComandaGatewayAdapter implements IAtualizarPrepararComandaRepositoryUseCase {
+public class PreparaComandaGatewayAdapter implements IAtualizarComandaRepositoryUseCase {
 
     private final SpringComandaRepository springComandaRepository;
 
-    @Autowired
     public PreparaComandaGatewayAdapter(SpringComandaRepository springComandaRepository) {
         this.springComandaRepository = springComandaRepository;
     }

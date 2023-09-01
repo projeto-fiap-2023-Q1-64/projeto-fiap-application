@@ -1,19 +1,13 @@
 package br.fiap.projeto.contexto.comanda.external.repository.entity;
 
-import java.util.UUID;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -30,6 +24,7 @@ public class ComandaEntity {
     @Column(nullable = false, unique = true)
     private UUID codigoPedido;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusComanda status;
 

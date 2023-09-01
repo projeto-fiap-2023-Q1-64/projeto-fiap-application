@@ -1,10 +1,10 @@
 package br.fiap.projeto.contexto.comanda.entity;
 
-import java.util.UUID;
-
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+
+import java.util.UUID;
 
 public class Comanda {
 

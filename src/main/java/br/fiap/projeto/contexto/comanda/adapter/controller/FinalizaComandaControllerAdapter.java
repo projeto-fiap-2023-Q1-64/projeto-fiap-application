@@ -1,24 +1,24 @@
 package br.fiap.projeto.contexto.comanda.adapter.controller;
 
-import java.util.UUID;
-
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
 
+import java.util.UUID;
+
 public class FinalizaComandaControllerAdapter implements IAtualizaComandaControllerAdapter {
 
-    private final IAtualizarComandaUseCase atualizarComandaUseCase;
+    private final IAtualizarComandaUseCase finalizarComandaUseCase;
 
-    public FinalizaComandaControllerAdapter(IAtualizarComandaUseCase atualizarComandaUseCase) {
-        this.atualizarComandaUseCase = atualizarComandaUseCase;
+    public FinalizaComandaControllerAdapter(IAtualizarComandaUseCase finalizarComandaUseCase) {
+        this.finalizarComandaUseCase = finalizarComandaUseCase;
     }
 
     @Override
     public ComandaDTO atualizaStatusComanda(UUID codigoComanda) throws ExceptionMessage {
         return ComandaDTO.newInstanceFromComanda(
-                atualizarComandaUseCase.atualizar(codigoComanda));
+                finalizarComandaUseCase.atualizar(codigoComanda));
     }
 
 }

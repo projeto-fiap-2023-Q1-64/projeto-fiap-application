@@ -5,8 +5,6 @@ import br.fiap.projeto.contexto.pedido.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pedido.domain.port.service.PedidoService;
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.PedidoComandaIntegration;
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.PedidoPagamentoIntegration;
-import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.Comanda;
-import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.CriaComanda;
 import br.fiap.projeto.contexto.pedido.infrastructure.integration.port.Pagamento;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;

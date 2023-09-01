@@ -1,10 +1,10 @@
 package br.fiap.projeto.contexto.pagamento.domain.service;
 
 
-import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
-import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoAprovadoDTO;
 import br.fiap.projeto.contexto.pagamento.application.rest.response.PagamentoDTO;
+import br.fiap.projeto.contexto.pagamento.application.rest.response.PedidoAPagarDTO;
+import br.fiap.projeto.contexto.pagamento.domain.Pagamento;
 import br.fiap.projeto.contexto.pagamento.domain.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.domain.port.repository.PagamentoRepositoryPort;
 import br.fiap.projeto.contexto.pagamento.domain.port.service.PagamentoServicePort;

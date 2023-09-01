@@ -4,8 +4,8 @@ import br.fiap.projeto.contexto.produto.entity.Produto;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.produto.usecase.exception.ProdutoNaoEncontradoException;
-import br.fiap.projeto.contexto.produto.usecase.port.IProdutoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.produto.usecase.port.IGestaoProdutoUseCase;
+import br.fiap.projeto.contexto.produto.usecase.port.IProdutoRepositoryAdapterGateway;
 
 import java.util.Arrays;
 import java.util.List;

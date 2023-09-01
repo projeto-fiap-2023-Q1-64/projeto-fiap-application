@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.produto.external.api.exception.handler;
 
-import br.fiap.projeto.contexto.produto.external.api.exception.ProdutoResponseException;
 import br.fiap.projeto.contexto.produto.external.api.ProdutoApiController;
+import br.fiap.projeto.contexto.produto.external.api.exception.ProdutoResponseException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
