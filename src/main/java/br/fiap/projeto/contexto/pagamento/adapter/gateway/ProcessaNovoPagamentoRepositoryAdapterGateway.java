@@ -7,6 +7,7 @@ import br.fiap.projeto.contexto.pagamento.external.repository.postgres.SpringPag
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceAlreadyInProcessException;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.UnprocessablePaymentException;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.mensagens.MensagemDeErro;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IProcessaNovoPagamentoRepositoryAdapterGateway;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public class ProcessaNovoPagamentoRepositoryAdapterGateway implements IProcessaN
             System.out.println("Existe um pagamento e ele está no status: " + possivelPagamento.getStatus());
             return true;
         }else{
-            throw new ResourceAlreadyInProcessException("Pedido:  " + pagamento.getCodigoPedido() + " já possui pagamento. INFO: " + possivelPagamento);
+            throw new ResourceAlreadyInProcessException(MensagemDeErro.PAGAMENTO_EXISTENTE.getMessage());
         }
     }
 

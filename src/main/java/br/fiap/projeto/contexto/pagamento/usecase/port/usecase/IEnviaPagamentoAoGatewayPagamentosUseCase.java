@@ -1,10 +1,15 @@
 package br.fiap.projeto.contexto.pagamento.usecase.port.usecase;
 
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
+import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
 public interface IEnviaPagamentoAoGatewayPagamentosUseCase {
 
-    //TODO adicionar o método enviar~ aqui -> será chamado o do useCase
-    void enviaRequestAoSistemaExternoPagamentos(Pagamento pagamento);
+    void enviaRequestAoSistemaExternoPagamentos(String codigoPedido, StatusPagamento status);
 
+    void verificaPagamentoAntesDeEnviarAoGateway(String codigoPedido, StatusPagamento status);
+
+    void validaStatusAtualDoPagamentoAntesDeEnviarAoGateway(String codigoPedido, StatusPagamento status);
+
+    Pagamento atualizaStatusNovoAoEnviarPagamentoAoGateway(String codigoPedido, StatusPagamento statusPagamento);
 }
