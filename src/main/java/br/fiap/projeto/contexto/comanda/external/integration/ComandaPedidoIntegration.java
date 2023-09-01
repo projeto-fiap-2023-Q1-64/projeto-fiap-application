@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.UUID;
 
-@FeignClient(value = "comandaPedidoIntegration", url = "http://localhost:8080/pedidos")
+@FeignClient(value = "comandaPedidoIntegration", url = "http://localhost:${server.port}/pedidos")
 public interface ComandaPedidoIntegration {
     // @ResponseBody
     @RequestMapping(method = RequestMethod.PUT, value = "/{codigo}/prontificar")
-    public ResponseEntity<UUID> prontificar(@PathVariable("codigo") String codigoPedido);
+    public ResponseEntity<String> prontificar(@PathVariable("codigo") String codigoPedido);
 }
