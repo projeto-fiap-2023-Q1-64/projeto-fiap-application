@@ -36,4 +36,9 @@ public class PedidoWorkFlowRestAdapterController implements IPedidoWorkFlowRestA
     public PedidoDTO finalizarPedido(UUID codigo) throws Exception {
         return PedidoDtoMapper.toDto(this.workFlowUseCase.finalizar(codigo));
     }
+
+    @Override
+    public PedidoDTO cancelarPedido(UUID codigo) throws Exception {
+        return PedidoDtoMapper.toDto(this.workFlowUseCase.cancelar(codigo));
+    }
 }

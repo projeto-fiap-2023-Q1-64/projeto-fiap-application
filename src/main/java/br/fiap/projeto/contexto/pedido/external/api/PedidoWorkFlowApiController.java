@@ -30,4 +30,10 @@ public class PedidoWorkFlowApiController {
     public ResponseEntity<PedidoDTO> entregarPedido(@ApiParam(value = "Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
         return ResponseEntity.ok().body(this.pedidoWorkFlowRestAdapterController.finalizarPedido(codigo));
     }
+
+    @PutMapping("/{codigo}/cancelar")
+    @ResponseBody
+    public ResponseEntity<PedidoDTO> cancelarPedido(@ApiParam(value = "Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
+        return ResponseEntity.ok().body(this.pedidoWorkFlowRestAdapterController.cancelarPedido(codigo));
+    }
 }

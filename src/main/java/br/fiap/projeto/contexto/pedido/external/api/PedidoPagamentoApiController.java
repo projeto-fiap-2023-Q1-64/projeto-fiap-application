@@ -23,9 +23,9 @@ public class PedidoPagamentoApiController {
     }
 
 
-    @PatchMapping("/{codigo}/verificar-pagamento")
+    @PatchMapping("/{codigo}/atualizar-pagamento")
     @ResponseBody
-    public ResponseEntity<?> verificarPagamento(@ApiParam(value = "Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
-        return ResponseEntity.ok().body(pedidoPagamentoIntegrationRestAdapterController.pagar(codigo));
+    public ResponseEntity<?> atualizarPagamento(@ApiParam(value = "Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
+        return ResponseEntity.ok().body(pedidoPagamentoIntegrationRestAdapterController.atualizarPagamentoPedido(codigo));
     }
 }

@@ -14,6 +14,7 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
     public PedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway) {
         super(IPedidoRepositoryAdapterGateway);
     }
+    @Override
     public Pedido receber(UUID codigo) throws Exception {
         Pedido pedido = this.buscar(codigo);
         if(pedido.getStatus().equals(StatusPedido.INICIADO)){
@@ -65,6 +66,13 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         }else{
             throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
+        return IPedidoRepositoryAdapterGateway.salvar(pedido);
+    }
+
+    @Override
+    public Pedido cancelar(UUID codigo) throws Exception {
+        Pedido pedido = this.buscar(codigo);
+        pedido.atualizarStatus(StatusPedido.CANCELADO);
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
 }

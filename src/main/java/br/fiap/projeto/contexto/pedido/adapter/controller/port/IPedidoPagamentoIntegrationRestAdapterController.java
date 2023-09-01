@@ -5,5 +5,5 @@ import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDT
 import java.util.UUID;
 
 public interface IPedidoPagamentoIntegrationRestAdapterController {
-    PedidoDTO pagar(UUID codigoPedido) throws Exception;
+    PedidoDTO atualizarPagamentoPedido(UUID codigoPedido) throws Exception;
 }
