@@ -4,11 +4,9 @@ import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IBuscaPag
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
