@@ -45,18 +45,18 @@ public class BeanPagamentoConfiguration {
     }
 
     @Bean
-    IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway(SpringPagamentoRepository springPagamentoRepository){
-        return new ProcessaNovoPagamentoRepositoryAdapterGateway(springPagamentoRepository);
+    IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway(SpringPagamentoRepository springPagamentoRepository, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new ProcessaNovoPagamentoRepositoryAdapterGateway(springPagamentoRepository, buscaPagamentoUseCase);
     }
 
     @Bean
-    IProcessaPagamentoRestAdapterController processaNovoPagamentoAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase, IBuscaPagamentoUseCase buscaPagamentoUseCase){
-        return new ProcessaNovoPagamentoRestAdapterController(processaNovoPagamentoUseCase, buscaPagamentoUseCase );
+    IProcessaPagamentoRestAdapterController processaNovoPagamentoAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase){
+        return new ProcessaNovoPagamentoRestAdapterController(processaNovoPagamentoUseCase);
     }
 
     @Bean
-    IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase(IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway){
-        return new ProcessaNovoPagamentoUseCase(processaNovoPagamentoAdapterGateway);
+    IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase(IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new ProcessaNovoPagamentoUseCase(processaNovoPagamentoAdapterGateway, buscaPagamentoUseCase);
     }
 
     @Bean

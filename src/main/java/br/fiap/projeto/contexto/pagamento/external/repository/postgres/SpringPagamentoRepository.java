@@ -22,6 +22,4 @@ public interface SpringPagamentoRepository extends JpaRepository<PagamentoEntity
 
     List<PagamentoEntity> findAll();
 
-    void save(Pagamento pagamento);
-
 }

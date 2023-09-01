@@ -3,7 +3,6 @@ package br.fiap.projeto.contexto.pagamento.external.api;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IBuscaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

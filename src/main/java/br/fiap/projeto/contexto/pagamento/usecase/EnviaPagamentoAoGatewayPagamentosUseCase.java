@@ -10,6 +10,8 @@ import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUs
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IEnviaPagamentoAoGatewayPagamentosUseCase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IProcessaNovoPagamentoUseCase;
 
+import java.util.NoSuchElementException;
+
 public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamentoAoGatewayPagamentosUseCase {
 
     private final IBuscaPagamentoUseCase buscaPagamentoUseCase;
@@ -57,11 +59,11 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
     }
 
     private Pagamento getPagamento(String codigoPedido) {
-        return buscaPagamentoUseCase.findByCodigoPedido(codigoPedido)
-                .stream()
-                .filter(p -> p.getCodigoPedido()
-                        .equals(codigoPedido)).findFirst()
-                .get();
+        try {
+            return buscaPagamentoUseCase.findByCodigoPedidoNotRejected(codigoPedido);
+        }catch(NoSuchElementException elementException){
+            throw new ResourceNotFoundException(elementException.getMessage());
+        }
     }
 
     private static void printMensagensSimulaIntegracaoComSistemaExterno(String codigoPedido, StatusPagamento status) {

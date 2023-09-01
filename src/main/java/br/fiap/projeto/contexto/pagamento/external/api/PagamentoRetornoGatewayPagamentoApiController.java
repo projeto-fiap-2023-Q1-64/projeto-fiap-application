@@ -1,10 +1,8 @@
 package br.fiap.projeto.contexto.pagamento.external.api;
 
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IAtualizaPagamentoRestAdapterController;
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IBuscaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoStatusDTORequest;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
