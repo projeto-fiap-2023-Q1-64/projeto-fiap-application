@@ -3,11 +3,10 @@ package br.fiap.projeto.contexto.pagamento.usecase;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.UnprocessablePaymentException;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.mensagens.MensagemDeErro;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IAtualizaStatusPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IAtualizaStatusPagamentoUsecase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
-
-import java.util.UUID;
 
 public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoUsecase {
 
@@ -49,7 +48,7 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
             !pagamentoEmAndamento.podeSerAprovado(statusAtual, statusRequest)   &&
             !pagamentoEmAndamento.podeSerCancelado(statusAtual, statusRequest)  &&
             !pagamentoEmAndamento.podeSerRejeitado(statusAtual, statusRequest)  ){
-            throw new UnprocessablePaymentException("Mudança de Status de Pagamento inválida.");
+            throw new UnprocessablePaymentException(MensagemDeErro.STATUS_INVALIDO.getMessage());
         }
     }
 

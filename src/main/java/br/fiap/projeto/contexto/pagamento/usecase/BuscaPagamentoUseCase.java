@@ -1,9 +1,9 @@
 package br.fiap.projeto.contexto.pagamento.usecase;
 
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.mensagens.MensagemDeErro;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IBuscaPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 
@@ -30,7 +30,7 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
             Optional<Pagamento> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigo(codigo));
             return possivelPagamento.get();
         }catch(Exception e){
-            throw new ResourceNotFoundException("Não foi possível encontrar um pagamento para este código de pedido.");
+            throw new ResourceNotFoundException(MensagemDeErro.PAGAMENTO_NAO_ENCONTRADO.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
             Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedido(codigoPedido));
             return possivelPagamento.get();
         }catch(NoSuchElementException elementException){
-            throw new ResourceNotFoundException("Não foi possível encontrar um pagamento para este código de pedido.");
+            throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
             Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamentoNot(codigoPedido, StatusPagamento.REJECTED));
             return possivelPagamento.get().stream().findFirst().get();
         }catch(NoSuchElementException elementException){
-            throw new ResourceNotFoundException("Não foi possível encontrar um pagamento para este código de pedido.");
+            throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
         }
 
     }
@@ -66,7 +66,7 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
             Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamento(codigoPedido, StatusPagamento.REJECTED));
             return possivelPagamento.get().stream().findFirst().get();
         }catch(NoSuchElementException elementException){
-            throw new ResourceNotFoundException("Não foi possível encontrar um pagamento para este código de pedido.");
+            throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
         }
 
     }

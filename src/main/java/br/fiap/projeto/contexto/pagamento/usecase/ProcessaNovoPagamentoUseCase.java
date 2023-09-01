@@ -15,8 +15,6 @@ public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCa
     //INFO: antigo salvaPedidosAPagar : deverão ser recebidos por este UseCase do cntx de Pedidos
     @Override
     public Pagamento criaNovoPagamento(Pagamento pagamento) {
-        //  TODO ativar verificações para impedir que seja salvo um novo pagamento para um pedido já pago/em processamento
-
         if(processaNovoPagamentoAdapterGateway.verificaSeJaExistePagamentoParaOPedido(pagamento)){
             processaNovoPagamentoAdapterGateway.verificaCondicoesParaCriarPagamento(pagamento);
         }
