@@ -18,7 +18,7 @@ public class FinalizaComandaControllerAdapter implements IAtualizaComandaControl
     @Override
     public ComandaDTO atualizaStatusComanda(UUID codigoComanda) throws EntradaInvalidaException {
         return ComandaDTO.newInstanceFromComanda(
-                finalizarComandaUseCase.finalizar(codigoComanda));
+                finalizarComandaUseCase.alterarStatus(codigoComanda));
     }
 
 }
