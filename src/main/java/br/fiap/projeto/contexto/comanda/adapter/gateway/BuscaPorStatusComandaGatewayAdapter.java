@@ -2,9 +2,9 @@ package br.fiap.projeto.contexto.comanda.adapter.gateway;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class BuscaPorStatusComandaGatewayAdapter implements IBuscarPorStatusComa
     }
 
     @Override
-    public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws ExceptionMessage {
+    public List<Comanda> buscaComandaPorStatus(StatusComanda status) throws EntradaInvalidaException {
         List<ComandaEntity> resultados = springComandaRepository.findByStatus(status);
         List<Comanda> comandas = new ArrayList<>();
         if (!resultados.isEmpty()) {

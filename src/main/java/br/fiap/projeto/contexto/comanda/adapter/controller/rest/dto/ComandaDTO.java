@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 
 import java.util.UUID;
 
@@ -35,7 +35,7 @@ public class ComandaDTO {
 		return codigoComanda;
 	}
 
-	public Comanda toComanda() throws ExceptionMessage {
+	public Comanda toComanda() throws EntradaInvalidaException {
 		return new Comanda(codigoComanda, codigoPedido, status);
 	}
 

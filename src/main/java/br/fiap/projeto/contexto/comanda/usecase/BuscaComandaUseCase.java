@@ -1,7 +1,7 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
 
@@ -16,7 +16,7 @@ public class BuscaComandaUseCase implements IBuscaPorComandaUseCase {
     }
 
     @Override
-    public Comanda buscaComandaPorStatus(UUID codigoComanda) throws ExceptionMessage {
+    public Comanda buscaComandaPorStatus(UUID codigoComanda) throws EntradaInvalidaException {
         return buscarComandaRepositoryUseCase.buscar(codigoComanda);
     }
 

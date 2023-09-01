@@ -3,7 +3,7 @@ package br.fiap.projeto.contexto.comanda.adapter.controller;
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.ICriarComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.CriarComandaDTO;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.ICriarComandaUseCase;
 
 public class CriaComandaControllerAdapter implements ICriarComandaControllerAdapter {
@@ -15,7 +15,7 @@ public class CriaComandaControllerAdapter implements ICriarComandaControllerAdap
     }
 
     @Override
-    public ComandaDTO criaComanda(CriarComandaDTO criarComandaDTO) throws ExceptionMessage {
+    public ComandaDTO criaComanda(CriarComandaDTO criarComandaDTO) throws EntradaInvalidaException {
         return ComandaDTO
                 .newInstanceFromComanda(criarComandaUseCase.criarComanda(criarComandaDTO.getCodigoPedido()));
     }

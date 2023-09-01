@@ -3,8 +3,6 @@ package br.fiap.projeto.contexto.pagamento.external.repository.postgres;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

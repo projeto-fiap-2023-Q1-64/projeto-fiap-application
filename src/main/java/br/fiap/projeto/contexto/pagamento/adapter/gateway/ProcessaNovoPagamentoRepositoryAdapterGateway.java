@@ -6,7 +6,6 @@ import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEn
 import br.fiap.projeto.contexto.pagamento.external.repository.postgres.SpringPagamentoRepository;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceAlreadyInProcessException;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.UnprocessablePaymentException;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IProcessaNovoPagamentoRepositoryAdapterGateway;
 
 import java.util.List;

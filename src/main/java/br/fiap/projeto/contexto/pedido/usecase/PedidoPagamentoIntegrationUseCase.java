@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
-import br.fiap.projeto.contexto.pedido.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pedido.entity.integration.PagamentoPedido;
 import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoPagamentoIntegrationAdapterGateway;
