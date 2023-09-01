@@ -21,9 +21,19 @@ public class CriarComandaUseCase implements ICriarComandaUseCase {
         if(codigoPedido == null){
             throw new EntradaInvalidaException("Código de pedido inválido!");
         }
+
+        //TODO: buscar comanda por código do pedido e validar que não existe, caso exista dar um erro
+
         return criarComandaRepositoryUseCase.criar(new Comanda(UUID.randomUUID(),
                 codigoPedido,
                 StatusComanda.RECEBIDO));
     }
+
+    // TODO: utilizar o modelo e criar um gateway que busca comanda por código do pedido para injetar aqui e fazer a consulta para a validação.
+//    private Comanda buscar(UUID codigoComanda) throws EntradaInvalidaException {
+//        Optional<Comanda> comanda = buscarComandaRepositoryUseCase.buscar(codigoComanda);
+//        comanda.orElseThrow(() -> new EntityNotFoundException("Comanda não encontrada!"));
+//        return comanda.get();
+//    }
 
 }

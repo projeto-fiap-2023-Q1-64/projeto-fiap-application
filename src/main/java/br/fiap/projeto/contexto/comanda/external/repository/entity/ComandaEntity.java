@@ -2,7 +2,6 @@ package br.fiap.projeto.contexto.comanda.external.repository.entity;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
-import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

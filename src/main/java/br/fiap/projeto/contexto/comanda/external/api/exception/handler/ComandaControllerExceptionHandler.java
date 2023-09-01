@@ -3,6 +3,7 @@ package br.fiap.projeto.contexto.comanda.external.api.exception.handler;
 import br.fiap.projeto.contexto.comanda.external.api.CriarComandaApiExternal;
 import br.fiap.projeto.contexto.comanda.external.api.exception.ComandaResponseException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.IntegracaoPedidoException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,12 @@ public class ComandaControllerExceptionHandler {
     public ResponseEntity<ComandaResponseException> handleEntradaInvalida(Exception e) {
         ComandaResponseException response = new ComandaResponseException(2001, e.getMessage(), e.getCause());
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(response);
+    }
+
+    @ExceptionHandler(IntegracaoPedidoException.class)
+    public ResponseEntity<ComandaResponseException> handleIntegracaoPedido(Exception e) {
+        ComandaResponseException response = new ComandaResponseException(2004, e.getMessage(), e.getCause());
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(response);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

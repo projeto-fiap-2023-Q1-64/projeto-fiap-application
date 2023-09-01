@@ -9,7 +9,6 @@ import br.fiap.projeto.contexto.comanda.usecase.FinalizarComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,9 +19,9 @@ public class FinalizarComandaBeanConfigurationExternal {
     IAtualizarComandaUseCase finalizarComandaUseCase(
             IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase,
             ComandaPedidoIntegration comandaPedidoIntegration,
-            ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase) {
+            IAtualizarComandaRepositoryUseCase finalizaComandaGatewayAdapter) {
         return new FinalizarComandaUseCase(buscarComandaRepositoryUseCase, comandaPedidoIntegration,
-                criarComandaRepositoryUseCase);
+                finalizaComandaGatewayAdapter);
     }
 
     @Bean
@@ -32,8 +31,8 @@ public class FinalizarComandaBeanConfigurationExternal {
     }
 
     @Bean
-    IAtualizarComandaRepositoryUseCase finalizaUmaComandaGatewayAdapter(
-            SpringComandaRepository springComandaRepository) {
+    IAtualizarComandaRepositoryUseCase finalizaComandaGatewayAdapter(
+            SpringComandaRepository springComandaRepository, IBuscarPorComandaRepositoryUseCase buscarPorComandaGatewayAdapter) {
         return new FinalizaComandaGatewayAdapter(springComandaRepository);
     }
 }

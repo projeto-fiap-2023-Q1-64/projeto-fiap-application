@@ -1,11 +1,8 @@
 package br.fiap.projeto.contexto.comanda.adapter.gateway;
 
-import java.util.UUID;
-
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
-import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
 
 public class FinalizaComandaGatewayAdapter implements IAtualizarComandaRepositoryUseCase {
@@ -17,11 +14,8 @@ public class FinalizaComandaGatewayAdapter implements IAtualizarComandaRepositor
     }
 
     @Override
-    public Comanda atualizar(UUID codigoComanda) throws EntradaInvalidaException {
-        return springComandaRepository
-                .save(new ComandaEntity(
-                        new BuscaPorComandaGatewayAdapter(springComandaRepository).buscar(codigoComanda).get()))
-                .toComanda();
+    public Comanda atualizar(Comanda comanda) {
+        return springComandaRepository.save(new ComandaEntity(comanda)).toComanda();
     }
 
 }

@@ -2,6 +2,8 @@ package br.fiap.projeto.contexto.comanda.external.api;
 
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.IntegracaoPedidoException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,7 @@ public class PrepararComandaApiExternal {
     @PatchMapping("/{codigo-comanda}/preparar")
     @ResponseBody
     @ApiOperation(value = "Inicia o preparo de uma comanda", notes = "Este endpoint informa o início do preparo de uma comanda")
-    ResponseEntity<ComandaDTO> preparar(@PathVariable("codigo-comanda") UUID codigoComando)
-            throws Exception {
+    ResponseEntity<ComandaDTO> preparar(@PathVariable("codigo-comanda") UUID codigoComando) throws IntegracaoPedidoException, EntradaInvalidaException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(this.preparaComandaControllerAdapter.atualizaStatusComanda(codigoComando));
     }
