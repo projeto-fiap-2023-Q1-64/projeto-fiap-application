@@ -5,9 +5,7 @@ import br.fiap.projeto.contexto.identificacao.external.repository.entity.Cliente
 import br.fiap.projeto.contexto.identificacao.external.repository.postgres.SpringClienteRepository;
 import br.fiap.projeto.contexto.identificacao.usecase.port.IClienteRepositoryAdapterGateway;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,10 +19,8 @@ public class ClienteRepositoryAdapterGateway implements IClienteRepositoryAdapte
 
     @Override
     public Cliente insere(Cliente cliente) {
-        ClienteEntity clienteEntity;
-        clienteEntity = ClienteEntity.fromCliente(cliente);
+        ClienteEntity clienteEntity = ClienteEntity.fromCliente(cliente);
         clienteEntity = springClienteRepository.save(clienteEntity);
-
         return clienteEntity.toCliente();
     }
 
@@ -36,52 +32,37 @@ public class ClienteRepositoryAdapterGateway implements IClienteRepositoryAdapte
     }
 
     @Override
-    public void remove(String codigo) {
-        Optional<ClienteEntity> existing;
-        existing = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
-        if (existing.isPresent()) {
-            existing.get().setDataExclusao(LocalDateTime.now());
-            springClienteRepository.save(existing.get());
-        }
+    public void remove(Cliente cliente) {
+        springClienteRepository.save(ClienteEntity.fromCliente(cliente));
     }
 
     @Override
-    public Cliente busca(String codigo) {
-        Optional<ClienteEntity> clienteRecuperado;
-        clienteRecuperado = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
-        if (!clienteRecuperado.isPresent()) {
-            return null;
-        }
-
-        return clienteRecuperado.get().toCliente();
+    public Optional<Cliente> busca(String codigo) {
+        Optional<ClienteEntity> clienteRecuperado = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
+        return clienteRecuperado.map(ClienteEntity::toCliente);
     }
 
     @Override
     public List<Cliente> buscaTodos() {
-        List<ClienteEntity> entidades;
-        entidades = springClienteRepository.findAllByDataExclusaoIsNull();
-
-        List<Cliente> clientes;
-        clientes = entidades.stream().map(ClienteEntity::toCliente).collect(Collectors.toList());
-
-        return clientes;
+        List<ClienteEntity> entidades = springClienteRepository.findAllByDataExclusaoIsNull();
+        return entidades.stream().map(ClienteEntity::toCliente).collect(Collectors.toList());
     }
 
     @Override
-    public Cliente buscaPorCpf(String cpf) {
-        ClienteEntity entity = springClienteRepository.findByCpfAndDataExclusaoIsNull(cpf);
-        if (Objects.nonNull(entity)) {
-            return entity.toCliente();
-        }
-        return null;
+    public Optional<Cliente> buscaPorCpf(String cpf) {
+        Optional<ClienteEntity> entity = springClienteRepository.findByCpfAndDataExclusaoIsNull(cpf);
+        return entity.map(ClienteEntity::toCliente);
     }
 
     @Override
-    public Cliente buscaPorEmail(String email) {
-        ClienteEntity entity = springClienteRepository.findByEmailAndDataExclusaoIsNull(email);
-        if (Objects.nonNull(entity)) {
-            return entity.toCliente();
-        }
-        return null;
+    public Optional<Cliente> buscaPorEmail(String email) {
+        Optional<ClienteEntity> entity = springClienteRepository.findByEmailAndDataExclusaoIsNull(email);
+        return entity.map(ClienteEntity::toCliente);
+    }
+
+    @Override
+    public Optional<Cliente> buscaPorCodigoEDataExclusaoNula(String codigo) {
+        Optional<ClienteEntity> cliente = springClienteRepository.findByCodigoAndDataExclusaoIsNull(codigo);
+        return cliente.map(ClienteEntity::toCliente);
     }
 }

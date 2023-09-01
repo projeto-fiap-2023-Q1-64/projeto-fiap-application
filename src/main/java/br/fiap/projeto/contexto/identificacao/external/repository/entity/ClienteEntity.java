@@ -26,24 +26,25 @@ public class ClienteEntity {
     public ClienteEntity() {
     }
 
-    public ClienteEntity(String codigo, String nome, String cpf, String email) {
+    public ClienteEntity(String codigo, String nome, String cpf, String email, LocalDateTime dataExclusao) {
         this.codigo = codigo;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
+        this.dataExclusao = dataExclusao;
     }
 
-    public ClienteEntity(String codigo, String nome, Cpf cpf, Email email) {
-        this(codigo, nome, cpf.getNumero(), email.getEndereco());
+    public ClienteEntity(String codigo, String nome, Cpf cpf, Email email, LocalDateTime dataExclusao) {
+        this(codigo, nome, cpf.getNumero(), email.getEndereco(), dataExclusao);
     }
 
     public static ClienteEntity fromCliente(Cliente cliente) {
-        return new ClienteEntity(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail());
+        return new ClienteEntity(cliente.getCodigo(), cliente.getNome(), cliente.getCpf(), cliente.getEmail(), cliente.getDataExclusao());
     }
 
     @SneakyThrows
     public Cliente toCliente() {
-        return new Cliente(codigo, nome, cpf, email);
+        return new Cliente(codigo, nome, cpf, email, dataExclusao);
     }
 
     public String getCodigo() {
@@ -66,7 +67,4 @@ public class ClienteEntity {
         return dataExclusao;
     }
 
-    public void setDataExclusao(LocalDateTime dataExclusao) {
-        this.dataExclusao = dataExclusao;
-    }
 }
