@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface SpringClienteRepository extends JpaRepository<ClienteEntity, String> {
     List<ClienteEntity> findAllByDataExclusaoIsNull();
-    ClienteEntity findByCpfAndDataExclusaoIsNull(String cpf);
-    ClienteEntity findByEmailAndDataExclusaoIsNull(String email);
+    Optional<ClienteEntity> findByCpfAndDataExclusaoIsNull(String cpf);
+    Optional<ClienteEntity> findByEmailAndDataExclusaoIsNull(String email);
     Optional<ClienteEntity> findByCodigoAndDataExclusaoIsNull(String codigo);
 }

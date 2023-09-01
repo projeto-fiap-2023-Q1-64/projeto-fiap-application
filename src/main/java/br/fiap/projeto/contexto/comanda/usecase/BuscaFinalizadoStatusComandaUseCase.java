@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.comanda.usecase;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusFinalizadoComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
 
@@ -19,10 +19,12 @@ public class BuscaFinalizadoStatusComandaUseCase implements IBuscaPorStatusFinal
     }
 
     @Override
-    public List<Comanda> buscaComandaPorStatusFinalizado() throws ExceptionMessage, Exception {
-        return buscarPorStatusComandaRepositoryUseCase.buscaComandaPorStatus(StatusComanda.FINALIZADO)
+    public List<Comanda> buscaComandaPorStatusFinalizado() throws EntradaInvalidaException, Exception {
+        return buscarPorStatusComandaRepositoryUseCase
+                .buscaComandaPorStatus(StatusComanda.FINALIZADO)
                 .stream()
                 .collect(Collectors.toList());
+
     }
 
 }

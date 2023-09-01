@@ -1,13 +1,10 @@
 package br.fiap.projeto.contexto.comanda.adapter.gateway;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 
 public class CriaComandaGatewayAdapter implements ICriarComandaRepositoryUseCase {
 
@@ -18,7 +15,7 @@ public class CriaComandaGatewayAdapter implements ICriarComandaRepositoryUseCase
     }
 
     @Override
-    public Comanda criar(Comanda comanda) throws ExceptionMessage {
+    public Comanda criar(Comanda comanda) throws EntradaInvalidaException {
         return springComandaRepository.save(new ComandaEntity(comanda)).toComanda();
     }
 

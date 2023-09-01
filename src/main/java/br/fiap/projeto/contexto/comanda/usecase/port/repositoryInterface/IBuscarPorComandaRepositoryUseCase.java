@@ -1,12 +1,13 @@
 package br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface IBuscarPorComandaRepositoryUseCase {
 
-    Comanda buscar(UUID codigoComanda) throws ExceptionMessage;
+    Optional<Comanda> buscar(UUID codigoComanda) throws EntradaInvalidaException;
 
 }

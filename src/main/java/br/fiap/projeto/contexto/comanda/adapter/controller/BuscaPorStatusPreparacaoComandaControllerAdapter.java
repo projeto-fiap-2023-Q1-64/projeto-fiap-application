@@ -1,9 +1,7 @@
 package br.fiap.projeto.contexto.comanda.adapter.controller;
 
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IBuscaPorStatusPreparacaoComandaControllerAdapter;
-import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.BuscaPorStatusComandaDTO;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
-import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusFinalizadoComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusPreparacaoComandaUseCase;
 
 import java.util.List;

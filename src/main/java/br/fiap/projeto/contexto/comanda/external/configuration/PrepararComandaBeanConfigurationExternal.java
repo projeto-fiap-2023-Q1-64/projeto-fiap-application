@@ -8,7 +8,6 @@ import br.fiap.projeto.contexto.comanda.usecase.PrepararComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,8 +17,8 @@ public class PrepararComandaBeanConfigurationExternal {
     @Bean
     IAtualizarComandaUseCase prepararComandaUseCase(
             IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase,
-            ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase) {
-        return new PrepararComandaUseCase(buscarComandaRepositoryUseCase, criarComandaRepositoryUseCase);
+            IAtualizarComandaRepositoryUseCase preparaComandaGatewayAdapter) {
+        return new PrepararComandaUseCase(buscarComandaRepositoryUseCase, preparaComandaGatewayAdapter);
     }
 
     @Bean

@@ -1,7 +1,5 @@
 package br.fiap.projeto.contexto.pedido.adapter.mapper;
 
-import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
-import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.external.integration.port.Produto;

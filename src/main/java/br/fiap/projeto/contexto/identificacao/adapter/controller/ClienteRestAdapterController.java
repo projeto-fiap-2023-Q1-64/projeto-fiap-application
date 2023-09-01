@@ -20,7 +20,7 @@ public class ClienteRestAdapterController implements IClienteRestAdapterControll
     }
 
     @Override
-    public ClienteResponseDTO insere(ClienteRequestDTO cliente) throws EntradaInvalidaException {
+    public ClienteResponseDTO insere(ClienteRequestDTO cliente) throws EntradaInvalidaException, EntidadeNaoEncontradaException {
         Cliente clienteSalvo = gestaoClienteUsecase.insere(new Cliente(cliente.getNome(), cliente.getCpf(), cliente.getEmail()));
         return ClienteResponseDTO.fromCliente(clienteSalvo);
     }

@@ -13,7 +13,7 @@ public interface IClienteRestAdapterController {
 
     List<ClienteResponseDTO> buscaTodos();
 
-    ClienteResponseDTO insere(ClienteRequestDTO cliente) throws EntradaInvalidaException;
+    ClienteResponseDTO insere(ClienteRequestDTO cliente) throws EntradaInvalidaException, EntidadeNaoEncontradaException;
 
     ClienteResponseDTO atualiza(String codigo, ClienteRequestDTO cliente) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
 

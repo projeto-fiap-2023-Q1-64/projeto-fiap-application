@@ -12,7 +12,7 @@ public interface IGestaoClienteUsecase {
 
     List<Cliente> buscaTodos();
 
-    Cliente insere(Cliente cliente) throws EntradaInvalidaException;
+    Cliente insere(Cliente cliente) throws EntradaInvalidaException, EntidadeNaoEncontradaException;
 
     Cliente edita(Cliente cliente) throws EntidadeNaoEncontradaException, EntradaInvalidaException;
 

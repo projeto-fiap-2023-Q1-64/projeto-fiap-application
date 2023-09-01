@@ -1,8 +1,8 @@
 package br.fiap.projeto.contexto.produto.adapter.controller;
 
+import br.fiap.projeto.contexto.produto.adapter.controller.port.IProdutoRestAdapterController;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.request.ProdutoDTORequest;
 import br.fiap.projeto.contexto.produto.adapter.controller.rest.response.ProdutoDTOResponse;
-import br.fiap.projeto.contexto.produto.adapter.controller.port.IProdutoRestAdapterController;
 import br.fiap.projeto.contexto.produto.entity.Produto;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
 import br.fiap.projeto.contexto.produto.usecase.exception.EntradaInvalidaException;
