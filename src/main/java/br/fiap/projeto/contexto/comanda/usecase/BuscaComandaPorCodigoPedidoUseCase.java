@@ -7,7 +7,7 @@ import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaNaoEncontradaException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaPorCodigoPedidoUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
 
 public class BuscaComandaPorCodigoPedidoUseCase implements IBuscaPorComandaPorCodigoPedidoUseCase {
 

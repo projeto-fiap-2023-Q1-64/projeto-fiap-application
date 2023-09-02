@@ -7,7 +7,8 @@ import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComan
 import br.fiap.projeto.contexto.comanda.usecase.BuscaComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorComandaRepositoryUseCase;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +17,8 @@ public class BuscaPorComandaBeanConfigurationExternal {
 
     @Bean
     IBuscaPorComandaUseCase buscaComandaUseCase(
-            IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase) throws EntradaInvalidaException, Exception {
+            IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase)
+            throws EntradaInvalidaException, Exception {
         return new BuscaComandaUseCase(buscarComandaRepositoryUseCase);
     }
 
