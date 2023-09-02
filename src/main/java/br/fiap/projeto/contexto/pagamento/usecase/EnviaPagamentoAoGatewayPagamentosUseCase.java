@@ -35,32 +35,15 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
    }
 
     @Override
-    public void verificaPagamentoAntesDeEnviarAoGateway(String codigoPedido, StatusPagamento status) {
-        processaPagamentoUseCase.verificaSeJaExistePagamentoParaOPedido(getPagamento(codigoPedido));
-        if(getPagamento(codigoPedido).getCodigo() == (null)){
-            throw new ResourceNotFoundException(MensagemDeErro.PAGAMENTO_NAO_ENCONTRADO.getMessage());
-        }
-    }
-
-    @Override
-    public void validaStatusAtualDoPagamentoAntesDeEnviarAoGateway(String codigoPedido, StatusPagamento status) {
-        Pagamento pagamentoStatusAtual = getPagamento(codigoPedido);
-        if(!pagamentoStatusAtual.getStatus().equals(StatusPagamento.PENDING)){
-            throw new UnprocessablePaymentException(MensagemDeErro.STATUS_INVALIDO_ENVIO_GATEWAY.getMessage());
-        }
-    }
-
-    @Override
-    public Pagamento atualizaStatusNovoAoEnviarPagamentoAoGateway(String codigoPedido, StatusPagamento statusPagamento) {
-        Pagamento pagamentoAnalisado = getPagamento(codigoPedido);
-        atualizaStatusPagamentoUsecase.analisaStatusDoPagamento(pagamentoAnalisado.getStatus(), statusPagamento, pagamentoAnalisado);
-        atualizaStatusPagamentoUsecase.salvaStatus(pagamentoAnalisado);
-        return pagamentoAnalisado;
+    public Pagamento preparaParaEnviarPagamentoAoGateway(String codigoPedido) {
+        this.verificaPagamentoAntesDeEnviarAoGateway(codigoPedido);
+        this.validaStatusAtualDoPagamentoAntesDeEnviarAoGateway(codigoPedido);
+        return this.atualizaStatusNovoAoEnviarPagamentoAoGateway(codigoPedido);
     }
 
     private Pagamento getPagamento(String codigoPedido) {
         try {
-            return buscaPagamentoUseCase.findByCodigoPedidoNotRejected(codigoPedido);
+            return buscaPagamentoUseCase.findByCodigoPedidoPending(codigoPedido);
         }catch(NoSuchElementException elementException){
             throw new ResourceNotFoundException(elementException.getMessage());
         }
@@ -71,6 +54,25 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
         System.out.println("Pagamento agora será processado pelo Gateway de Pagamento.");
         System.out.println("Pagamento do Pedido: " + codigoPedido);
         System.out.println("Status: " + status);
+    }
+    private void verificaPagamentoAntesDeEnviarAoGateway(String codigoPedido) {
+        if(getPagamento(codigoPedido).getCodigo() == (null)){
+            throw new ResourceNotFoundException(MensagemDeErro.PAGAMENTO_NAO_ENCONTRADO.getMessage());
+        }
+    }
+
+    private void validaStatusAtualDoPagamentoAntesDeEnviarAoGateway(String codigoPedido) {
+        Pagamento pagamentoStatusAtual = getPagamento(codigoPedido);
+        if(!pagamentoStatusAtual.getStatus().equals(StatusPagamento.PENDING)){
+            throw new UnprocessablePaymentException(MensagemDeErro.STATUS_INVALIDO_ENVIO_GATEWAY.getMessage());
+        }
+    }
+
+    private Pagamento atualizaStatusNovoAoEnviarPagamentoAoGateway(String codigoPedido) {
+        Pagamento pagamentoAnalisado = getPagamento(codigoPedido);
+        atualizaStatusPagamentoUsecase.analisaStatusDoPagamento(pagamentoAnalisado.getStatus(), StatusPagamento.IN_PROCESS, pagamentoAnalisado);
+        atualizaStatusPagamentoUsecase.salvaStatus(pagamentoAnalisado);
+        return pagamentoAnalisado;
     }
 
 }

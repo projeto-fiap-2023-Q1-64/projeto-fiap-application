@@ -17,6 +17,4 @@ public interface IBuscaPagamentoRepositoryAdapterGateway {
 
     List<Pagamento> findByCodigoPedidoAndStatusPagamentoNot(String codigoPedido, StatusPagamento status);
     List<Pagamento> findByCodigoPedidoAndStatusPagamento(String codigoPedido, StatusPagamento status);
-
-
 }
