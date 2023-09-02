@@ -15,7 +15,8 @@ import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaExcepti
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusFinalizadoComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusPreparacaoComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorStatusRecebidoComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorStatusComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorStatusComandaRepositoryUseCase;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,18 +33,18 @@ public class BuscaPorStatusComandaBeanConfigurationExternal {
 
         @Bean
         IBuscaPorStatusFinalizadoComandaUseCase buscaFinalizadoStatusComandaUseCase(
-                IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase)
-                throws EntradaInvalidaException, Exception {
+                        IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase)
+                        throws EntradaInvalidaException, Exception {
                 return new BuscaFinalizadoStatusComandaUseCase(
-                        buscarPorStatusComandaRepositoryUseCase);
+                                buscarPorStatusComandaRepositoryUseCase);
         }
 
         @Bean
         IBuscaPorStatusRecebidoComandaUseCase buscaRecebidoStatusComandaUseCase(
-                IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase)
-                throws EntradaInvalidaException, Exception {
+                        IBuscarPorStatusComandaRepositoryUseCase buscarPorStatusComandaRepositoryUseCase)
+                        throws EntradaInvalidaException, Exception {
                 return new BuscaRecebidoStatusComandaUseCase(
-                        buscarPorStatusComandaRepositoryUseCase);
+                                buscarPorStatusComandaRepositoryUseCase);
         }
 
         @Bean
@@ -51,23 +52,23 @@ public class BuscaPorStatusComandaBeanConfigurationExternal {
                         IBuscaPorStatusRecebidoComandaUseCase buscaPreparacaoStatusComandaUseCase)
                         throws EntradaInvalidaException, Exception {
                 return new BuscaPorStatusRecebidoComandaControllerAdapter(
-                        buscaPreparacaoStatusComandaUseCase);
+                                buscaPreparacaoStatusComandaUseCase);
         }
 
         @Bean
         IBuscaPorStatusPreparacaoComandaControllerAdapter buscarPorStatusPreparacaoComandaControlleAdapter(
-                IBuscaPorStatusPreparacaoComandaUseCase buscaPreparacaoStatusComandaUseCase)
-                throws EntradaInvalidaException, Exception {
+                        IBuscaPorStatusPreparacaoComandaUseCase buscaPreparacaoStatusComandaUseCase)
+                        throws EntradaInvalidaException, Exception {
                 return new BuscaPorStatusPreparacaoComandaControllerAdapter(
-                        buscaPreparacaoStatusComandaUseCase);
+                                buscaPreparacaoStatusComandaUseCase);
         }
 
         @Bean
         IBuscaPorStatusFinalizadoComandaControllerAdapter buscarPorStatusFinalizadoComandaControlleAdapter(
-                IBuscaPorStatusFinalizadoComandaUseCase buscaFinalizadoStatusComandaUseCase)
-                throws EntradaInvalidaException, Exception {
+                        IBuscaPorStatusFinalizadoComandaUseCase buscaFinalizadoStatusComandaUseCase)
+                        throws EntradaInvalidaException, Exception {
                 return new BuscaPorStatusFinalizadoComandaControllerAdapter(
-                        buscaFinalizadoStatusComandaUseCase);
+                                buscaFinalizadoStatusComandaUseCase);
         }
 
         @Bean

@@ -8,7 +8,7 @@ import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComan
 import br.fiap.projeto.contexto.comanda.usecase.BuscaComandaPorCodigoPedidoUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaPorCodigoPedidoUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
 
 @Configuration
 public class BuscaComandaPorCodigoPedidoBeanConfigurationExternal {

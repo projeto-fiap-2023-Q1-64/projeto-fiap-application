@@ -14,23 +14,9 @@ public class EnviaPagamentoAoGatewayRestAdapterController implements  IEnviaPaga
 
     @Override
     public PagamentoAEnviarAoGatewayDTORequest preparaParaEnviarPagamentoAoGateway(PagamentoAEnviarAoGatewayDTORequest pagamentoDTORequest) {
-
-        enviaPagamentoAoGatewayPagamentosUseCase
-                .verificaPagamentoAntesDeEnviarAoGateway(
-                        pagamentoDTORequest.getCodigoPedido(), pagamentoDTORequest.getStatusPagamento()
-                );
-
-        enviaPagamentoAoGatewayPagamentosUseCase
-                .validaStatusAtualDoPagamentoAntesDeEnviarAoGateway(
-                        pagamentoDTORequest.getCodigoPedido(), pagamentoDTORequest.getStatusPagamento()
-                );
-
         return new PagamentoAEnviarAoGatewayDTORequest(
-                enviaPagamentoAoGatewayPagamentosUseCase
-                        .atualizaStatusNovoAoEnviarPagamentoAoGateway(
-                                pagamentoDTORequest.getCodigoPedido(), pagamentoDTORequest.getStatusPagamento()
-                        )
-        );
+                enviaPagamentoAoGatewayPagamentosUseCase.preparaParaEnviarPagamentoAoGateway(
+                        pagamentoDTORequest.getCodigoPedido()));
     }
 
     @Override

@@ -4,8 +4,8 @@ import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IAtualizarComandaRepositoryUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IAtualizarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorComandaRepositoryUseCase;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -17,7 +17,7 @@ public class PrepararComandaUseCase implements IAtualizarComandaUseCase {
     private final IAtualizarComandaRepositoryUseCase prepararComandaRepositoryUseCase;
 
     public PrepararComandaUseCase(IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase,
-                                  IAtualizarComandaRepositoryUseCase prepararComandaRepositoryUseCase) {
+            IAtualizarComandaRepositoryUseCase prepararComandaRepositoryUseCase) {
         this.buscarComandaRepositoryUseCase = buscarComandaRepositoryUseCase;
         this.prepararComandaRepositoryUseCase = prepararComandaRepositoryUseCase;
     }
@@ -28,7 +28,8 @@ public class PrepararComandaUseCase implements IAtualizarComandaUseCase {
         if (comanda.getStatus().equals(StatusComanda.RECEBIDO)) {
             comanda.atualizaStatus(StatusComanda.EM_PREPARACAO);
         } else {
-            throw new EntradaInvalidaException("Status da comanda inválido para esta operação! Precisa estar em RECEBIDO.");
+            throw new EntradaInvalidaException(
+                    "Status da comanda inválido para esta operação! Precisa estar em RECEBIDO.");
         }
         return prepararComandaRepositoryUseCase.atualizar(comanda);
     }

@@ -7,10 +7,7 @@ import br.fiap.projeto.contexto.pagamento.usecase.exceptions.mensagens.MensagemD
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IBuscaPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
 
@@ -57,7 +54,6 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
         }catch(NoSuchElementException elementException){
             throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
         }
-
     }
 
     @Override
@@ -68,6 +64,14 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
         }catch(NoSuchElementException elementException){
             throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
         }
-
+    }
+    @Override
+    public Pagamento findByCodigoPedidoPending(String codigoPedido) {
+        try{
+            Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamento(codigoPedido, StatusPagamento.PENDING));
+            return possivelPagamento.get().stream().findFirst().get();
+        }catch(NoSuchElementException elementException){
+            throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
+        }
     }
 }

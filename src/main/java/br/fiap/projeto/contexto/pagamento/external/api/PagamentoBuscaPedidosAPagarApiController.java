@@ -1,7 +1,10 @@
 package br.fiap.projeto.contexto.pagamento.external.api;
 
+import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
+import br.fiap.projeto.contexto.pagamento.entity.integration.PagamentoPedido;
 import br.fiap.projeto.contexto.pagamento.external.integration.IPedidoIntegration;
 import br.fiap.projeto.contexto.pagamento.external.integration.port.Pedido;
+import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IPagamentoPedidoIntegrationGateway;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +20,17 @@ import java.util.List;
 @Api(tags = {"Pagamentos"}, description = "Endpoints do domínio de Pagamentos")
 public class PagamentoBuscaPedidosAPagarApiController {
 
-    private final IPedidoIntegration pedidoIntegration;
+    private final IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway;
 
-    public PagamentoBuscaPedidosAPagarApiController(IPedidoIntegration pedidoIntegration) {
-        this.pedidoIntegration = pedidoIntegration;
+    public PagamentoBuscaPedidosAPagarApiController(IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway) {
+        this.pagamentoPedidoIntegrationGateway = pagamentoPedidoIntegrationGateway;
     }
 
     @GetMapping(value="a-pagar")
     @Transactional
     @ApiOperation(value = "Busca pedidos a pagar", notes="Esse endpoint recupera o(s) pedido(s) do domínio de Pedidos e que estão prontos para serem pagos.")
-    public ResponseEntity <List<Pedido>> recuperaPedidosAPagar(){
-        List<Pedido> pedidosIntegration = pedidoIntegration.buscaPedidosAPagar();
+    public ResponseEntity <List<PagamentoPedido>> recuperaPedidosAPagar(){
+        List<PagamentoPedido> pedidosIntegration = pagamentoPedidoIntegrationGateway.buscaPedidosAPagar();
         return ResponseEntity.ok(pedidosIntegration);
     }
 }

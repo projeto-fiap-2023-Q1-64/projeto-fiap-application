@@ -7,8 +7,8 @@ import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaDuplicadaException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.ICriarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.ICriarComandaRepositoryUseCase;
 
 public class CriarComandaUseCase implements ICriarComandaUseCase {
 
@@ -27,7 +27,7 @@ public class CriarComandaUseCase implements ICriarComandaUseCase {
             throw new EntradaInvalidaException("Código de pedido inválido!");
         }
         if (buscarPorComandaPorCodigoPedidoRepositoryUseCase.buscar(codigoPedido).isPresent()) {
-            throw new ComandaDuplicadaException("Comanda já existe");
+            throw new ComandaDuplicadaException("Esta comanda já existe");
         }
 
         return criarComandaRepositoryUseCase.criar(new Comanda(UUID.randomUUID(),

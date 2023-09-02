@@ -7,9 +7,5 @@ public interface IEnviaPagamentoAoGatewayPagamentosUseCase {
 
     void enviaRequestAoSistemaExternoPagamentos(String codigoPedido, StatusPagamento status);
 
-    void verificaPagamentoAntesDeEnviarAoGateway(String codigoPedido, StatusPagamento status);
-
-    void validaStatusAtualDoPagamentoAntesDeEnviarAoGateway(String codigoPedido, StatusPagamento status);
-
-    Pagamento atualizaStatusNovoAoEnviarPagamentoAoGateway(String codigoPedido, StatusPagamento statusPagamento);
+    Pagamento preparaParaEnviarPagamentoAoGateway(String codigoPedido);
 }

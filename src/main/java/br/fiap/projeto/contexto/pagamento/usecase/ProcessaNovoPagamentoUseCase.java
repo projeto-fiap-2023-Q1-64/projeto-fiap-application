@@ -8,6 +8,7 @@ import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IProcessaNovoP
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IProcessaNovoPagamentoUseCase;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCase {
@@ -32,10 +33,7 @@ public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCa
 
     @Override
     public Pagamento criaNovoPagamento(Pagamento pagamento) {
-       //verifica se existe pagamento
-        Pagamento possivelPagamento = verificaSeJaExistePagamentoParaOPedido(pagamento);
-        //se não existe ou possui status rejected, cria um pagamento
-        if(possivelPagamento == null || possivelPagamento.getStatus().equals(StatusPagamento.REJECTED)){
+        if(this.isPossivelPagar(pagamento.getCodigoPedido())){
             processaNovoPagamentoAdapterGateway.salvaNovoPagamento(pagamento);
             System.out.println("USE CASE: Novo pagamento criado para o pedido: " + pagamento.getCodigoPedido());
             return pagamento;
@@ -43,18 +41,19 @@ public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCa
             throw new ResourceAlreadyInProcessException(MensagemDeErro.PAGAMENTO_EXISTENTE.getMessage());
         }
     }
+    private Boolean isPossivelPagar(String codigoPedido) {
+        List<Pagamento> pagamentos = buscaPagamentoUseCase.findByCodigoPedido(codigoPedido);
 
-
-    @Override
-    public Pagamento verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento) {
-        try {
-            return buscaPagamentoUseCase
-                    .findByCodigoPedido(pagamento.getCodigoPedido())
-                    .stream()
-                    .filter(p -> p.getCodigoPedido()
-                            .equals(pagamento.getCodigoPedido())).findFirst().get();
-        }catch(NoSuchElementException elementException){
-            return null;
+        if(pagamentos.isEmpty()){
+            return true;
         }
+        if((pagamentos.stream().filter(p ->
+                p.getStatus().equals(StatusPagamento.CANCELLED) ||
+                p.getStatus().equals(StatusPagamento.APPROVED) ||
+                p.getStatus().equals(StatusPagamento.IN_PROCESS) ||
+                p.getStatus().equals(StatusPagamento.PENDING) ).count() > 0)){
+            return false;
+        }
+        return (pagamentos.stream().filter(p -> p.getStatus().equals(StatusPagamento.REJECTED)).count() > 0) ;
     }
 }
