@@ -43,7 +43,7 @@ public class BuscaPagamentoRepositoryAdapterGateway implements IBuscaPagamentoRe
     }
 
     @Override
-    public List<Pagamento> findByCodigoPedidoAndStatusPagamentoNot(String codigoPedido, StatusPagamento status) {
+    public List<Pagamento> findByCodigoPedidoAndStatusPagamentoNotRejected(String codigoPedido, StatusPagamento status) {
         List<PagamentoEntity> listaPagamentoEntity = springPagamentoRepository.findByCodigoPedidoAndStatusPagamentoNot(codigoPedido, status);
         return listaPagamentoEntity.stream().map(PagamentoEntity::conversorDePagamentoORMEntityParaPagamentoDomainEntity).collect(Collectors.toList());
     }
@@ -53,4 +53,5 @@ public class BuscaPagamentoRepositoryAdapterGateway implements IBuscaPagamentoRe
         List<PagamentoEntity> listaPagamentoEntity = springPagamentoRepository.findByCodigoPedidoAndStatusPagamento(codigoPedido, status);
         return listaPagamentoEntity.stream().map(PagamentoEntity::conversorDePagamentoORMEntityParaPagamentoDomainEntity).collect(Collectors.toList());
     }
+
 }

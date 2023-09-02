@@ -49,7 +49,7 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     @Override
     public Pagamento findByCodigoPedidoNotRejected(String codigoPedido) {
         try{
-            Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamentoNot(codigoPedido, StatusPagamento.REJECTED));
+            Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamentoNotRejected(codigoPedido, StatusPagamento.REJECTED));
             return possivelPagamento.get().stream().findFirst().get();
         }catch(NoSuchElementException elementException){
             throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
@@ -60,6 +60,7 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     public Pagamento findByCodigoPedidoRejected(String codigoPedido) {
         try{
             Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamento(codigoPedido, StatusPagamento.REJECTED));
+            System.out.println("Pagamento dentro do findByCodigoPedidoRejected " + possivelPagamento);
             return possivelPagamento.get().stream().findFirst().get();
         }catch(NoSuchElementException elementException){
             throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
@@ -69,6 +70,15 @@ public class BuscaPagamentoUseCase implements IBuscaPagamentoUseCase {
     public Pagamento findByCodigoPedidoPending(String codigoPedido) {
         try{
             Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamento(codigoPedido, StatusPagamento.PENDING));
+            return possivelPagamento.get().stream().findFirst().get();
+        }catch(NoSuchElementException elementException){
+            throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());
+        }
+    }
+    @Override
+    public Pagamento findByCodigoPedidoInProcess(String codigoPedido) {
+        try{
+            Optional<List<Pagamento>> possivelPagamento = Optional.ofNullable(pagamentoAdapterGateway.findByCodigoPedidoAndStatusPagamento(codigoPedido, StatusPagamento.IN_PROCESS));
             return possivelPagamento.get().stream().findFirst().get();
         }catch(NoSuchElementException elementException){
             throw new ResourceNotFoundException(MensagemDeErro.PEDIDO_PAGAMENTO_NAO_ENCONTRADO.getMessage());

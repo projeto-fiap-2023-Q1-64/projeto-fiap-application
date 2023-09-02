@@ -76,9 +76,8 @@ public class BeanPagamentoConfiguration {
 
     @Bean
     IEnviaPagamentoAoGatewayPagamentosUseCase enviaPagamentoAoGatewayPagamentosUseCase(IBuscaPagamentoUseCase buscaPagamentoUseCase,
-                                                                                       IProcessaNovoPagamentoUseCase processaPagamentoUseCase,
                                                                                        IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase){
-        return new EnviaPagamentoAoGatewayPagamentosUseCase(buscaPagamentoUseCase, processaPagamentoUseCase, atualizaStatusPagamentoUsecase);
+        return new EnviaPagamentoAoGatewayPagamentosUseCase(buscaPagamentoUseCase, atualizaStatusPagamentoUsecase);
     }
 
     @Bean

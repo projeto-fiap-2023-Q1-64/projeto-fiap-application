@@ -9,7 +9,6 @@ import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUs
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IProcessaNovoPagamentoUseCase;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCase {
 
@@ -30,7 +29,6 @@ public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCa
      * @param pagamento
      * @return
      */
-
     @Override
     public Pagamento criaNovoPagamento(Pagamento pagamento) {
         if(this.isPossivelPagar(pagamento.getCodigoPedido())){

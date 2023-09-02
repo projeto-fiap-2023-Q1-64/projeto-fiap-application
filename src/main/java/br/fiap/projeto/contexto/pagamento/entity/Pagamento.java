@@ -108,17 +108,5 @@ public class Pagamento {
 		return statusAtual.equals(StatusPagamento.PENDING) && statusRequest.equals(StatusPagamento.IN_PROCESS);
 	}
 
-	public boolean podeSerAprovado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.APPROVED);
-	}
-
-	public boolean podeSerCancelado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-		return statusAtual.equals(StatusPagamento.REJECTED) && statusRequest.equals(StatusPagamento.CANCELLED);
-	}
-
-	public boolean podeSerRejeitado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.REJECTED);
-	}
-
 }
  

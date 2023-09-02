@@ -9,7 +9,11 @@ public enum MensagemDeErro {
 
     STATUS_INVALIDO_ENVIO_GATEWAY("Pagamento não pode ser enviado ao Gateway. Status de pagamento inválido."),
 
-    PAGAMENTO_EXISTENTE("Já existe um pagamento em processamento para este código de Pedido.")
+    PAGAMENTO_EXISTENTE("Já existe um pagamento em processamento para este código de Pedido."),
+
+    PAGAMENTO_PENDENTE("Já existe um pagamento pendente para este código de pedido."),
+
+    PAGAMENTO_DEVE_SER_ENVIADO_AO_GATEWAY("Este pagamento encontra-se pendente, deve ser enviado ao gateway para inciar processo de pagamentos")
     ;
 
 

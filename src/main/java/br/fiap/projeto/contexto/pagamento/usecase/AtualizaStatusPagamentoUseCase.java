@@ -19,56 +19,63 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
         this.buscaPagamentoUseCase = buscaPagamentoUseCase;
     }
 
+    /**
+     * Utilizado pelo retorno do Gateway de Pagamentos para atualizar o Pagamento
+     * com a resposta do sistema bancário externo. Compara o status passado na request
+     * (novo status) com o status existente do pagamento, as possíveis transições de estado são:
+     * <li>IN_PROCESS -> APPROVED ou CANCELLED</li>
+     * <li>REJECTED -> CANCELLED</li>
+     * <li>PENDING ->  IN_PROCESS somente via atualização de status pelo método de envio ao gateway, não deve ser atualizado aqui</li>
+     *
+     * @param codigoPedido
+     * @param statusPagamento
+     */
     @Override
-    public void analisaStatusDoPagamento(StatusPagamento statusAtual, StatusPagamento statusRequest, Pagamento pagamentoEmAndamento) {
-
-        validaCondicoesDeStatusEnviadasNaRequest(statusAtual, statusRequest, pagamentoEmAndamento);
-
-        if(pagamentoEmAndamento.podeSerProcessado(statusAtual, statusRequest)){
-            System.out.println("Pode ser processado ");
-            pagamentoEmAndamento.colocaEmProcessamento(pagamentoEmAndamento);
+    public void atualizaStatusPagamento(String codigoPedido, StatusPagamento novoStatusPagamento) {
+        Pagamento pagamento;
+        switch (novoStatusPagamento){
+            case CANCELLED:
+                pagamento = buscaPagamentoUseCase.findByCodigoPedidoRejected(codigoPedido);
+                pagamento.cancelaPagamento(pagamento);
+                break;
+            case REJECTED:
+                pagamento = buscaPagamentoUseCase.findByCodigoPedidoInProcess(codigoPedido);
+                pagamento.rejeitaPagamento(pagamento);
+                break;
+            case APPROVED:
+                pagamento = buscaPagamentoUseCase.findByCodigoPedidoInProcess(codigoPedido);
+                pagamento.aprovaPagamento(pagamento);
+                break;
+            case IN_PROCESS:
+                throw new UnprocessablePaymentException(MensagemDeErro.PAGAMENTO_DEVE_SER_ENVIADO_AO_GATEWAY.getMessage());
+            case PENDING:
+                throw new UnprocessablePaymentException(MensagemDeErro.PAGAMENTO_PENDENTE.getMessage());
+            default:
+                return;
         }
-        if(pagamentoEmAndamento.podeSerAprovado(statusAtual, statusRequest)) {
-            System.out.println("Pode ser aprovado ");
-            pagamentoEmAndamento.aprovaPagamento(pagamentoEmAndamento);
-        }
-        if(pagamentoEmAndamento.podeSerCancelado(statusAtual, statusRequest)){
-            System.out.println("Pode ser cancelado ");
-            pagamentoEmAndamento.cancelaPagamento(pagamentoEmAndamento);
-        }
-        if(pagamentoEmAndamento.podeSerRejeitado(statusAtual, statusRequest)){
-            System.out.println("Pode ser rejeitado ");
-            pagamentoEmAndamento.rejeitaPagamento(pagamentoEmAndamento);
-        }
-
+        salvaStatus(pagamento);
     }
 
-    private static void validaCondicoesDeStatusEnviadasNaRequest(StatusPagamento statusAtual, StatusPagamento statusRequest, Pagamento pagamentoEmAndamento) {
-        if( !pagamentoEmAndamento.podeSerProcessado(statusAtual, statusRequest) &&
-            !pagamentoEmAndamento.podeSerAprovado(statusAtual, statusRequest)   &&
-            !pagamentoEmAndamento.podeSerCancelado(statusAtual, statusRequest)  &&
-            !pagamentoEmAndamento.podeSerRejeitado(statusAtual, statusRequest)  ){
+    /**
+     * Utilizado para atualizar o status do pagamento ao ser enviado para o Gateway de Pagamentos.
+     * A única transição entre estados possíveis é:
+     * <li>PENDING -> IN_PROCESS</li>
+     * Atualização de pendente para em processamento deverá acontecer somente ao
+     * enviar par ao Gateway de Pagamentos.
+     * @param codigoPedido
+     * @param statusPagamento
+     */
+    @Override
+    public void atualizaStatusPagamentoGateway(String codigoPedido, StatusPagamento statusPagamento) {
+        Pagamento pagamento = buscaPagamentoUseCase.findByCodigoPedidoPending(codigoPedido);
+        if(!pagamento.podeSerProcessado(pagamento.getStatus(), statusPagamento)){
             throw new UnprocessablePaymentException(MensagemDeErro.STATUS_INVALIDO.getMessage());
         }
-    }
-
-    @Override
-    public void salvaStatus(Pagamento pagamento) {
-        atualizaStatusPagamentoAdapterGateway.atualizaStatusPagamento(pagamento);
-    }
-
-    @Override
-    public void atualizaStatusPagamento(String codigoPedido, StatusPagamento statusPagamento) {
-        Pagamento pagamento;
-        if(statusPagamento.equals(StatusPagamento.CANCELLED)){
-            pagamento = buscaPagamentoUseCase.findByCodigoPedidoRejected(codigoPedido);
-        }else{
-            pagamento = buscaPagamentoUseCase.findByCodigoPedidoNotRejected(codigoPedido);
-        }
-        analisaStatusDoPagamento(pagamento.getStatus(),
-                statusPagamento,
-                pagamento);
-
+        System.out.println("Pode ser processado ");
+        pagamento.colocaEmProcessamento(pagamento);
         salvaStatus(pagamento);
+    }
+    private void salvaStatus(Pagamento pagamento) {
+        atualizaStatusPagamentoAdapterGateway.atualizaStatusPagamento(pagamento);
     }
 }

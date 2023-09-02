@@ -16,15 +16,11 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
 
     private final IBuscaPagamentoUseCase buscaPagamentoUseCase;
 
-    private final IProcessaNovoPagamentoUseCase processaPagamentoUseCase;
-
     private final IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase;
 
     public EnviaPagamentoAoGatewayPagamentosUseCase(IBuscaPagamentoUseCase buscaPagamentoUseCase,
-                                                    IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase,
                                                     IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase) {
         this.buscaPagamentoUseCase = buscaPagamentoUseCase;
-        this.processaPagamentoUseCase = processaNovoPagamentoUseCase;
         this.atualizaStatusPagamentoUsecase = atualizaStatusPagamentoUsecase;
     }
 
@@ -70,8 +66,7 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
 
     private Pagamento atualizaStatusNovoAoEnviarPagamentoAoGateway(String codigoPedido) {
         Pagamento pagamentoAnalisado = getPagamento(codigoPedido);
-        atualizaStatusPagamentoUsecase.analisaStatusDoPagamento(pagamentoAnalisado.getStatus(), StatusPagamento.IN_PROCESS, pagamentoAnalisado);
-        atualizaStatusPagamentoUsecase.salvaStatus(pagamentoAnalisado);
+        atualizaStatusPagamentoUsecase.atualizaStatusPagamentoGateway(codigoPedido, StatusPagamento.IN_PROCESS);
         return pagamentoAnalisado;
     }
 
