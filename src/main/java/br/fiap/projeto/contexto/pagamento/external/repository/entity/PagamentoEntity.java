@@ -47,15 +47,6 @@ public class PagamentoEntity {
         this.setValorTotal(pagamento.getValorTotal());
     }
 
-    /**
-     * Teste de criação de pagamentos consumindo os pedidos que chegam da API
-     * @param PedidoAPagarDTORequest
-     */
-    public PagamentoEntity(PedidoAPagarDTORequest pedidosAPagarDTORequest) {
-        this.codigoPedido = pedidosAPagarDTORequest.getCodigoPedido();
-        this.statusPagamento = StatusPagamento.PENDING;
-    }
-
     public UUID getCodigo() {
         return codigo;
     }

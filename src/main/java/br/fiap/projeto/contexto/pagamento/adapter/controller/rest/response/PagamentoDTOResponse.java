@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response;
 
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoAEnviarAoGatewayDTORequest;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 
@@ -92,17 +91,5 @@ public class PagamentoDTOResponse {
                 ", status=" + status +
                 ", dataPagamento=" + dataPagamento +
                 '}';
-    }
-
-    public Pagamento conversorDePagamentoDTOResponseParaPagamento() {
-        return new Pagamento(codigo, codigoPedido, status, dataPagamento, valorTotal);
-    }
-
-
-    public void atualizaDadosRequest(PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest, PagamentoDTOResponse pagamentoDTOResponse) {
-        pagamentoDTOResponse.atualizaStatusPagamento(pagamentoAEnviarAoGatewayDTORequest.getStatusPagamento());
-    }
-    private void atualizaStatusPagamento(StatusPagamento statusPagamento) {
-        this.setStatus(statusPagamento);
     }
 }

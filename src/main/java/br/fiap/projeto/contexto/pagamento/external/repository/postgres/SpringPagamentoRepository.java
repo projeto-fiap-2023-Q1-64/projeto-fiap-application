@@ -1,6 +1,5 @@
 package br.fiap.projeto.contexto.pagamento.external.repository.postgres;
 
-import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
 import br.fiap.projeto.contexto.pagamento.external.repository.entity.PagamentoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +20,5 @@ public interface SpringPagamentoRepository extends JpaRepository<PagamentoEntity
     List<PagamentoEntity> findByStatusPagamento(StatusPagamento status);
 
     List<PagamentoEntity> findAll();
-
-    void save(Pagamento pagamento);
 
 }

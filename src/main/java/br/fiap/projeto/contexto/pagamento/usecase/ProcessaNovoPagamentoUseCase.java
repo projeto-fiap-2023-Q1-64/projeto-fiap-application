@@ -1,39 +1,59 @@
 package br.fiap.projeto.contexto.pagamento.usecase;
 
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
+import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceAlreadyInProcessException;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.mensagens.MensagemDeErro;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IProcessaNovoPagamentoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IProcessaNovoPagamentoUseCase;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCase {
 
     private final IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway;
+    private final IBuscaPagamentoUseCase buscaPagamentoUseCase;
 
-    public ProcessaNovoPagamentoUseCase(IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway) {
+    public ProcessaNovoPagamentoUseCase(IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway, IBuscaPagamentoUseCase buscaPagamentoUseCase) {
         this.processaNovoPagamentoAdapterGateway = processaNovoPagamentoAdapterGateway;
+        this.buscaPagamentoUseCase = buscaPagamentoUseCase;
     }
 
-    //INFO: antigo salvaPedidosAPagar : deverão ser recebidos por este UseCase do cntx de Pedidos
+    /**
+     *  Um pagamento poderá ser criado quando:<br>
+     *  <li>Não existir um código de pagamento</li><br>
+     *  <li>Existir um código de pagamento mas o Status de Pagamento se encontrar em REJECTED</li>
+     *  <br>Para os casos em que o pagamento está Aprovado e Cancelado, não deverá permitir o fluxo
+     *  desta criação de pagamentos.
+     * @param pagamento
+     * @return
+     */
+
     @Override
     public Pagamento criaNovoPagamento(Pagamento pagamento) {
-        //  TODO ativar verificações para impedir que seja salvo um novo pagamento para um pedido já pago/em processamento
-
-        if(processaNovoPagamentoAdapterGateway.verificaSeJaExistePagamentoParaOPedido(pagamento)){
-            processaNovoPagamentoAdapterGateway.verificaCondicoesParaCriarPagamento(pagamento);
+        if(this.isPossivelPagar(pagamento.getCodigoPedido())){
+            processaNovoPagamentoAdapterGateway.salvaNovoPagamento(pagamento);
+            System.out.println("USE CASE: Novo pagamento criado para o pedido: " + pagamento.getCodigoPedido());
+            return pagamento;
+        }else{
+            throw new ResourceAlreadyInProcessException(MensagemDeErro.PAGAMENTO_EXISTENTE.getMessage());
         }
-        processaNovoPagamentoAdapterGateway.salvaNovoPagamento(pagamento);
-        System.out.println("USE CASE: Novo pagamento criado para o pedido: " + pagamento.getCodigoPedido());
-        return pagamento;
     }
+    private Boolean isPossivelPagar(String codigoPedido) {
+        List<Pagamento> pagamentos = buscaPagamentoUseCase.findByCodigoPedido(codigoPedido);
 
-    @Override
-    public Boolean verificaSeJaExistePagamentoParaOPedido(Pagamento pagamento) {
-        return processaNovoPagamentoAdapterGateway.verificaSeJaExistePagamentoParaOPedido(pagamento);
+        if(pagamentos.isEmpty()){
+            return true;
+        }
+        if((pagamentos.stream().filter(p ->
+                p.getStatus().equals(StatusPagamento.CANCELLED) ||
+                p.getStatus().equals(StatusPagamento.APPROVED) ||
+                p.getStatus().equals(StatusPagamento.IN_PROCESS) ||
+                p.getStatus().equals(StatusPagamento.PENDING) ).count() > 0)){
+            return false;
+        }
+        return (pagamentos.stream().filter(p -> p.getStatus().equals(StatusPagamento.REJECTED)).count() > 0) ;
     }
-
-    @Override
-    public void verificaCondicoesParaCriarPagamento(Pagamento pagamento) {
-        processaNovoPagamentoAdapterGateway.verificaCondicoesParaCriarPagamento(pagamento);
-    }
-
-
 }

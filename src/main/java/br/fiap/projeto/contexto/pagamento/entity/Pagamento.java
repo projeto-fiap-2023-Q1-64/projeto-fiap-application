@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.entity;
 
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 
 import java.util.Date;
 import java.util.Objects;
@@ -25,9 +24,6 @@ public class Pagamento {
 
 	//INFO usado no conversor do PedidoAPagarDTORequest
 	public Pagamento(String codigoPedido,  Double valorTotal){
-		if(codigoPedido.isEmpty()){
-			throw new ResourceNotFoundException("Código de pedido inexistente");
-		}
 		this.codigoPedido = codigoPedido;
 		this.status = StatusPagamento.PENDING;
 		this.dataPagamento = new Date();
