@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pagamento/gateway")
-@Api(tags = {"Pagamentos"}, description = "Endpoints do domínio de Pagamentos")
+@Api(tags = {"Pagamento - Integração"}, description = "Endpoints de integração com Gateway de Pagamento.")
 public class PagamentoEnviaParaGatewayPagamentoApiController {
 
     private final IEnviaPagamentoGatewayRestAdapterController enviaPagamentoGatewayRestAdapterController;
