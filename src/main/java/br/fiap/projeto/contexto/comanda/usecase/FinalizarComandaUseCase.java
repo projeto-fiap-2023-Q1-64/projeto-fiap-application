@@ -37,12 +37,13 @@ public class FinalizarComandaUseCase implements IAtualizarComandaUseCase {
         }
 
         comanda.atualizaStatus(StatusComanda.FINALIZADO);
+        comanda = finalizaComandaRepositoryUseCase.atualizar(comanda);
+
         String codigo = enviarStatusPedido(comanda.getCodigoPedido());
         if (codigo.equals(null)) {
             throw new EntradaInvalidaException(comanda.getStatus().toString());
         }
-
-        return finalizaComandaRepositoryUseCase.atualizar(comanda);
+        return comanda;
     }
 
     private Comanda buscar(UUID codigoComanda) throws EntradaInvalidaException {
