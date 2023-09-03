@@ -18,13 +18,13 @@ directory: 5
 Dentro de cada contexto, uma estrutura de diretórios que visa organizar as camadas
 conforme o descrito na Clean Arquitecture.
 
-* EXTERNAL: A camada mais externa da aquitetura, visa concentrar os recursos que irão efetuar a comunicação externa, como também é a camada reservada para as configurações e recursos dependentes de algum framework, como a disponibilização de APIs, acesso ao banco de dados e a configuração das injeções de dependências, etc.
-* ADAPTER: A camada reservada para adaptadores que farão a ligação/tradução da comunicação da camada externa com os use cases, através de GATEWAYS, CONTROLLERS e PRESENTERS. Garantindo a conversão de dados da camada externa para entidades, mantendo assim o isolamento das camadas mais internas.
-  * GATEWAYS: Os use cases utilizam para a sincronização de dados externos como acesso a banco de dados e o consumo de outras APIs.
-  * CONTROLLERS: São responsáveis por receber solicitações externas ao domínio de negócio, permitindo efetuar operações com os use cases.
-  * PRESENTERS: São responsáveis por cuidar da apresentação, porem no projeto não os utilizamos por não termos interfaces visuais.
-* USECASE: A camada reservada para a implementação dos use cases que irão orquestrar as regras de negócio e se comunicará com o mundo externo através de adaptadores que serão injetados para seu uso.
-* ENTITY: Esta é a camada mais interna onde as entidades de domínio se encontram.
+* **EXTERNAL:** A camada mais externa da aquitetura, visa concentrar os recursos que irão efetuar a comunicação externa, como também é a camada reservada para as configurações e recursos dependentes de algum framework, como a disponibilização de APIs, acesso ao banco de dados e a configuração das injeções de dependências, etc.
+* **ADAPTER:** A camada reservada para adaptadores que farão a ligação/tradução da comunicação da camada externa com os use cases, através de GATEWAYS, CONTROLLERS e PRESENTERS. Garantindo a conversão de dados da camada externa para entidades, mantendo assim o isolamento das camadas mais internas.
+  * **GATEWAYS:** Os use cases utilizam para a sincronização de dados externos como acesso a banco de dados e o consumo de outras APIs.
+  * **CONTROLLERS:** São responsáveis por receber solicitações externas ao domínio de negócio, permitindo efetuar operações com os use cases.
+  * **PRESENTERS:** São responsáveis por cuidar da apresentação, porem no projeto não os utilizamos por não termos interfaces visuais.
+* **USECASE:** A camada reservada para a implementação dos use cases que irão orquestrar as regras de negócio e se comunicará com o mundo externo através de adaptadores que serão injetados para seu uso.
+* **ENTITY:** Esta é a camada mais interna onde as entidades de domínio se encontram.
 
 ```
 contexto
