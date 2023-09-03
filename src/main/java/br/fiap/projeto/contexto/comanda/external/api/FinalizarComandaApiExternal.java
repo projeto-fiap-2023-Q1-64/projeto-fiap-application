@@ -4,9 +4,12 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComanda
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,7 +29,7 @@ public class FinalizarComandaApiExternal {
     @PatchMapping("/{codigo-pedido}/finalizar")
     @ResponseBody
     @ApiOperation(value = "Finaliza uma comanda", notes = "Este endpoint informa a finalização da comanda")
-    ResponseEntity<ComandaDTO> finalizar(@PathVariable("codigo-pedido") UUID codigoPedido)
+    ResponseEntity<ComandaDTO> finalizar(@PathVariable("codigo-pedido") UUID codigoComando)
             throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(this.finalizaComandaPortControllerAdapter.atualizaStatusComanda(codigoPedido));
