@@ -8,9 +8,7 @@ import br.fiap.projeto.contexto.pedido.usecase.exception.IntegrationPagamentoExc
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoPagamentoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoManagementUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoPagamentoIntegrationUseCase;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
 
 import java.util.UUID;
@@ -48,6 +46,25 @@ public class PedidoPagamentoIntegrationUseCase extends AbstractPedidoUseCase imp
         }
         if(pagamentoPedido.isCanceled()){
             return pedidoWorkFlowUseCase.cancelar(codigoPedido);
+        }
+
+        throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());
+    }
+
+    @Override
+    public Pedido recebeRetornoPagamento(PagamentoPedido pagamentoPedido) throws Exception {
+        if(pagamentoPedido == null) {
+            throw new IntegrationPagamentoException("Retorno inválido!");
+        }
+        Pedido pedido = buscar(UUID.fromString(pagamentoPedido.getCodigoPedido()));
+        if(pedido == null) {
+            throw new Exception(MensagemErro.PEDIDO_NOT_FOUND.getMessage());
+        }
+        if(pagamentoPedido.isPago()){
+            return pedidoWorkFlowUseCase.pagar(pedido.getCodigo());
+        }
+        if(pagamentoPedido.isCanceled()){
+            return pedidoWorkFlowUseCase.cancelar(pedido.getCodigo());
         }
 
         throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());

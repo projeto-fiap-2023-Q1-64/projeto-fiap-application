@@ -1,6 +1,7 @@
 package br.fiap.projeto.contexto.pedido.external.api;
 
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoPagamentoIntegrationRestAdapterController;
+import br.fiap.projeto.contexto.pedido.external.integration.port.Pagamento;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,11 +22,17 @@ public class PedidoPagamentoApiController {
         this.pedidoPagamentoIntegrationRestAdapterController = pedidoPagamentoIntegrationRestAdapterController;
     }
 
-
     @PatchMapping("/{codigo}/atualizar-pagamento")
     @ResponseBody
     @ApiOperation(value = "Atualizar Pagamento", notes="Esse endpoint realiza uma consulta para verificar o status de pagamento e com o resultado cancelar ou definir o pedido como pago.")
     public ResponseEntity<?> atualizarPagamento(@ApiParam(value = "Código do Pedido") @PathVariable("codigo") UUID codigo) throws Exception {
         return ResponseEntity.ok().body(pedidoPagamentoIntegrationRestAdapterController.atualizarPagamentoPedido(codigo));
+    }
+
+    @PatchMapping("/recebe-retorno-pagamento")
+    @ApiOperation(value = "Atualizar pedido quando aprovado", notes="Esse endpoint realiza uma consulta para verificar o status de pagamento e com o resultado cancelar ou definir o pedido como pago.")
+    public ResponseEntity<Void> atualizarPagamento(@RequestBody Pagamento pagamento) throws Exception {
+        pedidoPagamentoIntegrationRestAdapterController.recebeRetornoPagamento(pagamento);
+        return ResponseEntity.noContent().build();
     }
 }
