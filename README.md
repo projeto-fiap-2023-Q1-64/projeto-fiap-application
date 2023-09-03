@@ -19,6 +19,10 @@
 Obs.: Para rodar localmente, usar o comando ```kubectl config set-context docker-desktop``` 
 para alterar o contexto para o docker-desktop (se necessário)
 
+### Para acessar o swagger
+
+> http://localhost:31500/swagger-ui/index.html
+
 ---
 ## Entrega Fase 1
 
