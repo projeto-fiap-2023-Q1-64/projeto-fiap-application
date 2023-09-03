@@ -27,7 +27,7 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
    @Override
     public void enviaRequestAoSistemaExternoPagamentos(String codigoPedido, StatusPagamento status) {
         //TODO aqui faria as chamadas às integrações com o sistema externo - hoje apenas é simulado
-        printMensagensSimulaIntegracaoComSistemaExterno(codigoPedido, status);
+        printMensagensSimulaIntegracaoComSistemaExterno(codigoPedido);
    }
 
     @Override
@@ -45,11 +45,10 @@ public class EnviaPagamentoAoGatewayPagamentosUseCase implements IEnviaPagamento
         }
     }
 
-    private static void printMensagensSimulaIntegracaoComSistemaExterno(String codigoPedido, StatusPagamento status) {
+    private static void printMensagensSimulaIntegracaoComSistemaExterno(String codigoPedido) {
         System.out.println("Enviando pagamento ao Sistema Externo de Pagamentos: MercadoPago");
         System.out.println("Pagamento agora será processado pelo Gateway de Pagamento.");
         System.out.println("Pagamento do Pedido: " + codigoPedido);
-        System.out.println("Status: " + status);
     }
     private void verificaPagamentoAntesDeEnviarAoGateway(String codigoPedido) {
         if(getPagamento(codigoPedido).getCodigo() == (null)){

@@ -90,7 +90,7 @@ public class BeanPagamentoConfiguration {
     }
 
     @Bean
-    IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase(IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway){
-        return new PagamentoPedidoIntegrationUseCase(pagamentoPedidoIntegrationGateway);
+    IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase(IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new PagamentoPedidoIntegrationUseCase(pagamentoPedidoIntegrationGateway, buscaPagamentoUseCase);
     }
 }

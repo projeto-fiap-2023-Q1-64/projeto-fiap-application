@@ -8,4 +8,10 @@ import java.util.UUID;
 public interface IPagamentoPedidoIntegrationUseCase {
 
     void atualizarPagamentoPedido(Pagamento codigoPedido);
+
+    public void scheduleAtualizaPagamentoPedido(String codigo);
+
+    public void shutDownScheduler();
+
+
 }

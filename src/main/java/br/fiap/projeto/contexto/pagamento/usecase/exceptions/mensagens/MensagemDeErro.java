@@ -13,7 +13,11 @@ public enum MensagemDeErro {
 
     PAGAMENTO_PENDENTE("Já existe um pagamento pendente para este código de pedido."),
 
-    PAGAMENTO_DEVE_SER_ENVIADO_AO_GATEWAY("Este pagamento encontra-se pendente, deve ser enviado ao gateway para inciar processo de pagamentos")
+    PAGAMENTO_DEVE_SER_ENVIADO_AO_GATEWAY("Este pagamento encontra-se pendente, deve ser enviado ao gateway para inciar processo de pagamentos"),
+
+    ERRO_INTEGRACAO("Ocorreu um erro durante a integração com o domínio de {0}"),
+
+    ENVIO_ATUALIZACAO_STATUS_INTEGRACAO_FALHA("Não foi possível realizar envio de atualização durante integração.")
     ;
 
 

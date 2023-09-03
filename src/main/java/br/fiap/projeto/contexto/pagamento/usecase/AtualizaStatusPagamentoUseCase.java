@@ -59,11 +59,16 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
                 return;
         }
         salvaStatus(pagamento);
-//
-//        if(pagamento.getStatus().equals(StatusPagamento.CANCELLED) || pagamento.getStatus().equals(StatusPagamento.APPROVED)){
-//
-//            pagamentoPedidoIntegrationUseCase.atualizarPagamentoPedido(pagamento);
-//        }
+
+        triggerAtualizaStatusPagamentoDoPedido(pagamento.getCodigoPedido());
+    }
+
+    private void triggerAtualizaStatusPagamentoDoPedido(String codigoPedido) {
+        {
+            System.out.println("TASK AGENDADA: ATUALIZA STATUS DO PAGAMENTO DO PEDIDO");
+            pagamentoPedidoIntegrationUseCase.scheduleAtualizaPagamentoPedido(codigoPedido);
+            pagamentoPedidoIntegrationUseCase.shutDownScheduler();
+        }
     }
 
     /**

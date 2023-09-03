@@ -10,6 +10,7 @@ public class PagamentoAEnviarAoGatewayDTORequest {
 
     private String codigoPedido;
     private Double valorTotal;
+    //TODO remover o Status da Request
     private StatusPagamento statusPagamento;
     private Date dataPagamento;
 
