@@ -38,6 +38,7 @@ public class PostgresComandaDataLoader {
             try {
                 comandaRepositoryUseCase.criar(c);
             } catch (EntradaInvalidaException e) {
+                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         });
