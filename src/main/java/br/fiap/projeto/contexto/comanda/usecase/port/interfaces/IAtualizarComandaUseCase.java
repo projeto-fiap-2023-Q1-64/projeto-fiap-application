@@ -7,6 +7,6 @@ import br.fiap.projeto.contexto.comanda.usecase.exception.IntegracaoPedidoExcept
 import java.util.UUID;
 
 public interface IAtualizarComandaUseCase {
-    Comanda alterarStatus(UUID codigoComanda) throws EntradaInvalidaException, IntegracaoPedidoException;
+    Comanda alterarStatus(UUID codigoPedido) throws EntradaInvalidaException, IntegracaoPedidoException;
 
 }

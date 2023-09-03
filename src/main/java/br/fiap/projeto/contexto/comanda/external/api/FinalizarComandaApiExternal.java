@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/comandas")
-@Api(tags = {"Comanda"}, description = "Endpoint do domínio de comanda")
+@Api(tags = { "Comanda" }, description = "Endpoint do domínio de comanda")
 public class FinalizarComandaApiExternal {
 
     private final IAtualizaComandaControllerAdapter finalizaComandaPortControllerAdapter;
@@ -23,13 +23,13 @@ public class FinalizarComandaApiExternal {
         this.finalizaComandaPortControllerAdapter = finalizaComandaControllerAdapter;
     }
 
-    @PatchMapping("/{codigo-comanda}/finalizar")
+    @PatchMapping("/{codigo-pedido}/finalizar")
     @ResponseBody
     @ApiOperation(value = "Finaliza uma comanda", notes = "Este endpoint informa a finalização da comanda")
-    ResponseEntity<ComandaDTO> finalizar(@PathVariable("codigo-comanda") UUID codigoComando)
+    ResponseEntity<ComandaDTO> finalizar(@PathVariable("codigo-pedido") UUID codigoPedido)
             throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(this.finalizaComandaPortControllerAdapter.atualizaStatusComanda(codigoComando));
+                .body(this.finalizaComandaPortControllerAdapter.atualizaStatusComanda(codigoPedido));
     }
 
 }

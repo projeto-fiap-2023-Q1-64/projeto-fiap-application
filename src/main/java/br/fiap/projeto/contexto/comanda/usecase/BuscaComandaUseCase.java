@@ -18,9 +18,9 @@ public class BuscaComandaUseCase implements IBuscaPorComandaUseCase {
     }
 
     @Override
-    public Comanda buscaComandaPorStatus(UUID codigoComanda)
+    public Comanda buscaComandaPorStatus(UUID codigoPedido)
             throws EntradaInvalidaException, ComandaNaoEncontradaException {
-        Optional<Comanda> comanda = buscarComandaRepositoryUseCase.buscar(codigoComanda);
+        Optional<Comanda> comanda = buscarComandaRepositoryUseCase.buscar(codigoPedido);
         comanda.orElseThrow(() -> new ComandaNaoEncontradaException("Comanda não encontrada!"));
         comanda.get().validarDados();
         return comanda.get();

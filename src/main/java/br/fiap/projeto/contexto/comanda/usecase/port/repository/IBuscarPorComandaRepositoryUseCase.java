@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface IBuscarPorComandaRepositoryUseCase {
 
-    Optional<Comanda> buscar(UUID codigoComanda) throws EntradaInvalidaException;
+    Optional<Comanda> buscar(UUID codigoPedido) throws EntradaInvalidaException;
 
 }

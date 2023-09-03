@@ -19,7 +19,7 @@ public class BuscaPorComandaControllerAdapter implements IBuscaPorComandaControl
     public ComandaDTO buscaPorComanda(BuscaPorComandaDTO buscaPorComandaDTO)
             throws EntradaInvalidaException, ComandaNaoEncontradaException {
         return ComandaDTO.newInstanceFromComanda(
-                buscaPorComandaUseCase.buscaComandaPorStatus(buscaPorComandaDTO.getCodigoComanda()));
+                buscaPorComandaUseCase.buscaComandaPorStatus(buscaPorComandaDTO.getCodigoPedido()));
     }
 
 }

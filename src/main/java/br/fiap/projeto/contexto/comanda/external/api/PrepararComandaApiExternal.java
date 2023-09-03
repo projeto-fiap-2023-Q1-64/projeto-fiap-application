@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/comandas")
-@Api(tags = {"Comanda"}, description = "Endpoint do domínio de comanda")
+@Api(tags = { "Comanda" }, description = "Endpoint do domínio de comanda")
 public class PrepararComandaApiExternal {
 
     private final IAtualizaComandaControllerAdapter preparaComandaControllerAdapter;
@@ -25,12 +25,13 @@ public class PrepararComandaApiExternal {
         this.preparaComandaControllerAdapter = preparaComandaControllerAdapter;
     }
 
-    @PatchMapping("/{codigo-comanda}/preparar")
+    @PatchMapping("/{codigo-pedido}/preparar")
     @ResponseBody
     @ApiOperation(value = "Inicia o preparo de uma comanda", notes = "Este endpoint informa o início do preparo de uma comanda")
-    ResponseEntity<ComandaDTO> preparar(@PathVariable("codigo-comanda") UUID codigoComando) throws IntegracaoPedidoException, EntradaInvalidaException {
+    ResponseEntity<ComandaDTO> preparar(@PathVariable("codigo-pedido") UUID codigoPedido)
+            throws IntegracaoPedidoException, EntradaInvalidaException {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(this.preparaComandaControllerAdapter.atualizaStatusComanda(codigoComando));
+                .body(this.preparaComandaControllerAdapter.atualizaStatusComanda(codigoPedido));
     }
 
 }

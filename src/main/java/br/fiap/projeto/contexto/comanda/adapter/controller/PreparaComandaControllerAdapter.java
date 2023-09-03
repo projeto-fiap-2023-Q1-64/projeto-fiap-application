@@ -17,8 +17,9 @@ public class PreparaComandaControllerAdapter implements IAtualizaComandaControll
     }
 
     @Override
-    public ComandaDTO atualizaStatusComanda(UUID codigoComanda) throws EntradaInvalidaException, IntegracaoPedidoException {
-        return ComandaDTO.newInstanceFromComanda(prepararComandaUseCase.alterarStatus(codigoComanda));
+    public ComandaDTO atualizaStatusComanda(UUID codigoPedido)
+            throws EntradaInvalidaException, IntegracaoPedidoException {
+        return ComandaDTO.newInstanceFromComanda(prepararComandaUseCase.alterarStatus(codigoPedido));
     }
 
 }

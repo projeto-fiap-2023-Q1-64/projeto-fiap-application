@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface IAtualizaComandaControllerAdapter {
 
-    ComandaDTO atualizaStatusComanda(UUID codigoComanda) throws IntegracaoPedidoException, EntradaInvalidaException;
+    ComandaDTO atualizaStatusComanda(UUID codigoPedido) throws IntegracaoPedidoException, EntradaInvalidaException;
 }
