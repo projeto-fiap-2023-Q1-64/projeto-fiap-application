@@ -11,5 +11,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class FinalizaStatusComandaDTO {
 
-    private UUID codigoComanda;
+    private UUID codigoPedido;
 }

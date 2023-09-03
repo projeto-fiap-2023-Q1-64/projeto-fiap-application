@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.comanda.external.api.exception.handler;
 
 import br.fiap.projeto.contexto.comanda.external.api.CriarComandaApiExternal;
 import br.fiap.projeto.contexto.comanda.external.api.exception.ComandaResponseException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaDuplicadaException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.IntegracaoPedidoException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,14 +23,20 @@ public class ComandaControllerExceptionHandler {
 
     @ExceptionHandler(EntradaInvalidaException.class)
     public ResponseEntity<ComandaResponseException> handleEntradaInvalida(Exception e) {
-        ComandaResponseException response = new ComandaResponseException(2001, e.getMessage(), e.getCause());
+        ComandaResponseException response = new ComandaResponseException(2003, e.getMessage(), e.getCause());
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(response);
     }
 
     @ExceptionHandler(IntegracaoPedidoException.class)
     public ResponseEntity<ComandaResponseException> handleIntegracaoPedido(Exception e) {
         ComandaResponseException response = new ComandaResponseException(2004, e.getMessage(), e.getCause());
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(response);
+        return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body(response);
+    }
+
+    @ExceptionHandler(ComandaDuplicadaException.class)
+    public ResponseEntity<ComandaResponseException> handleComandaDuplicada(Exception e) {
+        ComandaResponseException response = new ComandaResponseException(2005, e.getMessage(), e.getCause());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

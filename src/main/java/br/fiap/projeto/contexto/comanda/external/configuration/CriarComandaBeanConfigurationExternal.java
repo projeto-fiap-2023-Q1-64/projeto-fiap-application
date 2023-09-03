@@ -9,8 +9,8 @@ import br.fiap.projeto.contexto.comanda.adapter.gateway.CriaComandaGatewayAdapte
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
 import br.fiap.projeto.contexto.comanda.usecase.CriarComandaUseCase;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.ICriarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.ICriarComandaRepositoryUseCase;
 
 @Configuration
 public class CriarComandaBeanConfigurationExternal {

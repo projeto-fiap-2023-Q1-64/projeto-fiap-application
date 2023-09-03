@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface;
+package br.fiap.projeto.contexto.comanda.usecase.port.repository;
 
 import java.util.Optional;
 import java.util.UUID;

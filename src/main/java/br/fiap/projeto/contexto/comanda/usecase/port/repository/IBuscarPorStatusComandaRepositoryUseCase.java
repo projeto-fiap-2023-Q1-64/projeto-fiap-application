@@ -1,4 +1,4 @@
-package br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface;
+package br.fiap.projeto.contexto.comanda.usecase.port.repository;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;

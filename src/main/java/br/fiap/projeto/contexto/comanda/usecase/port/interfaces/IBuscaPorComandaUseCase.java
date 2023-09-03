@@ -7,5 +7,5 @@ import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaExcepti
 import java.util.UUID;
 
 public interface IBuscaPorComandaUseCase {
-    Comanda buscaComandaPorStatus(UUID codigoComanda) throws EntradaInvalidaException, ComandaNaoEncontradaException;
+    Comanda buscaComandaPorStatus(UUID codigoPedido) throws EntradaInvalidaException, ComandaNaoEncontradaException;
 }

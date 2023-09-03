@@ -31,6 +31,7 @@ public abstract class AbstractPedidoUseCase implements IAbstractPedidoUseCase {
             buscar(codigo);
             return true;
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
     }

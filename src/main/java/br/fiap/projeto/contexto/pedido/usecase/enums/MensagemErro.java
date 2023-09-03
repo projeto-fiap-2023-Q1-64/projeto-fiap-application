@@ -9,7 +9,10 @@ public enum MensagemErro {
     ITEM_NOT_FOUND_IN_LIST( "Item não encontrado na lista"),
     INVALID_OPERATION( "Operação inválida!"),
     PEDIDO_NOT_APPROVED( "Pedido não aprovado!"),
-    INVALID_STATUS( "Status inválido!");
+    INVALID_STATUS( "Status do pedido inválido para esta operação!"),
+    PRODUTO_INTEGRATION_ERROR("Erro na integração com o Produto!"),
+    PRODUTO_EXIST_IN_THE_ORDER("O produto já existe no pedido, utilize a função adicionar quantidade."),
+    PAGAMENTO_INTEGRATION_ERROR( "Erro na integração com a Pagamento!");
 
     private final String message;
 
