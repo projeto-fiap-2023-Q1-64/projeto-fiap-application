@@ -12,20 +12,15 @@ import br.fiap.projeto.contexto.pagamento.adapter.gateway.AtualizaStatusPagament
 import br.fiap.projeto.contexto.pagamento.adapter.gateway.BuscaPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.adapter.gateway.PagamentoPedidoIntegrationGateway;
 import br.fiap.projeto.contexto.pagamento.adapter.gateway.ProcessaNovoPagamentoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pagamento.external.integration.IPagamentoPedidoIntegration;
 import br.fiap.projeto.contexto.pagamento.external.integration.IPedidoIntegration;
 import br.fiap.projeto.contexto.pagamento.external.repository.postgres.SpringPagamentoRepository;
-import br.fiap.projeto.contexto.pagamento.usecase.AtualizaStatusPagamentoUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.BuscaPagamentoUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.EnviaPagamentoAoGatewayPagamentosUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.ProcessaNovoPagamentoUseCase;
+import br.fiap.projeto.contexto.pagamento.usecase.*;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IAtualizaStatusPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IBuscaPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IPagamentoPedidoIntegrationGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IProcessaNovoPagamentoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IAtualizaStatusPagamentoUsecase;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IEnviaPagamentoAoGatewayPagamentosUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IProcessaNovoPagamentoUseCase;
+import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -69,9 +64,9 @@ public class BeanPagamentoConfiguration {
 
     @Bean
     IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase(IAtualizaStatusPagamentoRepositoryAdapterGateway atualizaStatusPagamentoAdapterGateway,
-                                                                   IBuscaPagamentoUseCase buscaPagamentoUseCase){
+                                                                   IBuscaPagamentoUseCase buscaPagamentoUseCase, IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase){
         return new AtualizaStatusPagamentoUseCase(atualizaStatusPagamentoAdapterGateway,
-                buscaPagamentoUseCase);
+                buscaPagamentoUseCase, pagamentoPedidoIntegrationUseCase);
     }
 
     @Bean
@@ -90,7 +85,12 @@ public class BeanPagamentoConfiguration {
         return new AtualizaStatusPagamentoRestAdapterController(atualizaStatusPagamentoUsecase);
     }
     @Bean
-    IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway(IPedidoIntegration pedidoIntegration){
-        return new PagamentoPedidoIntegrationGateway(pedidoIntegration);
+    IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway(IPedidoIntegration pedidoIntegration, IPagamentoPedidoIntegration pagamentoPedidoIntegration){
+        return new PagamentoPedidoIntegrationGateway(pedidoIntegration, pagamentoPedidoIntegration);
+    }
+
+    @Bean
+    IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase(IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway){
+        return new PagamentoPedidoIntegrationUseCase(pagamentoPedidoIntegrationGateway);
     }
 }

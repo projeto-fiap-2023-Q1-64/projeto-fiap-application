@@ -7,16 +7,21 @@ import br.fiap.projeto.contexto.pagamento.usecase.exceptions.mensagens.MensagemD
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IAtualizaStatusPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IAtualizaStatusPagamentoUsecase;
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
+import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IPagamentoPedidoIntegrationUseCase;
 
 public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoUsecase {
 
     private final IAtualizaStatusPagamentoRepositoryAdapterGateway atualizaStatusPagamentoAdapterGateway;
     private final IBuscaPagamentoUseCase buscaPagamentoUseCase;
 
+    private final IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase;
+
     public AtualizaStatusPagamentoUseCase(IAtualizaStatusPagamentoRepositoryAdapterGateway atualizaStatusPagamentoAdapterGateway,
-                                          IBuscaPagamentoUseCase buscaPagamentoUseCase) {
+                                          IBuscaPagamentoUseCase buscaPagamentoUseCase,
+                                          IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase) {
         this.atualizaStatusPagamentoAdapterGateway = atualizaStatusPagamentoAdapterGateway;
         this.buscaPagamentoUseCase = buscaPagamentoUseCase;
+        this.pagamentoPedidoIntegrationUseCase = pagamentoPedidoIntegrationUseCase;
     }
 
     /**
@@ -54,6 +59,11 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
                 return;
         }
         salvaStatus(pagamento);
+//
+//        if(pagamento.getStatus().equals(StatusPagamento.CANCELLED) || pagamento.getStatus().equals(StatusPagamento.APPROVED)){
+//
+//            pagamentoPedidoIntegrationUseCase.atualizarPagamentoPedido(pagamento);
+//        }
     }
 
     /**

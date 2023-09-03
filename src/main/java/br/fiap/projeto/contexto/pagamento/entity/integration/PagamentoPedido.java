@@ -1,12 +1,5 @@
 package br.fiap.projeto.contexto.pagamento.entity.integration;
 
-import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class PagamentoPedido {
  
 	private String codigo;
