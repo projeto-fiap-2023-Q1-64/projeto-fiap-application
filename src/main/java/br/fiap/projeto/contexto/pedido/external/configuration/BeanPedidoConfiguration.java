@@ -41,10 +41,12 @@ public class BeanPedidoConfiguration {
     @Bean
     IPedidoPagamentoIntegrationUseCase pedidoPagamentoIntegrationUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
                                                                          IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway,
-                                                                         IPedidoWorkFlowUseCase pedidoWorkFlowUseCase){
+                                                                         IPedidoWorkFlowUseCase pedidoWorkFlowUseCase,
+                                                                         IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase){
         return new PedidoPagamentoIntegrationUseCase(pedidoRepositoryAdapterGateway,
                 pedidoPagamentoIntegrationAdapterGateway,
-                pedidoWorkFlowUseCase);
+                pedidoWorkFlowUseCase,
+                pedidoComandaIntegrationUseCase);
     }
     @Bean
     IPedidoManagementRestAdapterController pedidoManagementRestAdapterController(IPedidoManagementUseCase pedidoUseCase){

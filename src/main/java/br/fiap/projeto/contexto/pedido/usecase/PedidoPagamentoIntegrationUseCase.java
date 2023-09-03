@@ -8,6 +8,7 @@ import br.fiap.projeto.contexto.pedido.usecase.exception.IntegrationPagamentoExc
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoPagamentoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoComandaIntegrationUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoPagamentoIntegrationUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
 
@@ -16,13 +17,16 @@ import java.util.UUID;
 public class PedidoPagamentoIntegrationUseCase extends AbstractPedidoUseCase implements IPedidoPagamentoIntegrationUseCase {
     private final IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway;
     private final IPedidoWorkFlowUseCase pedidoWorkFlowUseCase;
+    private final IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase;
 
     public PedidoPagamentoIntegrationUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
                                              IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway,
-                                             IPedidoWorkFlowUseCase pedidoWorkFlowUseCase) {
+                                             IPedidoWorkFlowUseCase pedidoWorkFlowUseCase,
+                                             IPedidoComandaIntegrationUseCase iPedidoComandaIntegrationUseCase) {
         super(pedidoRepositoryAdapterGateway);
         this.pedidoPagamentoIntegrationAdapterGateway = pedidoPagamentoIntegrationAdapterGateway;
         this.pedidoWorkFlowUseCase = pedidoWorkFlowUseCase;
+        this.pedidoComandaIntegrationUseCase = iPedidoComandaIntegrationUseCase;
     }
 
     @Override
@@ -61,7 +65,9 @@ public class PedidoPagamentoIntegrationUseCase extends AbstractPedidoUseCase imp
             throw new Exception(MensagemErro.PEDIDO_NOT_FOUND.getMessage());
         }
         if(pagamentoPedido.isPago()){
-            return pedidoWorkFlowUseCase.pagar(pedido.getCodigo());
+            Pedido pedidoPago = pedidoWorkFlowUseCase.pagar(pedido.getCodigo());
+            this.pedidoComandaIntegrationUseCase.criaComanda(pedidoPago.getCodigo());
+            return pedidoPago;
         }
         if(pagamentoPedido.isCanceled()){
             return pedidoWorkFlowUseCase.cancelar(pedido.getCodigo());

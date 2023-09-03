@@ -67,7 +67,6 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
         {
             System.out.println("TASK AGENDADA: ATUALIZA STATUS DO PAGAMENTO DO PEDIDO");
             pagamentoPedidoIntegrationUseCase.scheduleAtualizaPagamentoPedido(codigoPedido);
-            pagamentoPedidoIntegrationUseCase.shutDownScheduler();
         }
     }
 

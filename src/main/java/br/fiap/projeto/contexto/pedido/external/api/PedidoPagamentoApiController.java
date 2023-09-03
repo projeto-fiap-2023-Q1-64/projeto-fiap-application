@@ -29,9 +29,9 @@ public class PedidoPagamentoApiController {
         return ResponseEntity.ok().body(pedidoPagamentoIntegrationRestAdapterController.atualizarPagamentoPedido(codigo));
     }
 
-    @PatchMapping("/recebe-retorno-pagamento")
-    @ApiOperation(value = "Atualizar pedido quando aprovado", notes="Esse endpoint realiza uma consulta para verificar o status de pagamento e com o resultado cancelar ou definir o pedido como pago.")
-    public ResponseEntity<Void> atualizarPagamento(@RequestBody Pagamento pagamento) throws Exception {
+    @PutMapping("/recebe-retorno-pagamento")
+    @ApiOperation(value = "Atualizar pedido quando aprovado pelo gateway", notes="Esse endpoint recebe uma chamada de atualização de pagamento vinda do contexto de pagamento, quando o gateway aprova ou cancela um pagamento.")
+    public ResponseEntity<Void> atualizarPagamentoPeloRetornoPagamento(@RequestBody Pagamento pagamento) throws Exception {
         pedidoPagamentoIntegrationRestAdapterController.recebeRetornoPagamento(pagamento);
         return ResponseEntity.noContent().build();
     }

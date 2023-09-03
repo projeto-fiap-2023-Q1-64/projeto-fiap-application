@@ -11,6 +11,7 @@ import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUs
 import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IPagamentoPedidoIntegrationUseCase;
 import feign.FeignException;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ public class PagamentoPedidoIntegrationUseCase implements IPagamentoPedidoIntegr
 
     private final IBuscaPagamentoUseCase buscaPagamentoUseCase;
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService scheduler = null;
 
     public PagamentoPedidoIntegrationUseCase(IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway, IBuscaPagamentoUseCase buscaPagamentoUseCase) {
         this.pagamentoPedidoIntegrationGateway = pagamentoPedidoIntegrationGateway;
@@ -30,22 +31,27 @@ public class PagamentoPedidoIntegrationUseCase implements IPagamentoPedidoIntegr
 
    @Override
     public void atualizarPagamentoPedido(Pagamento pagamento) {
-       pagamentoPedidoIntegrationGateway.atualizaStatusPagamentoPedido(
-               new PagamentoPedidoResponse(pagamento.getCodigoPedido(), pagamento.getStatus().name()));
+        PagamentoPedidoResponse response = new PagamentoPedidoResponse(pagamento.getCodigoPedido(), pagamento.getStatus().name(), LocalDateTime.now());
+        pagamentoPedidoIntegrationGateway.atualizaStatusPagamentoPedido(response);
     }
 
     @Override
     public void scheduleAtualizaPagamentoPedido(String codigoPedido) {
         Pagamento pagamento = getPagamento(codigoPedido);
+        this.scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> {
             try{
                 atualizarPagamentoPedido(pagamento);
             }catch(FeignException fe){
+                fe.printStackTrace();
                 throw new PagamentoPedidoIntegrationException(MensagemDeErro.ERRO_INTEGRACAO.getMessage());
             }catch(Exception e){
+                e.printStackTrace();
                 throw new InvalidOperationIntegrationException(MensagemDeErro.ENVIO_ATUALIZACAO_STATUS_INTEGRACAO_FALHA.getMessage());
+            } finally {
+                shutDownScheduler();
             }
-        }, 30, TimeUnit.SECONDS);
+        }, 3, TimeUnit.SECONDS);
     }
 
     private Pagamento getPagamento(String codigoPedido) {
