@@ -19,7 +19,7 @@ public class PostgresComandaDataLoader {
     @Autowired
     private ICriarComandaRepositoryUseCase comandaRepositoryUseCase;
 
-    @PostConstruct
+//    @PostConstruct
     @SneakyThrows
     public void init() {
         List<Comanda> list = Arrays.asList(

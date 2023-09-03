@@ -17,7 +17,7 @@ public class PostgresPagamentoDataLoader {
     @Autowired
     private PostgresIPagamentoRepository pagamentoRepository;
 
-    @PostConstruct
+//    @PostConstruct
     public void init(){
         List<Pagamento> pagamentoList = Arrays.asList(
                 new Pagamento(null, "bfbf7088-99a2-4b17-ba31-c514fad6e4c4", StatusPagamento.IN_PROCESS, new Date(), 25.0),
