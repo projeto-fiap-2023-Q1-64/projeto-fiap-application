@@ -29,8 +29,10 @@ public class BeanPedidoConfiguration {
         return new PedidoQueryUseCase(pedidoRepositoryAdapterGateway);
     }
     @Bean
-    IPedidoWorkFlowUseCase pedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway){
-        return new PedidoWorkFlowUseCase(pedidoRepositoryAdapterGateway);
+    IPedidoWorkFlowUseCase pedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
+                                                 IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway){
+        return new PedidoWorkFlowUseCase(pedidoRepositoryAdapterGateway,
+                pedidoPagamentoIntegrationAdapterGateway);
     }
     @Bean
     IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase(IPedidoComandaIntegrationAdapterGateway pedidoComandaIntegrationAdapterGateway,

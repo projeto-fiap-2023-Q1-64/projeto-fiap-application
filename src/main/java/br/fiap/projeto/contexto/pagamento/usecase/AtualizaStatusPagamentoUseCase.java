@@ -60,7 +60,9 @@ public class AtualizaStatusPagamentoUseCase implements IAtualizaStatusPagamentoU
         }
         salvaStatus(pagamento);
 
-        triggerAtualizaStatusPagamentoDoPedido(pagamento.getCodigoPedido());
+        if(novoStatusPagamento.equals(StatusPagamento.APPROVED) || novoStatusPagamento.equals(StatusPagamento.CANCELLED)) {
+            triggerAtualizaStatusPagamentoDoPedido(pagamento.getCodigoPedido());
+        }
     }
 
     private void triggerAtualizaStatusPagamentoDoPedido(String codigoPedido) {

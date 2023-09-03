@@ -3,6 +3,7 @@ package br.fiap.projeto.contexto.pedido.adapter.gateway;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.PagamentoMapper;
 import br.fiap.projeto.contexto.pedido.entity.integration.PagamentoPedido;
 import br.fiap.projeto.contexto.pedido.external.integration.PedidoPagamentoIntegration;
+import br.fiap.projeto.contexto.pedido.external.integration.port.NovoPagamento;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoPagamentoIntegrationAdapterGateway;
 
 import java.util.UUID;
@@ -18,4 +19,9 @@ public class PedidoPagamentoIntegrationAdapterGateway implements IPedidoPagament
     public PagamentoPedido buscaStatusPagamentoPorCodigoPedido(UUID codigoPedido) {
         return PagamentoMapper.toPagamentoPedido(pedidoPagamentoIntegration.buscaStatusPagamentoPorCodigoPedido(codigoPedido.toString()));
     }
+    @Override
+    public PagamentoPedido iniciaPagamento(UUID codigoPedido, Double valorTotal) {
+        return PagamentoMapper.toPagamentoPedido(pedidoPagamentoIntegration.iniciaPagamento(new NovoPagamento(codigoPedido.toString(), valorTotal)));
+    }
+
 }

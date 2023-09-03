@@ -5,14 +5,18 @@ import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
 import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
+import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoPagamentoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
 
 import java.util.UUID;
 
 public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPedidoWorkFlowUseCase {
-    public PedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway) {
+    private final IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway;
+    public PedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway,
+                                 IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway) {
         super(IPedidoRepositoryAdapterGateway);
+        this.pedidoPagamentoIntegrationAdapterGateway = pedidoPagamentoIntegrationAdapterGateway;
     }
     @Override
     public Pedido receber(UUID codigo) throws Exception {
@@ -26,7 +30,11 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         }else{
             throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
-        return IPedidoRepositoryAdapterGateway.salvar(pedido);
+        pedido = IPedidoRepositoryAdapterGateway.salvar(pedido);
+
+        iniciaPagamento(pedido);
+
+        return pedido;
     }
     @Override
     public Pedido pagar(UUID codigo) throws Exception {
@@ -74,5 +82,11 @@ public class PedidoWorkFlowUseCase extends AbstractPedidoUseCase  implements IPe
         Pedido pedido = this.buscar(codigo);
         pedido.atualizarStatus(StatusPedido.CANCELADO);
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
+    }
+    private void iniciaPagamento(Pedido pedido) throws Exception {
+        if(!pedido.getStatus().equals(StatusPedido.RECEBIDO)){
+            throw new Exception(MensagemErro.INVALID_STATUS.getMessage());
+        }
+        pedidoPagamentoIntegrationAdapterGateway.iniciaPagamento(pedido.getCodigo(), pedido.getValorTotal());
     }
 }

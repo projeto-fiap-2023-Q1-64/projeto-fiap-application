@@ -6,4 +6,6 @@ import java.util.UUID;
 
 public interface IPedidoPagamentoIntegrationAdapterGateway {
     PagamentoPedido buscaStatusPagamentoPorCodigoPedido(UUID codigoPedido);
+
+    PagamentoPedido iniciaPagamento(UUID codigoPedido, Double valorTotal);
 }
