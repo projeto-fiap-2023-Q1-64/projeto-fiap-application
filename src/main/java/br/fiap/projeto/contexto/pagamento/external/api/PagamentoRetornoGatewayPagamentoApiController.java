@@ -1,10 +1,8 @@
 package br.fiap.projeto.contexto.pagamento.external.api;
 
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IAtualizaPagamentoRestAdapterController;
-import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IBuscaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoDTORequest;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.PagamentoStatusDTORequest;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pagamento/retorno-gateway")
-@Api(tags = {"Pagamentos"}, description = "Endpoints do domínio de Pagamentos")
+@Api(tags = {"Pagamento - Integração"}, description = "Endpoints de integração com Gateway de Pagamento.")
 public class PagamentoRetornoGatewayPagamentoApiController {
 
     private final IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController;
-    private final IBuscaPagamentoRestAdapterController buscaPagamentoRestAdapterController;
 
     @Autowired
-    public PagamentoRetornoGatewayPagamentoApiController(IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController, IBuscaPagamentoRestAdapterController buscaPagamentoRestAdapterController) {
+    public PagamentoRetornoGatewayPagamentoApiController(IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController) {
         this.atualizaPagamentoRestAdapterController = atualizaPagamentoRestAdapterController;
-        this.buscaPagamentoRestAdapterController = buscaPagamentoRestAdapterController;
     }
 
     //INFO Vai simular a chegada do Código do Pedido e seu novo Status como resposta simulada do Gateway
@@ -34,11 +30,6 @@ public class PagamentoRetornoGatewayPagamentoApiController {
     @PatchMapping(value="/atualiza-status")
     @ApiOperation(value="Atualiza Status dos Pagamentos", notes="Esse endpoint atualiza os status dos pagamentos, simulando o retorno que virá após envio ao Gateway de Pagamentos.")
     public ResponseEntity<Void> atualizaStatusComRespostaDoGatewayPagamento(@RequestBody PagamentoStatusDTORequest pagamentoStatusDTORequest){
-        try{
-            buscaPagamentoRestAdapterController.findByCodigoPedidoAtualizarStatus(pagamentoStatusDTORequest.getCodigoPedido());
-        }catch(Exception e){
-            throw new ResourceNotFoundException("Ocorreu um erro ao buscar o pagamento para o pedido: " + pagamentoStatusDTORequest.getCodigoPedido());
-        }
         atualizaPagamentoRestAdapterController.atualizaStatusPagamento(new PagamentoDTORequest(pagamentoStatusDTORequest));
         return ResponseEntity.ok().build() ;
     }

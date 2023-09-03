@@ -8,40 +8,46 @@ import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoQueryUseCase;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class PedidoQueryUseCase extends AbstractPedidoUseCase implements IPedidoQueryUseCase {
     public PedidoQueryUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway) {
         super(IPedidoRepositoryAdapterGateway);
     }
+
+    @Override
+    public Pedido buscaPedido(UUID codigoPedido) {
+        return this.buscar(codigoPedido);
+    }
+
     @Override
     public List<Pedido> buscaTodos() {
-        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaTodos();
-        return pedidoLista;
+        return IPedidoRepositoryAdapterGateway.buscaTodos();
     }
     @Override
     public List<Pedido> buscarTodosRecebido(){
-        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.RECEBIDO);
-        return pedidoLista;
+        return IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.RECEBIDO);
     }
     @Override
     public List<Pedido> buscarTodosPagos(){
-        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PAGO);
-        return pedidoLista;
+        return IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PAGO);
     }
     @Override
     public List<Pedido> buscarTodosEmPreparacao(){
-        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
-        return pedidoLista;
+        return IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.EM_PREPARACAO);
     }
     @Override
     public List<Pedido> buscarTodosPronto(){
-        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PRONTO);
-        return pedidoLista;
+        return IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.PRONTO);
     }
     @Override
     public List<Pedido> buscarTodosFinalizado(){
-        List<Pedido> pedidoLista = IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.FINALIZADO);
-        return pedidoLista;
+        return IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.FINALIZADO);
+    }
+
+    @Override
+    public List<Pedido> buscarTodosCancelado() {
+        return IPedidoRepositoryAdapterGateway.buscaPedidosPorStatus(StatusPedido.CANCELADO);
     }
 
     @Override

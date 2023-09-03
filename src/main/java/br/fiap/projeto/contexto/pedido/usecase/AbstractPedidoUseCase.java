@@ -2,8 +2,8 @@ package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IAbstractPedidoUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IAbstractPedidoUseCase;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -31,6 +31,7 @@ public abstract class AbstractPedidoUseCase implements IAbstractPedidoUseCase {
             buscar(codigo);
             return true;
         }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
     }

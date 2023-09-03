@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.pagamento.usecase.port.usecase;
 
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -15,5 +16,11 @@ public interface IBuscaPagamentoUseCase {
 
     List<Pagamento> findByCodigoPedido(String codigoPedido);
 
+    Pagamento findByCodigoPedidoNotRejected(String codigoPedido);
 
+    Pagamento findByCodigoPedidoRejected(String codigoPedido);
+
+    Pagamento findByCodigoPedidoPending(String codigoPedido);
+
+    Pagamento findByCodigoPedidoInProcess(String codigoPedido);
 }

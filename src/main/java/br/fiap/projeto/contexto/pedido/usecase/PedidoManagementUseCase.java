@@ -5,12 +5,13 @@ import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.entity.enums.OperacaoProduto;
 import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
+import br.fiap.projeto.contexto.pedido.usecase.exception.IntegrationProdutoException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidOperacaoProdutoException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.ItemNotFoundException;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoClienteIntegrationAdapterGateway;
-import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoManagementUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoProdutoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoManagementUseCase;
 import org.hibernate.ObjectNotFoundException;
 
 import java.util.List;
@@ -38,10 +39,15 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         return IPedidoRepositoryAdapterGateway.salvar(new Pedido(codigoCliente));
     }
     @Override
-    public Pedido adicionarProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException, ItemNotFoundException {
-        ProdutoPedido produtoPedido = pedidoProdutoIntegrationAdapterGateway.getProduto(codigoProduto);
+    public Pedido adicionarProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException, ItemNotFoundException, IntegrationProdutoException {
+        ProdutoPedido produtoPedido = getProduto(codigoProduto);
         if(produtoPedido != null) {
             Pedido pedido = this.buscar(codigoPedido);
+            if(this.isProdutoExisteNoPedido(codigoProduto, pedido)){
+                throw new InvalidOperacaoProdutoException(
+                        MensagemErro.INVALID_OPERATION.getMessage() + " "
+                                + MensagemErro.PRODUTO_EXIST_IN_THE_ORDER.getMessage());
+            }
             ItemPedido itemPedido = new ItemPedido(codigoPedido,
                     codigoProduto,
                     pedido,
@@ -60,9 +66,12 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         }
     }
     @Override
-    public void removerProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException {
+    public void removerProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException, ItemNotFoundException {
         Pedido pedido = this.buscar(codigoPedido);
         ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
+        if(itemPedido == null) {
+            throw new ItemNotFoundException(MensagemErro.PRODUTO_NOT_FOUND.getMessage());
+        }
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.REMOVER);
         pedido.getItens().remove(itemPedido);
         IPedidoRepositoryAdapterGateway.salvar(pedido);
@@ -117,5 +126,19 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
                 .filter(itemPedido -> itemPedido.getProdutoCodigo().equals(codigoProduto))
                 .findFirst()
                 .orElse(null);
+    }
+
+    private ProdutoPedido getProduto(UUID codigoProduto) throws IntegrationProdutoException {
+        try {
+            return pedidoProdutoIntegrationAdapterGateway.getProduto(codigoProduto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IntegrationProdutoException(MensagemErro.PRODUTO_INTEGRATION_ERROR.getMessage() + " " + e.getMessage());
+        }
+    }
+
+    private boolean isProdutoExisteNoPedido(UUID codigoProduto, Pedido pedido) {
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
+        return itemPedido != null;
     }
 }

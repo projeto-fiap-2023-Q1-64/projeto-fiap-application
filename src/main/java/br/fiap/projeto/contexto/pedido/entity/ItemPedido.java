@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.pedido.entity;
 
 import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class ItemPedido {
@@ -77,5 +78,18 @@ public class ItemPedido {
 	}
 	public void reduzirQuantidade() {
 		this.quantidade--;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ItemPedido that = (ItemPedido) o;
+		return Objects.equals(pedidoCodigo, that.pedidoCodigo) && Objects.equals(produtoCodigo, that.produtoCodigo);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(pedidoCodigo, produtoCodigo);
 	}
 }

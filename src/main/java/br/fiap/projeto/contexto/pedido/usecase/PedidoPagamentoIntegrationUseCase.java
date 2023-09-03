@@ -1,39 +1,78 @@
 package br.fiap.projeto.contexto.pedido.usecase;
 
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
+import br.fiap.projeto.contexto.pedido.entity.enums.StatusPedido;
+import br.fiap.projeto.contexto.pedido.entity.integration.PagamentoPedido;
 import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
+import br.fiap.projeto.contexto.pedido.usecase.exception.IntegrationPagamentoException;
+import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoPagamentoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoComandaIntegrationUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoPagamentoIntegrationUseCase;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoWorkFlowUseCase;
 
 import java.util.UUID;
 
 public class PedidoPagamentoIntegrationUseCase extends AbstractPedidoUseCase implements IPedidoPagamentoIntegrationUseCase {
-    final IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway;
-    final IPedidoWorkFlowUseCase pedidoWorkFlowUseCase;
+    private final IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway;
+    private final IPedidoWorkFlowUseCase pedidoWorkFlowUseCase;
+    private final IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase;
 
     public PedidoPagamentoIntegrationUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
                                              IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway,
-                                             IPedidoWorkFlowUseCase pedidoWorkFlowUseCase) {
+                                             IPedidoWorkFlowUseCase pedidoWorkFlowUseCase,
+                                             IPedidoComandaIntegrationUseCase iPedidoComandaIntegrationUseCase) {
         super(pedidoRepositoryAdapterGateway);
         this.pedidoPagamentoIntegrationAdapterGateway = pedidoPagamentoIntegrationAdapterGateway;
         this.pedidoWorkFlowUseCase = pedidoWorkFlowUseCase;
-    }
-
-    private Boolean isPagamentoAprovado(UUID codigoPedido) {
-        return pedidoPagamentoIntegrationAdapterGateway.buscaStatusPagamentoPorCodigoPedido(codigoPedido).isPago();
+        this.pedidoComandaIntegrationUseCase = iPedidoComandaIntegrationUseCase;
     }
 
     @Override
-    public Pedido pagar(UUID codigoPedido) throws Exception {
+    public Pedido atualizarPagamentoPedido(UUID codigoPedido) throws Exception {
         if(!pedidoExists(codigoPedido)){
             throw new Exception(MensagemErro.PEDIDO_NOT_FOUND.getMessage());
         }
-
-        if(!isPagamentoAprovado(codigoPedido)){
-            throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());
+        Pedido pedido = this.buscar(codigoPedido);
+        if(!pedido.getStatus().equals(StatusPedido.RECEBIDO)){
+            throw new InvalidStatusException(MensagemErro.INVALID_STATUS.getMessage());
         }
-        return pedidoWorkFlowUseCase.pagar(codigoPedido);
+        PagamentoPedido pagamentoPedido;
+        try {
+            pagamentoPedido = pedidoPagamentoIntegrationAdapterGateway.buscaStatusPagamentoPorCodigoPedido(codigoPedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IntegrationPagamentoException(MensagemErro.PAGAMENTO_INTEGRATION_ERROR.getMessage() + " " + e.getMessage());
+        }
+        if(pagamentoPedido.isPago()){
+            return pedidoWorkFlowUseCase.pagar(codigoPedido);
+        }
+        if(pagamentoPedido.isCanceled()){
+            return pedidoWorkFlowUseCase.cancelar(codigoPedido);
+        }
+
+        throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());
+    }
+
+    @Override
+    public Pedido recebeRetornoPagamento(PagamentoPedido pagamentoPedido) throws Exception {
+        if(pagamentoPedido == null) {
+            throw new IntegrationPagamentoException("Retorno inválido!");
+        }
+        Pedido pedido = buscar(UUID.fromString(pagamentoPedido.getCodigoPedido()));
+        if(pedido == null) {
+            throw new Exception(MensagemErro.PEDIDO_NOT_FOUND.getMessage());
+        }
+        if(pagamentoPedido.isPago()){
+            Pedido pedidoPago = pedidoWorkFlowUseCase.pagar(pedido.getCodigo());
+            this.pedidoComandaIntegrationUseCase.criaComanda(pedidoPago.getCodigo());
+            return pedidoPago;
+        }
+        if(pagamentoPedido.isCanceled()){
+            return pedidoWorkFlowUseCase.cancelar(pedido.getCodigo());
+        }
+
+        throw new Exception(MensagemErro.PEDIDO_NOT_APPROVED.getMessage());
     }
 }

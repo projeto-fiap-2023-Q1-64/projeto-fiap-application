@@ -10,4 +10,5 @@ public interface IPedidoWorkFlowUseCase {
     Pedido preparar(UUID codigo) throws Exception;
     Pedido prontificar(UUID codigo) throws Exception;
     Pedido finalizar(UUID codigo) throws Exception;
+    Pedido cancelar(UUID codigo) throws Exception;
 }

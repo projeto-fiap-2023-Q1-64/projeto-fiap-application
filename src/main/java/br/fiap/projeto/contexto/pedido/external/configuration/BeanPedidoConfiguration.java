@@ -29,8 +29,10 @@ public class BeanPedidoConfiguration {
         return new PedidoQueryUseCase(pedidoRepositoryAdapterGateway);
     }
     @Bean
-    IPedidoWorkFlowUseCase pedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway){
-        return new PedidoWorkFlowUseCase(pedidoRepositoryAdapterGateway);
+    IPedidoWorkFlowUseCase pedidoWorkFlowUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
+                                                 IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway){
+        return new PedidoWorkFlowUseCase(pedidoRepositoryAdapterGateway,
+                pedidoPagamentoIntegrationAdapterGateway);
     }
     @Bean
     IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase(IPedidoComandaIntegrationAdapterGateway pedidoComandaIntegrationAdapterGateway,
@@ -41,10 +43,12 @@ public class BeanPedidoConfiguration {
     @Bean
     IPedidoPagamentoIntegrationUseCase pedidoPagamentoIntegrationUseCase(IPedidoRepositoryAdapterGateway pedidoRepositoryAdapterGateway,
                                                                          IPedidoPagamentoIntegrationAdapterGateway pedidoPagamentoIntegrationAdapterGateway,
-                                                                         IPedidoWorkFlowUseCase pedidoWorkFlowUseCase){
+                                                                         IPedidoWorkFlowUseCase pedidoWorkFlowUseCase,
+                                                                         IPedidoComandaIntegrationUseCase pedidoComandaIntegrationUseCase){
         return new PedidoPagamentoIntegrationUseCase(pedidoRepositoryAdapterGateway,
                 pedidoPagamentoIntegrationAdapterGateway,
-                pedidoWorkFlowUseCase);
+                pedidoWorkFlowUseCase,
+                pedidoComandaIntegrationUseCase);
     }
     @Bean
     IPedidoManagementRestAdapterController pedidoManagementRestAdapterController(IPedidoManagementUseCase pedidoUseCase){

@@ -2,7 +2,8 @@ package br.fiap.projeto.contexto.comanda.adapter.controller;
 
 import br.fiap.projeto.contexto.comanda.adapter.controller.port.IAtualizaComandaControllerAdapter;
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.IntegracaoPedidoException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
 
 import java.util.UUID;
@@ -16,8 +17,9 @@ public class PreparaComandaControllerAdapter implements IAtualizaComandaControll
     }
 
     @Override
-    public ComandaDTO atualizaStatusComanda(UUID codigoComanda) throws ExceptionMessage {
-        return ComandaDTO.newInstanceFromComanda(prepararComandaUseCase.atualizar(codigoComanda));
+    public ComandaDTO atualizaStatusComanda(UUID codigoPedido)
+            throws EntradaInvalidaException, IntegracaoPedidoException {
+        return ComandaDTO.newInstanceFromComanda(prepararComandaUseCase.alterarStatus(codigoPedido));
     }
 
 }

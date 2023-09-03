@@ -10,7 +10,7 @@ services:
   projeto-fiap:
     image: rm350010/projeto-fiap-1:latest
     environment:
-      - "SPRING_CONFIG_ADDITIONAL_LOCATION=classpath:application-docker.properties"
+      - "SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/test_db"
     pull_policy: always
     ports:
       - "80:8080"

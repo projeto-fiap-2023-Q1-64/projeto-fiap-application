@@ -22,17 +22,19 @@ public class PedidoComandaIntegrationUseCase implements IPedidoComandaIntegratio
     @Override
     public Pedido criaComanda(UUID codigoPedido) throws Exception {
         Pedido pedido;
+        pedido = this.pedidoWorkFlowUseCase.preparar(codigoPedido);
+        if (pedido == null || !pedido.getStatus().equals(StatusPedido.EM_PREPARACAO)) {
+            throw new Exception(MensagemErro.STATUS_UPDATE_ERROR.getMessage());
+        }
+        ComandaPedido comandaPedido;
         try {
-            pedido = this.pedidoWorkFlowUseCase.preparar(codigoPedido);
-            if (pedido == null || !pedido.getStatus().equals(StatusPedido.EM_PREPARACAO)) {
-                throw new Exception(MensagemErro.STATUS_UPDATE_ERROR.getMessage());
-            }
-            ComandaPedido comandaPedido = pedidoComandaIntegrationAdapterGateway.criaComanda(codigoPedido);
-            if (comandaPedido == null || comandaPedido.getCodigoComanda().toString().isEmpty()) {
-                throw new Exception(MensagemErro.COMANDA_CREATE_ERROR.getMessage());
-            }
+            comandaPedido = pedidoComandaIntegrationAdapterGateway.criaComanda(codigoPedido);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception(MensagemErro.COMANDA_INTEGRATION_ERROR.getMessage());
+        }
+        if (comandaPedido == null || comandaPedido.getCodigoComanda().toString().isEmpty()) {
+            throw new Exception(MensagemErro.COMANDA_CREATE_ERROR.getMessage());
         }
         return pedido;
     }

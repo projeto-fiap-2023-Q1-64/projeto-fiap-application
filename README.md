@@ -8,7 +8,23 @@
 - Richard Cardoso (RM350010)
 
 ---
-## Entrega
+## Fase 2
+
+### Execução kubernetes (local)
+
+* Abrir o terminal no diretório raiz do projeto (onde fica o arquivo Readme.md)
+* Executar ```kubectl delete -f entrega\kubernetes``` para parar a execução
+* Executar ```kubectl apply -f entrega\kubernetes``` para iniciar a execução
+
+Obs.: Para rodar localmente, usar o comando ```kubectl config set-context docker-desktop``` 
+para alterar o contexto para o docker-desktop (se necessário)
+
+### Para acessar o swagger
+
+> http://localhost:31500/swagger-ui/index.html
+
+---
+## Entrega Fase 1
 
 Roteiro do fluxo principal -> https://liniis.notion.site/Walkthrough-Fluxo-de-Eventos-da-Lanchonete-Totem-f18dfb5a87674d93899a6bbde1ae1695
 
@@ -19,7 +35,7 @@ Swagger (cloud) -> [live swagger](https://projeto-fiap-64.cloud/swagger-ui/index
 Miro -> [Documentação DDD](https://miro.com/app/board/uXjVMJnebyw=/)
 
 ---
-## Comandos do docker
+## Comandos do docker - Fase 1
 ### Iniciar containers (aplicação e banco)
 ```
 docker-compose up --force-recreate --build
@@ -50,3 +66,7 @@ refactor: (refactoring production code, eg. renaming a variable)
 test: (adding missing tests, refactoring tests; no production code change)
 chore: (updating grunt tasks etc; no production code change)
 ```
+
+# Docs
+
+[Estrutura do projeto](ESTRUTURA.md)

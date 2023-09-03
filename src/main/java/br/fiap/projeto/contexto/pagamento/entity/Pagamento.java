@@ -1,7 +1,6 @@
 package br.fiap.projeto.contexto.pagamento.entity;
 
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 
 import java.util.Date;
 import java.util.Objects;
@@ -25,9 +24,6 @@ public class Pagamento {
 
 	//INFO usado no conversor do PedidoAPagarDTORequest
 	public Pagamento(String codigoPedido,  Double valorTotal){
-		if(codigoPedido.isEmpty()){
-			throw new ResourceNotFoundException("Código de pedido inexistente");
-		}
 		this.codigoPedido = codigoPedido;
 		this.status = StatusPagamento.PENDING;
 		this.dataPagamento = new Date();
@@ -110,18 +106,6 @@ public class Pagamento {
 
 	public boolean podeSerProcessado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
 		return statusAtual.equals(StatusPagamento.PENDING) && statusRequest.equals(StatusPagamento.IN_PROCESS);
-	}
-
-	public boolean podeSerAprovado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.APPROVED);
-	}
-
-	public boolean podeSerCancelado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-		return statusAtual.equals(StatusPagamento.REJECTED) && statusRequest.equals(StatusPagamento.CANCELLED);
-	}
-
-	public boolean podeSerRejeitado(StatusPagamento statusAtual, StatusPagamento statusRequest) {
-		return statusAtual.equals(StatusPagamento.IN_PROCESS) && statusRequest.equals(StatusPagamento.REJECTED);
 	}
 
 }

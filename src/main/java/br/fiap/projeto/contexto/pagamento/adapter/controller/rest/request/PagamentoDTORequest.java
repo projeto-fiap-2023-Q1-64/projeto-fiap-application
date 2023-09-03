@@ -3,7 +3,6 @@ package br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request;
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.response.PagamentoDTOResponse;
 import br.fiap.projeto.contexto.pagamento.entity.Pagamento;
 import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 
 import java.util.Date;
 import java.util.Objects;

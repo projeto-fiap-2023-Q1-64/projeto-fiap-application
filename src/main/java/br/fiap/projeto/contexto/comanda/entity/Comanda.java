@@ -2,7 +2,7 @@ package br.fiap.projeto.contexto.comanda.entity;
 
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 
 import java.util.UUID;
 
@@ -17,15 +17,10 @@ public class Comanda {
 	public Comanda() {
 	}
 
-	public Comanda(UUID codigoComanda, UUID codigoPedido, StatusComanda status) throws ExceptionMessage {
-		if (!((codigoComanda == null) || (codigoPedido == null))) {
-
-			this.codigoComanda = codigoComanda;
-			this.codigoPedido = codigoPedido;
-			this.status = status;
-		} else {
-			throw new ExceptionMessage("Comanda com parametros vazios");
-		}
+	public Comanda(UUID codigoComanda, UUID codigoPedido, StatusComanda status) {
+		this.codigoComanda = codigoComanda;
+		this.codigoPedido = codigoPedido;
+		this.status = status;
 	}
 
 	public Comanda(ComandaDTO comandaDTO) {
@@ -49,7 +44,12 @@ public class Comanda {
 
 	public void atualizaStatus(StatusComanda statusComanda) {
 		this.status = statusComanda;
+	}
 
+	public void validarDados() throws EntradaInvalidaException {
+		if ((codigoComanda == null) || (codigoPedido == null)) {
+			throw new EntradaInvalidaException("Comanda com parametros vazios");
+		}
 	}
 
 }

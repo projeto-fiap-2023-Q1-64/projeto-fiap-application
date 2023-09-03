@@ -3,10 +3,11 @@ package br.fiap.projeto.contexto.identificacao.usecase.port;
 import br.fiap.projeto.contexto.identificacao.entity.Cliente;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IClienteRepositoryAdapterGateway {
 
-    Cliente busca(String codigo);
+    Optional<Cliente> busca(String codigo);
 
     List<Cliente> buscaTodos();
 
@@ -14,9 +15,11 @@ public interface IClienteRepositoryAdapterGateway {
 
     Cliente atualiza(Cliente cliente);
 
-    void remove(String codigo);
+    void remove(Cliente cliente);
 
-    Cliente buscaPorCpf(String cpf);
+    Optional<Cliente> buscaPorCpf(String cpf);
 
-    Cliente buscaPorEmail(String email);
+    Optional<Cliente> buscaPorEmail(String email);
+
+    Optional<Cliente> buscaPorCodigoEDataExclusaoNula(String codigo);
 }

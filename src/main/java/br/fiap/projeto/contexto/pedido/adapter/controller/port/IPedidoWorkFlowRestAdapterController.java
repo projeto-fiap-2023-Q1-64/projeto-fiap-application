@@ -10,4 +10,5 @@ public interface IPedidoWorkFlowRestAdapterController {
     PedidoDTO prepararPedido(UUID codigo) throws Exception ;
     PedidoDTO prontificarPedido(UUID codigo) throws Exception ;
     PedidoDTO finalizarPedido(UUID codigo) throws Exception ;
+    PedidoDTO cancelarPedido(UUID codigo) throws Exception ;
 }

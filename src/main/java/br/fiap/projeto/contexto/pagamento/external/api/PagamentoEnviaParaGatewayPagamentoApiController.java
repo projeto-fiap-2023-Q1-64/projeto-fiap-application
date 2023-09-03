@@ -5,7 +5,6 @@ import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.request.Pagame
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,25 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pagamento/gateway")
-@Api(tags = {"Pagamentos"}, description = "Endpoints do domínio de Pagamentos")
+@Api(tags = {"Pagamento - Integração"}, description = "Endpoints de integração com Gateway de Pagamento.")
 public class PagamentoEnviaParaGatewayPagamentoApiController {
 
     private final IEnviaPagamentoGatewayRestAdapterController enviaPagamentoGatewayRestAdapterController;
 
-
     @Autowired
     public PagamentoEnviaParaGatewayPagamentoApiController(IEnviaPagamentoGatewayRestAdapterController enviaPagamentoGatewayRestAdapterController) {
         this.enviaPagamentoGatewayRestAdapterController = enviaPagamentoGatewayRestAdapterController;
-
     }
 
     @PostMapping(value="/gateway-de-pagamento")
     @Transactional
     @ApiOperation(value = "Envia o Pagamento Gateway de Pagamentos", notes="Esse endpoint efetua o envio ao sistema externo de pagamentos - Integração com o Gateway que efetua a transação bancária.")
     public ResponseEntity<Void> enviaCompraParaGateway(@RequestBody PagamentoAEnviarAoGatewayDTORequest pagamentoAEnviarAoGatewayDTORequest) {
-        enviaPagamentoGatewayRestAdapterController
-                .enviaParaGatewayDePagamento(enviaPagamentoGatewayRestAdapterController
-                        .preparaParaEnviarPagamentoAoGateway(pagamentoAEnviarAoGatewayDTORequest));
+        enviaPagamentoGatewayRestAdapterController.enviaParaGatewayDePagamento(
+                enviaPagamentoGatewayRestAdapterController.preparaParaEnviarPagamentoAoGateway(
+                        pagamentoAEnviarAoGatewayDTORequest)
+        );
         return ResponseEntity.ok().build();
     }
 

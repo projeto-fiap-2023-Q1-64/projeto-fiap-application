@@ -10,21 +10,17 @@ import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IEnviaPag
 import br.fiap.projeto.contexto.pagamento.adapter.controller.rest.port.IProcessaPagamentoRestAdapterController;
 import br.fiap.projeto.contexto.pagamento.adapter.gateway.AtualizaStatusPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.adapter.gateway.BuscaPagamentoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pagamento.adapter.gateway.EnviaPagamentoParaGatewayPagamentosRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pagamento.adapter.gateway.PagamentoPedidoIntegrationGateway;
 import br.fiap.projeto.contexto.pagamento.adapter.gateway.ProcessaNovoPagamentoRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pagamento.external.integration.IPagamentoPedidoIntegration;
+import br.fiap.projeto.contexto.pagamento.external.integration.IPedidoIntegration;
 import br.fiap.projeto.contexto.pagamento.external.repository.postgres.SpringPagamentoRepository;
-import br.fiap.projeto.contexto.pagamento.usecase.AtualizaStatusPagamentoUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.BuscaPagamentoUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.EnviaPagamentoAoGatewayPagamentosUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.ProcessaNovoPagamentoUseCase;
+import br.fiap.projeto.contexto.pagamento.usecase.*;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IAtualizaStatusPagamentoRepositoryAdapterGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IBuscaPagamentoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IEnviaPagamentoAoGatewayPagamentosRepositoryAdapterGateway;
+import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IPagamentoPedidoIntegrationGateway;
 import br.fiap.projeto.contexto.pagamento.usecase.port.repository.IProcessaNovoPagamentoRepositoryAdapterGateway;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IAtualizaStatusPagamentoUsecase;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IBuscaPagamentoUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IEnviaPagamentoAoGatewayPagamentosUseCase;
-import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.IProcessaNovoPagamentoUseCase;
+import br.fiap.projeto.contexto.pagamento.usecase.port.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -47,18 +43,18 @@ public class BeanPagamentoConfiguration {
     }
 
     @Bean
-    IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway(SpringPagamentoRepository springPagamentoRepository){
-        return new ProcessaNovoPagamentoRepositoryAdapterGateway(springPagamentoRepository);
+    IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway(SpringPagamentoRepository springPagamentoRepository, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new ProcessaNovoPagamentoRepositoryAdapterGateway(springPagamentoRepository, buscaPagamentoUseCase);
     }
 
     @Bean
-    IProcessaPagamentoRestAdapterController processaNovoPagamentoAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase, IBuscaPagamentoUseCase buscaPagamentoUseCase){
-        return new ProcessaNovoPagamentoRestAdapterController(processaNovoPagamentoUseCase, buscaPagamentoUseCase );
+    IProcessaPagamentoRestAdapterController processaNovoPagamentoAdapterController(IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase){
+        return new ProcessaNovoPagamentoRestAdapterController(processaNovoPagamentoUseCase);
     }
 
     @Bean
-    IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase(IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway){
-        return new ProcessaNovoPagamentoUseCase(processaNovoPagamentoAdapterGateway);
+    IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase(IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new ProcessaNovoPagamentoUseCase(processaNovoPagamentoAdapterGateway, buscaPagamentoUseCase);
     }
 
     @Bean
@@ -67,31 +63,34 @@ public class BeanPagamentoConfiguration {
     }
 
     @Bean
-    IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase(IAtualizaStatusPagamentoRepositoryAdapterGateway atualizaStatusPagamentoAdapterGateway){
-        return new AtualizaStatusPagamentoUseCase(atualizaStatusPagamentoAdapterGateway);
+    IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase(IAtualizaStatusPagamentoRepositoryAdapterGateway atualizaStatusPagamentoAdapterGateway,
+                                                                   IBuscaPagamentoUseCase buscaPagamentoUseCase, IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase){
+        return new AtualizaStatusPagamentoUseCase(atualizaStatusPagamentoAdapterGateway,
+                buscaPagamentoUseCase, pagamentoPedidoIntegrationUseCase);
     }
 
     @Bean
-    IEnviaPagamentoAoGatewayPagamentosRepositoryAdapterGateway enviaPagamentoAoGatewayPagamentosAdapterGateway(SpringPagamentoRepository springPagamentoRepository){
-        return new EnviaPagamentoParaGatewayPagamentosRepositoryAdapterGateway(springPagamentoRepository);
+    IEnviaPagamentoAoGatewayPagamentosUseCase enviaPagamentoAoGatewayPagamentosUseCase(IBuscaPagamentoUseCase buscaPagamentoUseCase,
+                                                                                       IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase){
+        return new EnviaPagamentoAoGatewayPagamentosUseCase(buscaPagamentoUseCase, atualizaStatusPagamentoUsecase);
     }
 
     @Bean
-    IEnviaPagamentoAoGatewayPagamentosUseCase enviaPagamentoAoGatewayPagamentosUseCase(IEnviaPagamentoAoGatewayPagamentosRepositoryAdapterGateway enviaPagamentoAoGatewayPagamentosAdapterGateway){
-        return new EnviaPagamentoAoGatewayPagamentosUseCase(enviaPagamentoAoGatewayPagamentosAdapterGateway);
+    IEnviaPagamentoGatewayRestAdapterController enviaPagamentoGatewayRestAdapterController(IEnviaPagamentoAoGatewayPagamentosUseCase enviaPagamentoAoGatewayPagamentosUseCase){
+        return new EnviaPagamentoAoGatewayRestAdapterController(enviaPagamentoAoGatewayPagamentosUseCase);
     }
 
     @Bean
-    IEnviaPagamentoGatewayRestAdapterController enviaPagamentoGatewayRestAdapterController(IEnviaPagamentoAoGatewayPagamentosUseCase enviaPagamentoAoGatewayPagamentosUseCase,
-                                                                                           IProcessaNovoPagamentoUseCase processaNovoPagamentoUseCase,
-                                                                                           IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase,
-                                                                                           IBuscaPagamentoUseCase buscaPagamentoUseCase){
-        return new EnviaPagamentoAoGatewayRestAdapterController(enviaPagamentoAoGatewayPagamentosUseCase,
-                processaNovoPagamentoUseCase, atualizaStatusPagamentoUsecase, buscaPagamentoUseCase);
+    IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController(IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase){
+        return new AtualizaStatusPagamentoRestAdapterController(atualizaStatusPagamentoUsecase);
+    }
+    @Bean
+    IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway(IPedidoIntegration pedidoIntegration, IPagamentoPedidoIntegration pagamentoPedidoIntegration){
+        return new PagamentoPedidoIntegrationGateway(pedidoIntegration, pagamentoPedidoIntegration);
     }
 
     @Bean
-    IAtualizaPagamentoRestAdapterController atualizaPagamentoRestAdapterController(IAtualizaStatusPagamentoUsecase atualizaStatusPagamentoUsecase, IBuscaPagamentoUseCase buscaPagamentoUseCase){
-        return new AtualizaStatusPagamentoRestAdapterController(atualizaStatusPagamentoUsecase, buscaPagamentoUseCase);
+    IPagamentoPedidoIntegrationUseCase pagamentoPedidoIntegrationUseCase(IPagamentoPedidoIntegrationGateway pagamentoPedidoIntegrationGateway, IBuscaPagamentoUseCase buscaPagamentoUseCase){
+        return new PagamentoPedidoIntegrationUseCase(pagamentoPedidoIntegrationGateway, buscaPagamentoUseCase);
     }
 }

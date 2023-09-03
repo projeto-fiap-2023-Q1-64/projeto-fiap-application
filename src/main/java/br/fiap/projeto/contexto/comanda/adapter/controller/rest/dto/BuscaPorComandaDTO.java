@@ -10,5 +10,5 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BuscaPorComandaDTO {
-    private UUID codigoComanda;
+    private UUID codigoPedido;
 }

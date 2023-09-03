@@ -1,5 +1,7 @@
 package br.fiap.projeto.contexto.pagamento.external.api.exceptions;
 
+import br.fiap.projeto.contexto.pagamento.external.integration.exceptions.InvalidOperationIntegrationException;
+import br.fiap.projeto.contexto.pagamento.external.integration.exceptions.PagamentoPedidoIntegrationException;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceAlreadyInProcessException;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.ResourceNotFoundException;
 import br.fiap.projeto.contexto.pagamento.usecase.exceptions.UnprocessablePaymentException;
@@ -55,12 +57,43 @@ public class ResourceExceptionHandler {
         StandardError standardError = new StandardError();
         standardError.setTimestamp(Instant.now());
         standardError.setStatus(status.value());
-        standardError.setError("Pagamento solicitado sobre o recurso não pode ser processado. Um pagamento já está em andamento.");
+        standardError.setError("Pagamento solicitado sobre o recurso não pode ser processado.");
         standardError.setMessage(exception.getMessage());
         standardError.setPath(request.getRequestURI());
 
         return ResponseEntity.status(status).body(standardError);
     }
 
+
+    @ExceptionHandler(PagamentoPedidoIntegrationException.class)
+    public ResponseEntity<StandardError> integrationFailed(PagamentoPedidoIntegrationException exception,
+                                                        HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_GATEWAY;
+
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(status.value());
+        standardError.setError("Não foi possível estabelecer a integração.");
+        standardError.setMessage(exception.getMessage());
+        standardError.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(standardError);
+    }
+@ExceptionHandler(InvalidOperationIntegrationException.class)
+public ResponseEntity<StandardError> integrationOperationFailed(InvalidOperationIntegrationException exception,
+                                                       HttpServletRequest request) {
+
+    HttpStatus status = HttpStatus.BAD_GATEWAY ;
+
+    StandardError standardError = new StandardError();
+    standardError.setTimestamp(Instant.now());
+    standardError.setStatus(status.value());
+    standardError.setError("Naõ foi efetuar a atualização do status do pagamento durante a integração");
+    standardError.setMessage(exception.getMessage());
+    standardError.setPath(request.getRequestURI());
+
+    return ResponseEntity.status(status).body(standardError);
+}
 
 }

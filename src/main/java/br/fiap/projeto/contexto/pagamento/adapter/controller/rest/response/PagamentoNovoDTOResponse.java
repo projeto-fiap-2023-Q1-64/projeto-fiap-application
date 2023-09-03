@@ -10,11 +10,6 @@ public class PagamentoNovoDTOResponse {
     private StatusPagamento status;
 
 
-    public PagamentoNovoDTOResponse(String codigoPedido, StatusPagamento status) {
-        this.codigoPedido = codigoPedido;
-        this.status = status;
-    }
-
     //INFO usado no retorno da criação de um Novo Pagamento
     public PagamentoNovoDTOResponse(Pagamento pagamento) {
         this.setCodigoPedido(pagamento.getCodigoPedido());

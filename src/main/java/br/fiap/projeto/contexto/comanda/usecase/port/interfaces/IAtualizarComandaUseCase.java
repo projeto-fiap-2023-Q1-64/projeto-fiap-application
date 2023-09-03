@@ -1,11 +1,12 @@
 package br.fiap.projeto.contexto.comanda.usecase.port.interfaces;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.IntegracaoPedidoException;
 
 import java.util.UUID;
 
 public interface IAtualizarComandaUseCase {
-    Comanda atualizar(UUID codigoComanda) throws ExceptionMessage;
+    Comanda alterarStatus(UUID codigoPedido) throws EntradaInvalidaException, IntegracaoPedidoException;
 
 }

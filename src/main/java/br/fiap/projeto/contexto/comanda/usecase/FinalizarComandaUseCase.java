@@ -1,57 +1,65 @@
 package br.fiap.projeto.contexto.comanda.usecase;
 
-import br.fiap.projeto.contexto.comanda.entity.Comanda;
-import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
-import br.fiap.projeto.contexto.comanda.external.exception.ExceptionMessage;
-import br.fiap.projeto.contexto.comanda.external.integration.ComandaPedidoIntegration;
-import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.IBuscarPorComandaRepositoryUseCase;
-import br.fiap.projeto.contexto.comanda.usecase.port.repositoryInterface.ICriarComandaRepositoryUseCase;
+import java.util.Optional;
+import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.UUID;
+
+import br.fiap.projeto.contexto.comanda.entity.Comanda;
+import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
+import br.fiap.projeto.contexto.comanda.external.integration.ComandaPedidoIntegration;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.IntegracaoPedidoException;
+import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IAtualizarComandaUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IAtualizarComandaRepositoryUseCase;
+import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorComandaPorCodigoPedidoRepositoryUseCase;
 
 public class FinalizarComandaUseCase implements IAtualizarComandaUseCase {
 
-    private final IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase;
+    private final IBuscarPorComandaPorCodigoPedidoRepositoryUseCase buscarComandaPorCodigoPedidoRepositoryUseCase;
     private final ComandaPedidoIntegration comandaPedidoIntegration;
-    private final ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase;
+    private final IAtualizarComandaRepositoryUseCase finalizaComandaRepositoryUseCase;
 
     public FinalizarComandaUseCase(
-            IBuscarPorComandaRepositoryUseCase buscarComandaRepositoryUseCase,
+            IBuscarPorComandaPorCodigoPedidoRepositoryUseCase buscarComandaPorCodigoPedidoRepositoryUseCase,
             ComandaPedidoIntegration comandaPedidoIntegration,
-            ICriarComandaRepositoryUseCase criarComandaRepositoryUseCase) {
-        this.buscarComandaRepositoryUseCase = buscarComandaRepositoryUseCase;
+            IAtualizarComandaRepositoryUseCase finalizaComandaRepositoryUseCase) {
+        this.buscarComandaPorCodigoPedidoRepositoryUseCase = buscarComandaPorCodigoPedidoRepositoryUseCase;
         this.comandaPedidoIntegration = comandaPedidoIntegration;
-        this.criarComandaRepositoryUseCase = criarComandaRepositoryUseCase;
+        this.finalizaComandaRepositoryUseCase = finalizaComandaRepositoryUseCase;
     }
 
     @Override
-    public Comanda atualizar(UUID codigoComanda) throws ExceptionMessage {
-
-        Comanda comanda = this.buscar(codigoComanda);
-        if (comanda.getStatus().equals(StatusComanda.EM_PREPARACAO)) {
-            comanda.atualizaStatus(StatusComanda.FINALIZADO);
-            UUID codigo = enviarStatusPedido(comanda.getCodigoPedido());
-            if (codigo == null) {
-                throw new ExceptionMessage(comanda.getStatus().toString());
-            }
-
+    public Comanda alterarStatus(UUID codigoPedido) throws EntradaInvalidaException, IntegracaoPedidoException {
+        Comanda comanda = this.buscar(codigoPedido);
+        if (!comanda.getStatus().equals(StatusComanda.EM_PREPARACAO)) {
+            throw new EntradaInvalidaException(
+                    "Status da comanda inválido para esta operação! Precisa estar em EM_PREPARACAO.");
         }
-        return criarComandaRepositoryUseCase.criar(comanda);
-    }
 
-    private Comanda buscar(UUID codigoComanda) throws ExceptionMessage {
-        Comanda comanda = buscarComandaRepositoryUseCase
-                .buscar(codigoComanda);
-        if (comanda.getCodigoComanda() == null) {
-            new EntityNotFoundException("Comanda não encontrada!");
+        comanda.atualizaStatus(StatusComanda.FINALIZADO);
+        comanda = finalizaComandaRepositoryUseCase.atualizar(comanda);
+
+        String codigo = enviarStatusPedido(comanda.getCodigoPedido());
+        if (codigo.equals(null)) {
+            throw new EntradaInvalidaException(comanda.getStatus().toString());
         }
         return comanda;
     }
 
-    private UUID enviarStatusPedido(UUID codigoPedido) {
-        return comandaPedidoIntegration.prontificar(codigoPedido.toString()).getBody();
+    private Comanda buscar(UUID codigoPedido) throws EntradaInvalidaException {
+        Optional<Comanda> comanda = buscarComandaPorCodigoPedidoRepositoryUseCase.buscar(codigoPedido);
+        comanda.orElseThrow(() -> new EntityNotFoundException("Comanda não encontrada!"));
+        return comanda.get();
+    }
+
+    private String enviarStatusPedido(UUID codigoPedido) throws IntegracaoPedidoException {
+        try {
+            return comandaPedidoIntegration.prontificar(codigoPedido.toString()).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IntegracaoPedidoException("Erro ao tentar informar status pronto ao pedido!");
+        }
     }
 
 }
