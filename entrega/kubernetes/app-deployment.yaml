@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: c-projetofiap-deployment
-          image: rm350010/projeto-fiap-1:kubernetes-v1
+          image: rm350010/projeto-fiap-1:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
