@@ -23,6 +23,12 @@ para alterar o contexto para o docker-desktop (se necessário)
 
 > http://localhost:31500/swagger-ui/index.html
 
+### Docs do projeto
+
+>[Estrutura do projeto](ESTRUTURA.md)
+
+>[Roteiro do fluxo principal (Atualizado)](https://liniis.notion.site/Walkthrough-Fluxo-de-Eventos-da-Lanchonete-Totem-f18dfb5a87674d93899a6bbde1ae1695)
+
 ---
 ## Entrega Fase 1
 
