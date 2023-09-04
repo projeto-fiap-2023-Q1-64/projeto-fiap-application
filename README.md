@@ -8,7 +8,7 @@
 - Richard Cardoso (RM350010)
 
 ---
-## Fase 2
+## Entrega Fase 2
 
 ### Execução kubernetes (local)
 
