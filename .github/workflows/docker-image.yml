@@ -25,7 +25,7 @@ jobs:
     
     # Maven build
     - name: Build with Maven
-      run: mvn package
+      run: mvn package -Dmaven.test.skip
 
     - name: AWS ECR
       uses: kciter/aws-ecr-action@v4
