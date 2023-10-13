@@ -27,6 +27,7 @@ jobs:
     - name: Build with Maven
       run: mvn package -Dmaven.test.skip
 
+    # Build docker image and push to ecr
     - name: AWS ECR
       uses: kciter/aws-ecr-action@v4
       with:
@@ -36,11 +37,3 @@ jobs:
         repo: projeto-fiap
         region: us-east-1
         create_repo: true
-    
-    # Build Docker image
-    - name: Build Docker image
-      run: docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-
-    # Push Docker image
-    - name: Push Docker image
-      run: docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
