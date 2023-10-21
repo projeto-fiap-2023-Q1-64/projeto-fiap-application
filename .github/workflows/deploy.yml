@@ -17,8 +17,6 @@ jobs:
       CLUSTER_NAME: 'projeto-fiap'
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
         
     - name: Setup AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
@@ -40,30 +38,33 @@ jobs:
             aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME
 
     # Setup Maven and JDK
-    #- name: Set up JDK 11
-    #  uses: actions/setup-java@v2
-    #  with:
-    #    distribution: 'adopt'
-    #    java-version: '11'
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
 
     # Maven build
-    #- name: Build with Maven
-    #  run: mvn package -Dmaven.test.skip
+    - name: Build with Maven
+      run: mvn package -Dmaven.test.skip
 
             
     # Build docker image and push to ecr
-    #- name: AWS ECR
-    #  uses: kciter/aws-ecr-action@v4
-    #  with:
-    #    access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #    secret_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-    #    account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-    #    repo: projeto-fiap
-    #    region: us-east-1
-    #    create_repo: true
+    - name: AWS ECR
+      uses: kciter/aws-ecr-action@v4
+      with:
+        access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+        account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+        repo: projeto-fiap
+        region: us-east-1
+        create_repo: true
 
-    # Set up kubeconfig file
-    - name: Kubeconfig setup
+    # Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Deploy to kubernetes cluster
+    - name: kubernetes deploy
       run:  |
-            # kubectl apply -f ./entrega/kubernetes
-            ls -l
+            kubectl apply -f ./entrega/kubernetes
