@@ -3,7 +3,6 @@ name: Deploy Infrastructure
 on:
   push:
     branches: [ "main" ]
-  pull_request:
 
 jobs:
   trigger:
