@@ -53,6 +53,9 @@ jobs:
     # Set up kubeconfig file
     - name: Kubeconfig setup
       run:  |
+            echo $CLUSTER_NAME
+            echo $AWS_DEFAULT_REGION
+            echo $AWS_ACCESS_KEY_ID
             aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME
             
     # Build docker image and push to ecr
