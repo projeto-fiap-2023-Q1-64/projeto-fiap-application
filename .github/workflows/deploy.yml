@@ -44,6 +44,10 @@ jobs:
         distribution: 'adopt'
         java-version: '11'
 
+    # Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     # Maven build
     - name: Build with Maven
       run: mvn package -Dmaven.test.skip
@@ -59,10 +63,6 @@ jobs:
         repo: projeto-fiap
         region: us-east-1
         create_repo: true
-
-    # Checkout code
-    - name: Checkout code
-      uses: actions/checkout@v2
 
     # Deploy to kubernetes cluster
     - name: kubernetes deploy
