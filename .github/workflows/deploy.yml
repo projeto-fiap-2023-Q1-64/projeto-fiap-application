@@ -6,12 +6,6 @@ on:
   push:
     branches: [ "main" ]
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: 'us-east-1'
-  CLUSTER_NAME: 'projeto-fiap'
-
 jobs:
 
   build-and-push:
@@ -29,10 +23,6 @@ jobs:
         distribution: 'adopt'
         java-version: '11'
     
-    # Maven build
-    - name: Build with Maven
-      run: mvn package -Dmaven.test.skip
-
     # Install aws cli v2
     - name: AWS CLI
       run:  |
@@ -52,11 +42,21 @@ jobs:
 
     # Set up kubeconfig file
     - name: Kubeconfig setup
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: 'us-east-1'
+        CLUSTER_NAME: 'projeto-fiap'
       run:  |
             echo $CLUSTER_NAME
             echo $AWS_DEFAULT_REGION
             echo $AWS_ACCESS_KEY_ID
             aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME
+
+    # Maven build
+    #- name: Build with Maven
+    #  run: mvn package -Dmaven.test.skip
+
             
     # Build docker image and push to ecr
     #- name: AWS ECR
