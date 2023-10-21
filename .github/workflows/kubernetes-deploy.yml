@@ -2,8 +2,6 @@ name: "Docker Image Deploy"
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
 
 jobs:
 
