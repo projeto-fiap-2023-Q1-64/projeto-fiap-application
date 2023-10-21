@@ -40,7 +40,8 @@ jobs:
             unzip -q /tmp/awscliv2.zip -d /tmp
             rm /tmp/awscliv2.zip
             sudo /tmp/aws/install --update
-            rm -rf /tmp/aws/            
+            rm -rf /tmp/aws/         
+            aws --version
 
     # Install kubectl
     - name: kubectl
@@ -52,7 +53,7 @@ jobs:
     # Set up kubeconfig file
     - name: Kubeconfig setup
       run:  |
-            aws eks update-kubeconfig --region {{ env.AWS_DEFAULT_REGION }} --name {{ env.CLUSTER_NAME }}
+            aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME
             
     # Build docker image and push to ecr
     #- name: AWS ECR
