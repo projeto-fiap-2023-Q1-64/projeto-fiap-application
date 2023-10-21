@@ -19,4 +19,4 @@ jobs:
         workflow: terraform-apply.yml
         token: ${{ secrets.PAT }}  # Personal Access Token with repo scope
         repo: richard-cardosodev/projeto-fiap-iac-infra
-        inputs: '{"message": "Triggered from application deployment workflow"}'
+        #inputs: '{"message": "Triggered from application deployment workflow"}'
