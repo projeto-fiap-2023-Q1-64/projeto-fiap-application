@@ -19,23 +19,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    
-    # Setup Maven and JDK
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
+        
+    - name: Setup AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        distribution: 'adopt'
-        java-version: '11'
-    
-    # Install aws cli v2
-    - name: AWS CLI
-      run:  |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
-            unzip -q /tmp/awscliv2.zip -d /tmp
-            rm /tmp/awscliv2.zip
-            sudo /tmp/aws/install --update
-            rm -rf /tmp/aws/         
-            aws --version
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: $AWS_DEFAULT_REGION
 
     # Install kubectl
     - name: kubectl
@@ -46,13 +36,15 @@ jobs:
 
     # Set up kubeconfig file
     - name: Kubeconfig setup
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run:  |
-            echo $CLUSTER_NAME
-            echo $AWS_DEFAULT_REGION
             aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME
+
+    # Setup Maven and JDK
+    #- name: Set up JDK 11
+    #  uses: actions/setup-java@v2
+    #  with:
+    #    distribution: 'adopt'
+    #    java-version: '11'
 
     # Maven build
     #- name: Build with Maven
