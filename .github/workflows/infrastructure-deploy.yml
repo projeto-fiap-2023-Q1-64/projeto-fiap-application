@@ -1,0 +1,22 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Trigger Infrastructure Deploy Workflow
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        ref: refs/heads/main
+        workflow: terraform-apply.yml
+        token: ${{ secrets.PAT }}  # Personal Access Token with repo scope
+        repo: richard-cardosodev/projeto-fiap-iac-infra
+        #inputs: '{"message": "Triggered from application deployment workflow"}'
