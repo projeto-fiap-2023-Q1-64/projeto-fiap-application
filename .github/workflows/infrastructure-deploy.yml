@@ -1,0 +1,21 @@
+name: Triggering Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Trigger Target Workflow
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: terraform-apply.yml
+        token: ${{ secrets.PAT }}  # Personal Access Token with repo scope
+        repo: richard-cardosodev/projeto-fiap-iac-infra
+        inputs: '{"reason": "Triggered from application workflow"}'
