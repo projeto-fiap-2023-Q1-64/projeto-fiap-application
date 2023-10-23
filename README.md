@@ -8,6 +8,13 @@
 - Richard Cardoso (RM350010)
 
 ---
+## Entrega Fase 3
+
+### Subida do ambiente:
+
+* Passo 1: 
+
+---
 ## Entrega Fase 2
 
 ### Execução kubernetes (local)
