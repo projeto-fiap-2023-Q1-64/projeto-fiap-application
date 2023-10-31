@@ -4,6 +4,9 @@ import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
 import br.fiap.projeto.contexto.pedido.entity.Pedido;
 import br.fiap.projeto.contexto.pedido.external.repository.entity.ItemPedidoEntity;
 import br.fiap.projeto.contexto.pedido.external.repository.entity.PedidoEntity;
+import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
+import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,9 +39,18 @@ public class PedidoMapper {
                                 pedido.getDataCriacao());
         }
 
-        public static Pedido toDomain(PedidoEntity pedidoEntity) {
+        public static Pedido toDomain(PedidoEntity pedidoEntity) throws InvalidStatusException, NoItensException {
                 List<ItemPedido> itensPedido = pedidoEntity.getItens().stream()
-                                .map(ItemPedidoMapper::toDomain)
+                                .map(t -> {
+                                        try {
+                                                return ItemPedidoMapper.toDomain(t);
+                                        } catch (InvalidStatusException e) {
+                                                e.printStackTrace();
+                                        } catch (NoItensException e) {
+                                                e.printStackTrace();
+                                        }
+                                        return null;
+                                })
                                 .collect(Collectors.toList());
                 return new Pedido(pedidoEntity.getCodigo(),
                                 itensPedido,
@@ -48,7 +60,8 @@ public class PedidoMapper {
                                 pedidoEntity.getDataCriacao());
         }
 
-        public static Pedido toDomainWithoutItens(PedidoEntity pedidoEntity) {
+        public static Pedido toDomainWithoutItens(PedidoEntity pedidoEntity)
+                        throws InvalidStatusException, NoItensException {
                 return new Pedido(pedidoEntity.getCodigo(),
                                 null,
                                 pedidoEntity.getCliente(),

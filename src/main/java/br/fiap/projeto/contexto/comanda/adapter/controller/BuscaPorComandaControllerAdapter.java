@@ -5,6 +5,7 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.BuscaPorComa
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaNaoEncontradaException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.StatusNuloException;
 import br.fiap.projeto.contexto.comanda.usecase.port.interfaces.IBuscaPorComandaUseCase;
 
 public class BuscaPorComandaControllerAdapter implements IBuscaPorComandaControllerAdapter {
@@ -17,7 +18,7 @@ public class BuscaPorComandaControllerAdapter implements IBuscaPorComandaControl
 
     @Override
     public ComandaDTO buscaPorComanda(BuscaPorComandaDTO buscaPorComandaDTO)
-            throws EntradaInvalidaException, ComandaNaoEncontradaException {
+            throws EntradaInvalidaException, ComandaNaoEncontradaException, StatusNuloException {
         return ComandaDTO.newInstanceFromComanda(
                 buscaPorComandaUseCase.buscaComandaPorStatus(buscaPorComandaDTO.getCodigoPedido()));
     }

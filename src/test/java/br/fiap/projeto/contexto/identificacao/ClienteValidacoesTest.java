@@ -18,8 +18,7 @@ public class ClienteValidacoesTest {
         assertThrows(
                 EntradaInvalidaException.class,
                 () -> new Cliente(UUID.randomUUID().toString(), "nome1", "123", "teste@teste.com"),
-                Cpf.CPF_INVALIDO
-        );
+                Cpf.CPF_INVALIDO);
     }
 
     @Test
@@ -28,8 +27,7 @@ public class ClienteValidacoesTest {
         assertThrows(
                 EntradaInvalidaException.class,
                 () -> new Cliente(UUID.randomUUID().toString(), "nome1", "01234567890", "teste"),
-                Email.EMAIL_INVALIDO
-        );
+                Email.EMAIL_INVALIDO);
     }
 
     @Test
@@ -38,8 +36,7 @@ public class ClienteValidacoesTest {
         assertThrows(
                 EntradaInvalidaException.class,
                 () -> new Cliente(null, "nome1", "01234567890", "teste@teste.com"),
-                Cliente.CODIGO_AUSENTE
-        );
+                Cliente.CODIGO_AUSENTE);
     }
 
     @Test
@@ -48,8 +45,7 @@ public class ClienteValidacoesTest {
         assertThrows(
                 EntradaInvalidaException.class,
                 () -> new Cliente(UUID.randomUUID().toString(), null, "01234567890", "teste@teste.com"),
-                Cliente.CPF_AUSENTE
-        );
+                Cliente.CPF_AUSENTE);
     }
 
     @Test
@@ -58,8 +54,7 @@ public class ClienteValidacoesTest {
         assertThrows(
                 EntradaInvalidaException.class,
                 () -> new Cliente(UUID.randomUUID().toString(), "nome1", "01234567890", null),
-                Cliente.EMAIL_AUSENTE
-        );
+                Cliente.EMAIL_AUSENTE);
     }
 
     @Test
@@ -68,7 +63,6 @@ public class ClienteValidacoesTest {
         assertThrows(
                 EntradaInvalidaException.class,
                 () -> new Cliente(UUID.randomUUID().toString(), "nome1", null, "teste@teste.com"),
-                Cliente.CPF_AUSENTE
-        );
+                Cliente.CPF_AUSENTE);
     }
 }

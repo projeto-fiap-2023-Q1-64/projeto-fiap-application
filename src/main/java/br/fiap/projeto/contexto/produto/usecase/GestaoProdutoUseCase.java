@@ -49,7 +49,8 @@ public class GestaoProdutoUseCase implements IGestaoProdutoUseCase {
         if (produto == null) {
             throw new EntradaInvalidaException("Entrada inválida! Produto não deve ser nulo!");
         }
-        Produto newProduto = new Produto(UUID.randomUUID().toString(), produto.getNome(), produto.getDescricao(), produto.getPreco(), produto.getCategoria(), produto.getImagem(), produto.getTempoPreparoMin());
+        Produto newProduto = new Produto(UUID.randomUUID().toString(), produto.getNome(), produto.getDescricao(),
+                produto.getPreco(), produto.getCategoria(), produto.getImagem(), produto.getTempoPreparoMin());
         return produtoAdapterGateway.criaProduto(newProduto);
     }
 
@@ -62,9 +63,11 @@ public class GestaoProdutoUseCase implements IGestaoProdutoUseCase {
     }
 
     @Override
-    public void atualizaProduto(String codigo, Produto produto) throws ProdutoNaoEncontradoException {
+    public void atualizaProduto(String codigo, Produto produto)
+            throws ProdutoNaoEncontradoException, EntradaInvalidaException {
         Optional<Produto> produtoRecuperado = produtoAdapterGateway.buscaProduto(codigo);
         produtoRecuperado.orElseThrow(() -> new ProdutoNaoEncontradoException());
-        produtoAdapterGateway.atualizaProduto(new Produto(codigo, produto.getNome(), produto.getDescricao(), produto.getPreco(), produto.getCategoria(), produto.getImagem(), produto.getTempoPreparoMin()));
+        produtoAdapterGateway.atualizaProduto(new Produto(codigo, produto.getNome(), produto.getDescricao(),
+                produto.getPreco(), produto.getCategoria(), produto.getImagem(), produto.getTempoPreparoMin()));
     }
 }

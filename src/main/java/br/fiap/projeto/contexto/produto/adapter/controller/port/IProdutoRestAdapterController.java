@@ -10,10 +10,17 @@ import java.util.List;
 
 public interface IProdutoRestAdapterController {
     public List<ProdutoDTOResponse> buscaTodos();
+
     public ProdutoDTOResponse buscaProduto(String codigo) throws ProdutoNaoEncontradoException;
+
     public List<ProdutoDTOResponse> buscaProdutosPorCategoria(CategoriaProduto categoria);
+
     public ProdutoDTOResponse criaProduto(ProdutoDTORequest produtoDTORequest) throws EntradaInvalidaException;
+
     public void removeProduto(String codigo) throws ProdutoNaoEncontradoException;
-    public void atualizaProduto(String codigo, ProdutoDTORequest produtoDTO) throws ProdutoNaoEncontradoException;
+
+    public void atualizaProduto(String codigo, ProdutoDTORequest produtoDTO)
+            throws ProdutoNaoEncontradoException, EntradaInvalidaException;
+
     public List<String> getCategoriasDeProdutos();
 }
