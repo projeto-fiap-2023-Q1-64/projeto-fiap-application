@@ -36,142 +36,182 @@ import static org.junit.platform.commons.function.Try.success;
 @TestPropertySource("classpath:application.properties")
 @Slf4j
 public class IntegracaoTest {
-    private static final Integer SERVER_PORT = 8080;
-    private TestRestTemplate restTemplate;
+        private static final Integer SERVER_PORT = 8080;
+        private TestRestTemplate restTemplate;
 
-    @BeforeEach
-    public void setup() {
+        @BeforeEach
+        public void setup() {
 
-        restTemplate = new TestRestTemplate();
-        restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-    }
-
-    @Test
-    public void test() {
-
-        PedidoDTO pedido;
-        String codigoPedido;
-        List<ProdutoDTOResponse> produtos;
-        PedidoAPagarDTORequest pedidoAPagar;
-        HttpEntity<?> httpEntity;
-        PagamentoDTOResponse pagamentoPedido;
-        PagamentoAEnviarAoGatewayDTORequest pagamentoPendente;
-        PagamentoStatusDTORequest pagamentoStatusDTO;
-        ComandaDTO comanda;
-        List<ComandaDTO> comandasPendentes;
-
-        // Cria pedido
-        pedido = restTemplate.postForEntity(createUriWithPort("/pedidos"), null, PedidoDTO.class).getBody();
-
-        assertNotNull(pedido);
-        assertNotNull(pedido.getCodigo());
-        assertTrue(StringUtils.hasText(pedido.getCodigo().toString()));
-
-        codigoPedido = pedido.getCodigo().toString();
-
-        // Lista produtos existentes
-        produtos = restTemplate.exchange(createUriWithPort("/produtos"), HttpMethod.GET, null, new ParameterizedTypeReference<List<ProdutoDTOResponse>>(){}).getBody();
-
-        assertFalse(CollectionUtils.isEmpty(produtos));
-
-        // Adiciona os produtos no pedido
-        for (ProdutoDTOResponse p : produtos) {
-            pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/adicionar-produto/" + p.getCodigo()), HttpMethod.POST, null, PedidoDTO.class).getBody();
+                restTemplate = new TestRestTemplate();
+                restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         }
-        assertNotNull(pedido);
-        assertNotNull(pedido.getItens());
-        assertTrue(pedido.getItens().stream()
-                .allMatch(x -> produtos.stream()
-                        .anyMatch(y -> y.getCodigo().equals(x.getProdutoCodigo().toString()))
-                )
-        );
-        assertEquals(pedido.getCodigo().toString(), codigoPedido);
 
-        // Altera status do pedido para recebido - @PutMapping("/{codigo}/pagar")
-        pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/pagar"), HttpMethod.PUT, null, PedidoDTO.class).getBody();
-        assertNotNull(pedido);
-        assertNotNull(pedido.getStatus());
-        assertEquals(pedido.getStatus(), StatusPedido.RECEBIDO);
-        assertEquals(pedido.getCodigo().toString(), codigoPedido);
+        @Test
+        public void test() {
 
-        // Cria novo pagamento - PagamentoProcessaNovoApiController /pagamento/processa/novo-pagamento
-        pedidoAPagar = new PedidoAPagarDTORequest(codigoPedido, pedido.getValorTotal());
-        httpEntity = new HttpEntity<>(pedidoAPagar);
-        restTemplate.exchange(createUriWithPort("/pagamento/processa/novo-pagamento"), HttpMethod.POST, httpEntity, Void.class);
+                PedidoDTO pedido;
+                String codigoPedido;
+                List<ProdutoDTOResponse> produtos;
+                PedidoAPagarDTORequest pedidoAPagar;
+                HttpEntity<?> httpEntity;
+                PagamentoDTOResponse pagamentoPedido;
+                PagamentoAEnviarAoGatewayDTORequest pagamentoPendente;
+                PagamentoStatusDTORequest pagamentoStatusDTO;
+                ComandaDTO comanda;
+                List<ComandaDTO> comandasPendentes;
 
-        // Recupera pedido por código para verificação de status - /por-status/{status}
-        // Valida se o estado alterou para PENDING
-        pagamentoPedido = restTemplate.exchange(createUriWithPort("/pagamento/busca/por-codigo-pedido/" + codigoPedido), HttpMethod.GET, null, PagamentoDTOResponse.class).getBody();
-        assertNotNull(pagamentoPedido);
-        assertEquals(pagamentoPedido.getCodigoPedido(), codigoPedido);
-        assertEquals(pagamentoPedido.getStatus(), StatusPagamento.PENDING);
+                // Cria pedido
+                pedido = restTemplate.postForEntity(createUriWithPort("/pedidos"), null, PedidoDTO.class).getBody();
 
-        // Envia para o gateway de pagamento - status é alterado para em_processamento - /pagamento/gateway/gateway-de-pagamento
-        pagamentoPendente = new PagamentoAEnviarAoGatewayDTORequest(new Pagamento(codigoPedido, pagamentoPedido.getValorTotal(), StatusPagamento.IN_PROCESS, Calendar.getInstance().getTime()));
-        httpEntity = new HttpEntity<>(pagamentoPendente);
-        restTemplate.postForObject(createUriWithPort("/pagamento/gateway/gateway-de-pagamento"), httpEntity, Void.class);
+                assertNotNull(pedido);
+                assertNotNull(pedido.getCodigo());
+                assertTrue(StringUtils.hasText(pedido.getCodigo().toString()));
 
-        // Recupera pedido por código para verificação de status - /por-status/{status}
-        // Valida se o estado alterou para IN_PROCESS
-        pagamentoPedido = restTemplate.exchange(createUriWithPort("/pagamento/busca/por-codigo-pedido/" + codigoPedido), HttpMethod.GET, null, PagamentoDTOResponse.class).getBody();
-        assertNotNull(pagamentoPedido);
-        assertEquals(pagamentoPedido.getCodigoPedido(), codigoPedido);
-        assertEquals(pagamentoPedido.getStatus(), StatusPagamento.IN_PROCESS);
+                codigoPedido = pedido.getCodigo().toString();
 
-         // Chama endpoint de retorno do gateway -
-         pagamentoStatusDTO = new PagamentoStatusDTORequest(codigoPedido, StatusPagamento.APPROVED);
-         httpEntity = new HttpEntity<>(pagamentoStatusDTO);
-         restTemplate.patchForObject(createUriWithPort("/pagamento/retorno-gateway/atualiza-status"), httpEntity, Void.class);
+                // Lista produtos existentes
+                produtos = restTemplate.exchange(createUriWithPort("/produtos"), HttpMethod.GET, null,
+                                new ParameterizedTypeReference<List<ProdutoDTOResponse>>() {
+                                }).getBody();
 
-        // Recupera pedido por código para verificação de status - /por-status/{status}
-        // Valida se o estado alterou para aprovado
-        pagamentoPedido = restTemplate.exchange(createUriWithPort("/pagamento/busca/por-codigo-pedido/" + codigoPedido), HttpMethod.GET, null, PagamentoDTOResponse.class).getBody();
-        assertNotNull(pagamentoPedido);
-        assertEquals(pagamentoPedido.getStatus(), StatusPagamento.APPROVED);
+                assertFalse(CollectionUtils.isEmpty(produtos));
 
-        // Pedido atualiza o status dele (pra pago) -> /{codigo}/verificar-pagamento"
-        pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/atualizar-pagamento"), HttpMethod.PATCH, null, PedidoDTO.class).getBody();
-        assertNotNull(pedido);
-        assertEquals(StatusPedido.PAGO, pedido.getStatus());
+                // Adiciona os produtos no pedido
+                for (ProdutoDTOResponse p : produtos) {
+                        pedido = restTemplate
+                                        .exchange(createUriWithPort("/pedidos/" + codigoPedido + "/adicionar-produto/"
+                                                        + p.getCodigo()),
+                                                        HttpMethod.POST, null, PedidoDTO.class)
+                                        .getBody();
+                }
+                assertNotNull(pedido);
+                assertNotNull(pedido.getItens());
+                assertTrue(pedido.getItens().stream()
+                                .allMatch(x -> produtos.stream()
+                                                .anyMatch(y -> y.getCodigo().equals(x.getProdutoCodigo().toString()))));
+                assertEquals(pedido.getCodigo().toString(), codigoPedido);
 
-        // Pedido cria a comanda => @PatchMapping("/{codigo}/enviar-comanda")
-        pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/enviar-comanda"), HttpMethod.PATCH, null, PedidoDTO.class).getBody();
-        assertNotNull(pedido);
-        assertEquals(StatusPedido.EM_PREPARACAO, pedido.getStatus());
+                // Altera status do pedido para recebido - @PutMapping("/{codigo}/pagar")
+                pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/pagar"), HttpMethod.PUT,
+                                null,
+                                PedidoDTO.class).getBody();
+                assertNotNull(pedido);
+                assertNotNull(pedido.getStatus());
+                assertEquals(pedido.getStatus(), StatusPedido.RECEBIDO);
+                assertEquals(pedido.getCodigo().toString(), codigoPedido);
 
-        // Busca comandas pendentes => @GetMapping("/comandas/busca-pendentes")
-        comandasPendentes = restTemplate.exchange(createUriWithPort("/comandas/busca-recebido"), HttpMethod.GET, null, new ParameterizedTypeReference<List<ComandaDTO>>(){}).getBody();
-        assertNotNull(comandasPendentes);
-        assertFalse(CollectionUtils.isEmpty(comandasPendentes));
+                // Cria novo pagamento - PagamentoProcessaNovoApiController
+                // /pagamento/processa/novo-pagamento
+                pedidoAPagar = new PedidoAPagarDTORequest(codigoPedido, pedido.getValorTotal());
+                httpEntity = new HttpEntity<>(pedidoAPagar);
+                restTemplate.exchange(createUriWithPort("/pagamento/processa/novo-pagamento"), HttpMethod.POST,
+                                httpEntity,
+                                Void.class);
 
-        comanda = comandasPendentes.stream()
-                .filter(c -> codigoPedido.equals(c.getCodigoPedido().toString()))
-                .findFirst()
-                .orElse(null);
-        assertNotNull(comanda);
+                // Recupera pedido por código para verificação de status - /por-status/{status}
+                // Valida se o estado alterou para PENDING
+                pagamentoPedido = restTemplate
+                                .exchange(createUriWithPort("/pagamento/busca/por-codigo-pedido/" + codigoPedido),
+                                                HttpMethod.GET, null, PagamentoDTOResponse.class)
+                                .getBody();
+                assertNotNull(pagamentoPedido);
+                assertEquals(pagamentoPedido.getCodigoPedido(), codigoPedido);
+                assertEquals(pagamentoPedido.getStatus(), StatusPagamento.PENDING);
 
-        // Comanda atualiza o estado da comanda para preparação
-        comanda = restTemplate.exchange(createUriWithPort("/comandas/" + comanda.getCodigoComanda() + "/preparar"), HttpMethod.PATCH, null, ComandaDTO.class).getBody();
-        assertNotNull(comanda);
-        assertEquals(StatusComanda.EM_PREPARACAO, comanda.getStatus());
+                // Envia para o gateway de pagamento - status é alterado para em_processamento -
+                // /pagamento/gateway/gateway-de-pagamento
+                pagamentoPendente = new PagamentoAEnviarAoGatewayDTORequest(new Pagamento(codigoPedido,
+                                pagamentoPedido.getValorTotal(), StatusPagamento.IN_PROCESS,
+                                Calendar.getInstance().getTime()));
+                httpEntity = new HttpEntity<>(pagamentoPendente);
+                restTemplate.postForObject(createUriWithPort("/pagamento/gateway/gateway-de-pagamento"), httpEntity,
+                                Void.class);
 
-        // Comanda atualiza o status da comanda para finalizado =>  @PatchMapping("/{codigo-comanda}/finalizar")
-        // Ao mesmo tempo, comanda atualiza o status do pedido para pronto =>  @PutMapping("/{codigo}/prontificar")
-        comanda = restTemplate.exchange(createUriWithPort("/comandas/" + comanda.getCodigoComanda() + "/finalizar"), HttpMethod.PATCH, null, ComandaDTO.class).getBody();
-        assertNotNull(comanda);
-        assertEquals(StatusComanda.FINALIZADO, comanda.getStatus());
+                // Recupera pedido por código para verificação de status - /por-status/{status}
+                // Valida se o estado alterou para IN_PROCESS
+                pagamentoPedido = restTemplate
+                                .exchange(createUriWithPort("/pagamento/busca/por-codigo-pedido/" + codigoPedido),
+                                                HttpMethod.GET, null, PagamentoDTOResponse.class)
+                                .getBody();
+                assertNotNull(pagamentoPedido);
+                assertEquals(pagamentoPedido.getCodigoPedido(), codigoPedido);
+                assertEquals(pagamentoPedido.getStatus(), StatusPagamento.IN_PROCESS);
 
-        // Pedido chama rotina de entrega => @PatchMapping("/{codigo}/entregar")
-        pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/entregar"), HttpMethod.PUT, null, PedidoDTO.class).getBody();
-        assertNotNull(pedido);
-        assertEquals(StatusPedido.FINALIZADO, pedido.getStatus());
+                // Chama endpoint de retorno do gateway -
+                pagamentoStatusDTO = new PagamentoStatusDTORequest(codigoPedido, StatusPagamento.APPROVED);
+                httpEntity = new HttpEntity<>(pagamentoStatusDTO);
+                restTemplate.patchForObject(createUriWithPort("/pagamento/retorno-gateway/atualiza-status"), httpEntity,
+                                Void.class);
 
-        success("Sucesso galera!");
-    }
+                // Recupera pedido por código para verificação de status - /por-status/{status}
+                // Valida se o estado alterou para aprovado
+                pagamentoPedido = restTemplate
+                                .exchange(createUriWithPort("/pagamento/busca/por-codigo-pedido/" + codigoPedido),
+                                                HttpMethod.GET, null, PagamentoDTOResponse.class)
+                                .getBody();
+                assertNotNull(pagamentoPedido);
+                assertEquals(pagamentoPedido.getStatus(), StatusPagamento.APPROVED);
 
-    private URI createUriWithPort(String s) {
+                // Pedido atualiza o status dele (pra pago) -> /{codigo}/verificar-pagamento"
+                pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/atualizar-pagamento"),
+                                HttpMethod.PATCH, null, PedidoDTO.class).getBody();
+                assertNotNull(pedido);
+                assertEquals(StatusPedido.PAGO, pedido.getStatus());
 
-        String sUrl = String.format("http:////localhost:%d/%s", SERVER_PORT, s).replace("//", "/");
-        return URI.create(sUrl);
-    }
+                // Pedido cria a comanda => @PatchMapping("/{codigo}/enviar-comanda")
+                pedido = restTemplate.exchange(createUriWithPort("/pedidos/" + codigoPedido + "/enviar-comanda"),
+                                HttpMethod.PATCH, null, PedidoDTO.class).getBody();
+                assertNotNull(pedido);
+                assertEquals(StatusPedido.EM_PREPARACAO, pedido.getStatus());
+
+                // Busca comandas pendentes => @GetMapping("/comandas/busca-pendentes")
+                comandasPendentes = restTemplate
+                                .exchange(createUriWithPort("/comandas/busca-recebido"), HttpMethod.GET, null,
+                                                new ParameterizedTypeReference<List<ComandaDTO>>() {
+                                                })
+                                .getBody();
+                assertNotNull(comandasPendentes);
+                assertFalse(CollectionUtils.isEmpty(comandasPendentes));
+
+                comanda = comandasPendentes.stream()
+                                .filter(c -> codigoPedido.equals(c.getCodigoPedido().toString()))
+                                .findFirst()
+                                .orElse(null);
+                assertNotNull(comanda);
+
+                // Comanda atualiza o estado da comanda para preparação
+                comanda = restTemplate
+                                .exchange(createUriWithPort("/comandas/" + comanda.getCodigoComanda() + "/preparar"),
+                                                HttpMethod.PATCH, null, ComandaDTO.class)
+                                .getBody();
+                assertNotNull(comanda);
+                assertEquals(StatusComanda.EM_PREPARACAO, comanda.getStatus());
+
+                // Comanda atualiza o status da comanda para finalizado =>
+                // @PatchMapping("/{codigo-comanda}/finalizar")
+                // Ao mesmo tempo, comanda atualiza o status do pedido para pronto =>
+                // @PutMapping("/{codigo}/prontificar")
+                comanda = restTemplate
+                                .exchange(createUriWithPort("/comandas/" + comanda.getCodigoComanda() + "/finalizar"),
+                                                HttpMethod.PATCH, null, ComandaDTO.class)
+                                .getBody();
+                assertNotNull(comanda);
+                assertEquals(StatusComanda.FINALIZADO, comanda.getStatus());
+
+                // Pedido chama rotina de entrega => @PatchMapping("/{codigo}/entregar")
+                pedido = restTemplate
+                                .exchange(createUriWithPort("/pedidos/" + codigoPedido + "/entregar"), HttpMethod.PUT,
+                                                null, PedidoDTO.class)
+                                .getBody();
+                assertNotNull(pedido);
+                assertEquals(StatusPedido.FINALIZADO, pedido.getStatus());
+
+                success("Sucesso galera!");
+        }
+
+        private URI createUriWithPort(String s) {
+
+                String sUrl = String.format("http:////localhost:%d/%s", SERVER_PORT, s).replace("//", "/");
+                return URI.create(sUrl);
+        }
 }
