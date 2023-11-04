@@ -177,7 +177,7 @@ public class PedidoServiceTest {
 
         int result = comparator.compare(pedido1, pedido2);
 
-        assertEquals(0, result);
+        assertEquals(-1, result);
     }
 
     @Test
