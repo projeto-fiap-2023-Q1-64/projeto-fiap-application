@@ -26,7 +26,7 @@ jobs:
     
     # Maven build
     - name: Build with Maven
-      run: mvn package -PallButIntegrationTests
+      run: mvn package
 
    # Build Docker image
     - name: Build Docker image
