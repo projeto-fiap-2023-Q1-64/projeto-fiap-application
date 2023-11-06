@@ -55,7 +55,8 @@ public class ProdutoRestAdapterController implements IProdutoRestAdapterControll
     }
 
     @Override
-    public void atualizaProduto(String codigo, ProdutoDTORequest produtoDTO) throws ProdutoNaoEncontradoException {
+    public void atualizaProduto(String codigo, ProdutoDTORequest produtoDTO)
+            throws ProdutoNaoEncontradoException, EntradaInvalidaException {
         this.produtoUseCase.atualizaProduto(codigo, produtoDTO.toProduto());
     }
 }

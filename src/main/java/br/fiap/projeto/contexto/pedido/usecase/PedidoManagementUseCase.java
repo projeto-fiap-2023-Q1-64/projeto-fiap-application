@@ -7,7 +7,9 @@ import br.fiap.projeto.contexto.pedido.entity.integration.ProdutoPedido;
 import br.fiap.projeto.contexto.pedido.usecase.enums.MensagemErro;
 import br.fiap.projeto.contexto.pedido.usecase.exception.IntegrationProdutoException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidOperacaoProdutoException;
+import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
 import br.fiap.projeto.contexto.pedido.usecase.exception.ItemNotFoundException;
+import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoClienteIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoProdutoIntegrationAdapterGateway;
 import br.fiap.projeto.contexto.pedido.usecase.port.adaptergateway.IPedidoRepositoryAdapterGateway;
@@ -22,28 +24,31 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
     private final IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegrationAdapterGateway;
 
     public PedidoManagementUseCase(IPedidoRepositoryAdapterGateway IPedidoRepositoryAdapterGateway,
-                                   IPedidoProdutoIntegrationAdapterGateway pedidoProdutoIntegrationAdapterGateway,
-                                   IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegrationAdapterGateway) {
+            IPedidoProdutoIntegrationAdapterGateway pedidoProdutoIntegrationAdapterGateway,
+            IPedidoClienteIntegrationAdapterGateway pedidoClienteIntegrationAdapterGateway) {
         super(IPedidoRepositoryAdapterGateway);
         this.pedidoProdutoIntegrationAdapterGateway = pedidoProdutoIntegrationAdapterGateway;
         this.pedidoClienteIntegrationAdapterGateway = pedidoClienteIntegrationAdapterGateway;
     }
 
     @Override
-    public Pedido criaPedido(String codigoCliente) {
+    public Pedido criaPedido(String codigoCliente) throws InvalidStatusException, NoItensException {
         if (codigoCliente != null &&
                 !codigoCliente.isEmpty() &&
-                !pedidoClienteIntegrationAdapterGateway.verificaClienteExite(UUID.fromString(codigoCliente))){
+                !pedidoClienteIntegrationAdapterGateway.verificaClienteExiste(UUID.fromString(codigoCliente))) {
             throw new ObjectNotFoundException(codigoCliente, "cliente");
         }
         return IPedidoRepositoryAdapterGateway.salvar(new Pedido(codigoCliente));
     }
+
     @Override
-    public Pedido adicionarProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException, ItemNotFoundException, IntegrationProdutoException {
+    public Pedido adicionarProduto(UUID codigoPedido, UUID codigoProduto)
+            throws InvalidOperacaoProdutoException, ItemNotFoundException, IntegrationProdutoException,
+            InvalidStatusException, NoItensException {
         ProdutoPedido produtoPedido = getProduto(codigoProduto);
-        if(produtoPedido != null) {
+        if (produtoPedido != null) {
             Pedido pedido = this.buscar(codigoPedido);
-            if(this.isProdutoExisteNoPedido(codigoProduto, pedido)){
+            if (this.isProdutoExisteNoPedido(codigoProduto, pedido)) {
                 throw new InvalidOperacaoProdutoException(
                         MensagemErro.INVALID_OPERATION.getMessage() + " "
                                 + MensagemErro.PRODUTO_EXIST_IN_THE_ORDER.getMessage());
@@ -61,41 +66,47 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
             pedido.adicionarItem(itemPedido);
             this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
             return IPedidoRepositoryAdapterGateway.salvar(pedido);
-        }else{
+        } else {
             throw new ItemNotFoundException(MensagemErro.PRODUTO_NOT_FOUND.getMessage());
         }
     }
+
     @Override
-    public void removerProduto(UUID codigoPedido, UUID codigoProduto) throws InvalidOperacaoProdutoException, ItemNotFoundException {
+    public void removerProduto(UUID codigoPedido, UUID codigoProduto)
+            throws InvalidOperacaoProdutoException, ItemNotFoundException, InvalidStatusException, NoItensException {
         Pedido pedido = this.buscar(codigoPedido);
-        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
-        if(itemPedido == null) {
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto, pedido.getItens());
+        if (itemPedido == null) {
             throw new ItemNotFoundException(MensagemErro.PRODUTO_NOT_FOUND.getMessage());
         }
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.REMOVER);
         pedido.getItens().remove(itemPedido);
         IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
+
     @Override
-    public Pedido aumentarQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
+    public Pedido aumentarQuantidade(UUID codigoPedido, UUID codigoProduto)
+            throws ItemNotFoundException, InvalidOperacaoProdutoException, InvalidStatusException, NoItensException {
         Pedido pedido = this.buscar(codigoPedido);
-        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
-        if(itemPedido == null){
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto, pedido.getItens());
+        if (itemPedido == null) {
             throw new ItemNotFoundException(MensagemErro.ITEM_NOT_FOUND_IN_LIST.getMessage());
         }
         itemPedido.adicionarQuantidade();
         this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.ADICIONAR);
         return IPedidoRepositoryAdapterGateway.salvar(pedido);
     }
+
     @Override
-    public Pedido reduzirQuantidade(UUID codigoPedido, UUID codigoProduto) throws ItemNotFoundException, InvalidOperacaoProdutoException {
+    public Pedido reduzirQuantidade(UUID codigoPedido, UUID codigoProduto)
+            throws ItemNotFoundException, InvalidOperacaoProdutoException, InvalidStatusException, NoItensException {
         Pedido pedido = this.buscar(codigoPedido);
-        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
-        if(itemPedido == null){
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto, pedido.getItens());
+        if (itemPedido == null) {
             throw new ItemNotFoundException(MensagemErro.ITEM_NOT_FOUND_IN_LIST.getMessage());
-        }else{
+        } else {
             this.atualizaValorTotal(pedido, itemPedido, OperacaoProduto.SUBTRAIR);
-            if(itemPedido.getQuantidade() <= 1){
+            if (itemPedido.getQuantidade() <= 1) {
                 this.removerProduto(codigoPedido, codigoProduto);
             } else {
                 itemPedido.reduzirQuantidade();
@@ -104,11 +115,13 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         }
         return null;
     }
-    private void atualizaValorTotal(Pedido pedido, ItemPedido itemPedido, OperacaoProduto operacao) throws InvalidOperacaoProdutoException {
+
+    private void atualizaValorTotal(Pedido pedido, ItemPedido itemPedido, OperacaoProduto operacao)
+            throws InvalidOperacaoProdutoException {
         Double valor = pedido.getValorTotal();
-        switch (operacao){
+        switch (operacao) {
             case REMOVER:
-                valor -= ( itemPedido.getValorUnitario() * itemPedido.getQuantidade() );
+                valor -= (itemPedido.getValorUnitario() * itemPedido.getQuantidade());
                 break;
             case SUBTRAIR:
                 valor -= itemPedido.getValorUnitario();
@@ -121,7 +134,8 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
         }
         pedido.atualizarValorTotal(valor);
     }
-    private ItemPedido getItemPedidoByProduto(UUID codigoProduto, List<ItemPedido> itemPedidos){
+
+    private ItemPedido getItemPedidoByProduto(UUID codigoProduto, List<ItemPedido> itemPedidos) {
         return itemPedidos.stream()
                 .filter(itemPedido -> itemPedido.getProdutoCodigo().equals(codigoProduto))
                 .findFirst()
@@ -133,12 +147,13 @@ public class PedidoManagementUseCase extends AbstractPedidoUseCase implements IP
             return pedidoProdutoIntegrationAdapterGateway.getProduto(codigoProduto);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IntegrationProdutoException(MensagemErro.PRODUTO_INTEGRATION_ERROR.getMessage() + " " + e.getMessage());
+            throw new IntegrationProdutoException(
+                    MensagemErro.PRODUTO_INTEGRATION_ERROR.getMessage() + " " + e.getMessage());
         }
     }
 
     private boolean isProdutoExisteNoPedido(UUID codigoProduto, Pedido pedido) {
-        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto,pedido.getItens());
+        ItemPedido itemPedido = this.getItemPedidoByProduto(codigoProduto, pedido.getItens());
         return itemPedido != null;
     }
 }

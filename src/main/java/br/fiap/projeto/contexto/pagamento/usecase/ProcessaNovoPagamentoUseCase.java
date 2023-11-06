@@ -15,43 +15,49 @@ public class ProcessaNovoPagamentoUseCase implements IProcessaNovoPagamentoUseCa
     private final IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway;
     private final IBuscaPagamentoUseCase buscaPagamentoUseCase;
 
-    public ProcessaNovoPagamentoUseCase(IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway, IBuscaPagamentoUseCase buscaPagamentoUseCase) {
+    public ProcessaNovoPagamentoUseCase(
+            IProcessaNovoPagamentoRepositoryAdapterGateway processaNovoPagamentoAdapterGateway,
+            IBuscaPagamentoUseCase buscaPagamentoUseCase) {
         this.processaNovoPagamentoAdapterGateway = processaNovoPagamentoAdapterGateway;
         this.buscaPagamentoUseCase = buscaPagamentoUseCase;
     }
 
     /**
-     *  Um pagamento poderá ser criado quando:<br>
-     *  <li>Não existir um código de pagamento</li><br>
-     *  <li>Existir um código de pagamento mas o Status de Pagamento se encontrar em REJECTED</li>
-     *  <br>Para os casos em que o pagamento está Aprovado e Cancelado, não deverá permitir o fluxo
-     *  desta criação de pagamentos.
+     * Um pagamento poderá ser criado quando:<br>
+     * <li>Não existir um código de pagamento</li><br>
+     * <li>Existir um código de pagamento mas o Status de Pagamento se encontrar em
+     * REJECTED</li>
+     * <br>
+     * Para os casos em que o pagamento está Aprovado e Cancelado, não deverá
+     * permitir o fluxo
+     * desta criação de pagamentos.
+     * 
      * @param pagamento
      * @return
      */
     @Override
     public Pagamento criaNovoPagamento(Pagamento pagamento) {
-        if(this.isPossivelPagar(pagamento.getCodigoPedido())){
+        if (this.isPossivelPagar(pagamento.getCodigoPedido())) {
             processaNovoPagamentoAdapterGateway.salvaNovoPagamento(pagamento);
             System.out.println("USE CASE: Novo pagamento criado para o pedido: " + pagamento.getCodigoPedido());
             return pagamento;
-        }else{
+        } else {
             throw new ResourceAlreadyInProcessException(MensagemDeErro.PAGAMENTO_EXISTENTE.getMessage());
         }
     }
-    private Boolean isPossivelPagar(String codigoPedido) {
+
+    public Boolean isPossivelPagar(String codigoPedido) {
         List<Pagamento> pagamentos = buscaPagamentoUseCase.findByCodigoPedido(codigoPedido);
 
-        if(pagamentos.isEmpty()){
+        if (pagamentos.isEmpty()) {
             return true;
         }
-        if((pagamentos.stream().filter(p ->
-                p.getStatus().equals(StatusPagamento.CANCELLED) ||
+        if ((pagamentos.stream().filter(p -> p.getStatus().equals(StatusPagamento.CANCELLED) ||
                 p.getStatus().equals(StatusPagamento.APPROVED) ||
                 p.getStatus().equals(StatusPagamento.IN_PROCESS) ||
-                p.getStatus().equals(StatusPagamento.PENDING) ).count() > 0)){
+                p.getStatus().equals(StatusPagamento.PENDING)).count() > 0)) {
             return false;
         }
-        return (pagamentos.stream().filter(p -> p.getStatus().equals(StatusPagamento.REJECTED)).count() > 0) ;
+        return (pagamentos.stream().filter(p -> p.getStatus().equals(StatusPagamento.REJECTED)).count() > 0);
     }
 }

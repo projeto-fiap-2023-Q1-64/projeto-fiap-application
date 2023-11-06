@@ -4,8 +4,9 @@ import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.BuscaPorComa
 import br.fiap.projeto.contexto.comanda.adapter.controller.rest.dto.ComandaDTO;
 import br.fiap.projeto.contexto.comanda.usecase.exception.ComandaNaoEncontradaException;
 import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
+import br.fiap.projeto.contexto.comanda.usecase.exception.StatusNuloException;
 
 public interface IBuscaPorComandaControllerAdapter {
     ComandaDTO buscaPorComanda(BuscaPorComandaDTO buscaPorComandaDTO)
-            throws EntradaInvalidaException, ComandaNaoEncontradaException;
+            throws EntradaInvalidaException, ComandaNaoEncontradaException, StatusNuloException;
 }

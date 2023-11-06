@@ -2,6 +2,7 @@ package br.fiap.projeto.contexto.comanda.external.repository.entity;
 
 import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -30,7 +31,7 @@ public class ComandaEntity {
     public ComandaEntity() {
     }
 
-    public ComandaEntity(Comanda comanda) {
+    public ComandaEntity(Comanda comanda) throws EntradaInvalidaException {
         this.codigoComanda = comanda.getCodigoComanda();
         this.codigoPedido = comanda.getCodigoPedido();
         this.status = comanda.getStatus();
@@ -42,7 +43,7 @@ public class ComandaEntity {
         this.status = comanda.getStatus();
     }
 
-    public Comanda toComanda() {
+    public Comanda toComanda() throws EntradaInvalidaException {
         return new Comanda(codigoComanda, codigoPedido, status);
     }
 }

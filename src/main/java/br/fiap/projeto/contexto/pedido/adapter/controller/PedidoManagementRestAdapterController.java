@@ -3,6 +3,8 @@ package br.fiap.projeto.contexto.pedido.adapter.controller;
 import br.fiap.projeto.contexto.pedido.adapter.controller.port.IPedidoManagementRestAdapterController;
 import br.fiap.projeto.contexto.pedido.adapter.controller.rest.response.PedidoDTO;
 import br.fiap.projeto.contexto.pedido.adapter.mapper.PedidoDtoMapper;
+import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
+import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
 import br.fiap.projeto.contexto.pedido.usecase.port.usecase.IPedidoManagementUseCase;
 
 import java.util.UUID;
@@ -10,12 +12,12 @@ import java.util.UUID;
 public class PedidoManagementRestAdapterController implements IPedidoManagementRestAdapterController {
     private final IPedidoManagementUseCase pedidoManagementUseCase;
 
-    public PedidoManagementRestAdapterController(IPedidoManagementUseCase pedidoManagementUseCase){
+    public PedidoManagementRestAdapterController(IPedidoManagementUseCase pedidoManagementUseCase) {
         this.pedidoManagementUseCase = pedidoManagementUseCase;
     }
 
     @Override
-    public PedidoDTO criaPedido(String codigoCliente) {
+    public PedidoDTO criaPedido(String codigoCliente) throws InvalidStatusException, NoItensException {
         return PedidoDtoMapper.toDto(this.pedidoManagementUseCase.criaPedido(codigoCliente));
     }
 

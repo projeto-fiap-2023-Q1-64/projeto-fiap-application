@@ -1,9 +1,11 @@
 package br.fiap.projeto.contexto.pedido.entity;
 
-import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
-
 import java.util.Objects;
 import java.util.UUID;
+
+import br.fiap.projeto.contexto.pedido.entity.enums.CategoriaProduto;
+import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
+import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
 
 public class ItemPedido {
 	private UUID pedidoCodigo;
@@ -20,7 +22,9 @@ public class ItemPedido {
 	public ItemPedido() {
 	}
 
-	public ItemPedido(UUID pedidoCodigo, UUID produtoCodigo, Pedido pedido, Integer quantidade, String produtoNome, String produtoDescricao, Double valorUnitario, CategoriaProduto categoriaProduto, String imagem, Integer tempoPreparoMin) {
+	public ItemPedido(UUID pedidoCodigo, UUID produtoCodigo, Pedido pedido, Integer quantidade, String produtoNome,
+			String produtoDescricao, Double valorUnitario, CategoriaProduto categoriaProduto, String imagem,
+			Integer tempoPreparoMin) throws NoItensException, InvalidStatusException {
 		this.pedidoCodigo = pedidoCodigo;
 		this.produtoCodigo = produtoCodigo;
 		this.pedido = pedido;
@@ -31,6 +35,7 @@ public class ItemPedido {
 		this.categoriaProduto = categoriaProduto;
 		this.imagem = imagem;
 		this.tempoPreparoMin = tempoPreparoMin;
+		validarItemPedido();
 	}
 
 	public UUID getPedidoCodigo() {
@@ -76,14 +81,17 @@ public class ItemPedido {
 	public void adicionarQuantidade() {
 		this.quantidade++;
 	}
+
 	public void reduzirQuantidade() {
 		this.quantidade--;
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		ItemPedido that = (ItemPedido) o;
 		return Objects.equals(pedidoCodigo, that.pedidoCodigo) && Objects.equals(produtoCodigo, that.produtoCodigo);
 	}
@@ -91,5 +99,18 @@ public class ItemPedido {
 	@Override
 	public int hashCode() {
 		return Objects.hash(pedidoCodigo, produtoCodigo);
+	}
+
+	private void validarItemPedido() throws NoItensException, InvalidStatusException {
+		if ((pedidoCodigo == null) || (produtoCodigo == null) || (quantidade == null) || (quantidade <= 0)
+				|| (produtoNome == null)
+				|| (produtoDescricao == null) || (valorUnitario == null) || (valorUnitario <= 0)
+				|| (tempoPreparoMin == null) || (tempoPreparoMin <= 0)) {
+			throw new NoItensException("erro");
+		}
+
+		if (categoriaProduto.equals(null)) {
+			throw new NullPointerException("Status Nulo");
+		}
 	}
 }

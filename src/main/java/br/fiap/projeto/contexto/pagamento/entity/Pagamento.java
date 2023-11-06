@@ -1,10 +1,11 @@
 package br.fiap.projeto.contexto.pagamento.entity;
 
-import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
-
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+
+import br.fiap.projeto.contexto.pagamento.entity.enums.StatusPagamento;
+import br.fiap.projeto.contexto.pagamento.usecase.exceptions.UnprocessablePaymentException;
 
 public class Pagamento {
 
@@ -20,26 +21,28 @@ public class Pagamento {
 		this.status = status;
 		this.dataPagamento = dataPagamento;
 		this.valorTotal = valorTotal;
+		ValidaPagamento();
 	}
 
-	//INFO usado no conversor do PedidoAPagarDTORequest
-	public Pagamento(String codigoPedido,  Double valorTotal){
+	// INFO usado no conversor do PedidoAPagarDTORequest
+	public Pagamento(String codigoPedido, Double valorTotal) {
 		this.codigoPedido = codigoPedido;
 		this.status = StatusPagamento.PENDING;
 		this.dataPagamento = new Date();
 		this.valorTotal = valorTotal;
 	}
 
-	//INFO usado no conversor do PagamentoAEnviarAoGatewayDTORequest
-	public Pagamento(String codigoPedido, Double valorTotal, StatusPagamento status, Date dataPagamento){
+	// INFO usado no conversor do PagamentoAEnviarAoGatewayDTORequest
+	public Pagamento(String codigoPedido, Double valorTotal, StatusPagamento status, Date dataPagamento) {
 		this.codigoPedido = codigoPedido;
 		this.valorTotal = valorTotal;
 		this.dataPagamento = dataPagamento;
 		this.status = status;
 	}
 
-	//INFO usado no conversor do PagamentoNovoDTOResponse apresentar apenas Cod e Status
-	public Pagamento(String codigoPedido, StatusPagamento status){
+	// INFO usado no conversor do PagamentoNovoDTOResponse apresentar apenas Cod e
+	// Status
+	public Pagamento(String codigoPedido, StatusPagamento status) {
 		this.codigoPedido = codigoPedido;
 		this.status = status;
 	}
@@ -47,25 +50,33 @@ public class Pagamento {
 	public UUID getCodigo() {
 		return codigo;
 	}
+
 	public String getCodigoPedido() {
 		return codigoPedido;
 	}
+
 	public StatusPagamento getStatus() {
 		return status;
 	}
+
 	private void setStatus(StatusPagamento status) {
 		this.status = status;
 	}
+
 	public Date getDataPagamento() {
 		return dataPagamento;
 	}
+
 	public Double getValorTotal() {
 		return valorTotal;
 	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		Pagamento pagamento = (Pagamento) o;
 		return Objects.equals(getCodigo(), pagamento.getCodigo());
 	}
@@ -94,6 +105,7 @@ public class Pagamento {
 		pagamento.setStatus(StatusPagamento.APPROVED);
 		System.out.println("Notifica aprovação do pagamento do pedido: " + this.getCodigoPedido());
 	}
+
 	public void cancelaPagamento(Pagamento pagamento) {
 		pagamento.setStatus(StatusPagamento.CANCELLED);
 		System.out.println("Notifica cancelamento do pagamento do pedido: " + this.getCodigoPedido());
@@ -108,5 +120,18 @@ public class Pagamento {
 		return statusAtual.equals(StatusPagamento.PENDING) && statusRequest.equals(StatusPagamento.IN_PROCESS);
 	}
 
+	private void ValidaPagamento() {
+		if ((codigo == null) || (codigoPedido == null) || (dataPagamento == null)) {
+			throw new UnprocessablePaymentException("Pagamento falhou");
+		}
+
+		if ((valorTotal == null) || (valorTotal <= 0)) {
+			throw new UnprocessablePaymentException("Pagamento falhou");
+		}
+
+		if (status.equals(null)) {
+			throw new NullPointerException("Pagamento falhou");
+		}
+	}
+
 }
- 

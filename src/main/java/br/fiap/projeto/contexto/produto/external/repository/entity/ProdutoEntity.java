@@ -2,13 +2,15 @@ package br.fiap.projeto.contexto.produto.external.repository.entity;
 
 import br.fiap.projeto.contexto.produto.entity.Produto;
 import br.fiap.projeto.contexto.produto.entity.enums.CategoriaProduto;
+import br.fiap.projeto.contexto.produto.usecase.exception.EntradaInvalidaException;
 import lombok.ToString;
 
 import javax.persistence.*;
 
 @ToString
 @Entity
-@Table(name = "Produtos", uniqueConstraints = @UniqueConstraint(name = "UN_PRODUTO", columnNames = {"nome", "categoria"}))
+@Table(name = "Produtos", uniqueConstraints = @UniqueConstraint(name = "UN_PRODUTO", columnNames = { "nome",
+        "categoria" }))
 public class ProdutoEntity {
 
     @Id
@@ -44,9 +46,7 @@ public class ProdutoEntity {
         this.tempoPreparoMin = produto.getTempoPreparoMin();
     }
 
-    public Produto toProduto() {
+    public Produto toProduto() throws EntradaInvalidaException {
         return new Produto(codigo, nome, descricao, preco, categoria, imagem, tempoPreparoMin);
     }
 }
-
-

@@ -4,6 +4,7 @@ import br.fiap.projeto.contexto.comanda.entity.Comanda;
 import br.fiap.projeto.contexto.comanda.entity.enums.StatusComanda;
 import br.fiap.projeto.contexto.comanda.external.repository.entity.ComandaEntity;
 import br.fiap.projeto.contexto.comanda.external.repository.postgres.SpringComandaRepository;
+import br.fiap.projeto.contexto.comanda.usecase.exception.EntradaInvalidaException;
 import br.fiap.projeto.contexto.comanda.usecase.port.repository.IBuscarPorStatusComandaRepositoryUseCase;
 
 import java.util.List;
@@ -19,7 +20,14 @@ public class BuscaPorStatusComandaGatewayAdapter implements IBuscarPorStatusComa
 
     @Override
     public List<Comanda> buscaComandaPorStatus(StatusComanda status) {
-        return springComandaRepository.findByStatus(status).stream().map(ComandaEntity::toComanda)
+        return springComandaRepository.findByStatus(status).stream().map(t -> {
+            try {
+                return t.toComanda();
+            } catch (EntradaInvalidaException e) {
+                e.getMessage();
+            }
+            return null;
+        })
                 .collect(Collectors.toList());
     }
 

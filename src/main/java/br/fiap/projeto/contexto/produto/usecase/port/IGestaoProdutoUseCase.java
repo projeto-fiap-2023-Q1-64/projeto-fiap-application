@@ -21,6 +21,6 @@ public interface IGestaoProdutoUseCase {
 
     Void removeProduto(String codigo) throws ProdutoNaoEncontradoException;
 
-    void atualizaProduto(String codigo, Produto produto) throws ProdutoNaoEncontradoException;
+    void atualizaProduto(String codigo, Produto produto) throws ProdutoNaoEncontradoException, EntradaInvalidaException;
 
 }

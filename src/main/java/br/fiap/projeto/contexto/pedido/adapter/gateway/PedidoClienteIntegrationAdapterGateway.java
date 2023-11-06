@@ -12,8 +12,9 @@ public class PedidoClienteIntegrationAdapterGateway implements IPedidoClienteInt
     public PedidoClienteIntegrationAdapterGateway(PedidoClienteIntegration pedidoClienteIntegration) {
         this.pedidoClienteIntegration = pedidoClienteIntegration;
     }
+
     @Override
-    public Boolean verificaClienteExite(UUID codigoCliente) {
+    public Boolean verificaClienteExiste(UUID codigoCliente) {
         Cliente cliente = pedidoClienteIntegration.busca(codigoCliente.toString());
         return cliente != null && !cliente.getCodigo().isEmpty();
     }

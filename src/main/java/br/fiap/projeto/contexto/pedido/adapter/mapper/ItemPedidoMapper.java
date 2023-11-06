@@ -3,6 +3,9 @@ package br.fiap.projeto.contexto.pedido.adapter.mapper;
 import br.fiap.projeto.contexto.pedido.entity.ItemPedido;
 import br.fiap.projeto.contexto.pedido.external.repository.entity.ItemPedidoCodigo;
 import br.fiap.projeto.contexto.pedido.external.repository.entity.ItemPedidoEntity;
+import br.fiap.projeto.contexto.pedido.usecase.exception.InvalidStatusException;
+import br.fiap.projeto.contexto.pedido.usecase.exception.NoItensException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +26,8 @@ public class ItemPedidoMapper {
                 itemPedido.getTempoPreparoMin());
     }
 
-    public static ItemPedido toDomain(ItemPedidoEntity itemPedidoEntity) {
+    public static ItemPedido toDomain(ItemPedidoEntity itemPedidoEntity)
+            throws InvalidStatusException, NoItensException {
         return new ItemPedido(itemPedidoEntity.getCodigo().getPedidoCodigo(),
                 itemPedidoEntity.getCodigo().getProdutoCodigo(),
                 pedidoMapper.toDomainWithoutItens(itemPedidoEntity.getPedido()),
